@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import initialServers from "../data/servers";
 import Home from "../pages/Home";            // Home.js -> export default Home
 import TopNavbar from "./TopNavbar";         // TopNavbar.js -> export default TopNavbar
 import ServerSidebar from "./ServerSidebar"; // ServerSidebar.js -> export default ServerSidebar
