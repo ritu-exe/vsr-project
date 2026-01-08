@@ -302,16 +302,19 @@ body {
 }
 .gradient-text {
   background: linear-gradient(90deg, #6366f1, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 .my-class {
-  /* For background gradient text */
   background-clip: text;          /* Standard property */
-  -webkit-background-clip: text;  /* WebKit prefix for Safari/Chrome */
-  
+  -webkit-background-clip: text;  /* WebKit prefix */
   color: transparent;             /* Standard fallback */
   -webkit-text-fill-color: transparent; /* WebKit prefix */
 }
 
-}
 .app-root::after {
   content: "";
   position: fixed;
@@ -338,4 +341,27 @@ body {
   cursor: pointer;
   color: black;
   font-weight: bold;
+}
+.top-navbar {
+  height: 56px;
+  background: linear-gradient(135deg, #020617, #020617cc);
+  backdrop-filter: blur(10px);
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.top-nav-links span {
+  margin-left: 20px;
+  cursor: pointer;
+  color: #94a3ff;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.top-nav-links span:hover {
+  color: #fff;
+  text-shadow: 0 0 8px #6366f1;
 }
