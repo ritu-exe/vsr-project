@@ -1,0 +1,157 @@
+/* Root */
+.app-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Navbar */
+.top-navbar {
+  height: 50px;
+  background: #020617;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.top-nav-links span {
+  margin-left: 20px;
+  cursor: pointer;
+  color: #cbd5f5;
+}
+
+/* Body */
+.app-body {
+  flex: 1;
+  display: flex;
+  background: #0f172a;
+}
+
+/* Server Sidebar */
+.server-sidebar {
+  width: 70px;
+  background: #020617;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.server {
+  width: 45px;
+  height: 45px;
+  background: #1e293b;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Main Room */
+.main-room {
+  flex: 1;
+  padding: 20px;
+  color: #e5e7eb;
+}
+
+.toggle-btn {
+  margin-top: 20px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Right Panel */
+.right-panel {
+  background: #020617;
+  color: #e5e7eb;
+  height: 100%;
+  position: relative;
+  transition: width 0.25s ease;
+  overflow: hidden;
+}
+
+.right-panel.open {
+  width: 280px;
+  padding: 20px;
+}
+
+.right-panel.collapsed {
+  width: 24px;
+}
+
+/* Toggle button */
+.right-panel-toggle {
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 48px;
+  background: #020617;
+  border-radius: 6px 0 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #cbd5f5;
+  font-size: 14px;
+}
+/* Server & Room Styles */
+.server-block {
+  width: 100%;
+}
+
+.server-name {
+  width: 45px;
+  height: 45px;
+  background: #1e293b;
+  border-radius: 50%;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.server-name.active {
+  background: #3b82f6;
+}
+
+.room-list {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.room-item {
+  font-size: 13px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #cbd5f5;
+  border-radius: 6px;
+}
+
+.room-item:hover {
+  background: #1e293b;
+}
+
+.room-item.active {
+  background: #334155;
+  color: #fff;
+}
+.create-server {
+  background: transparent;
+  border: 2px dashed #3b82f6;
+  color: #3b82f6;
+  font-size: 26px;
+  cursor: pointer;
+}
+.create-room {
+  font-style: italic;
+  color: #3b82f6;
+}
