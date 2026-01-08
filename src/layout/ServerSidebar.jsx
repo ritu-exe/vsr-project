@@ -76,9 +76,11 @@ function ServerSidebar({
   }
 
   return (
-    <aside className="server-sidebar">
+    /* 🔹 ADDED glass class here */
+    <aside className="server-sidebar glass">
       {servers.map((server) => (
         <div key={server.id} className="server-block">
+          {/* Server Icon */}
           <div
             className={`server-name ${
               server.id === selectedServer.id ? "active" : ""
@@ -87,10 +89,12 @@ function ServerSidebar({
               setSelectedServer(server);
               setSelectedRoom(server.rooms[0]);
             }}
+            title={server.name}
           >
             {server.name[0].toUpperCase()}
           </div>
 
+          {/* Room List */}
           {server.id === selectedServer.id && (
             <div className="room-list">
               <div
@@ -121,6 +125,7 @@ function ServerSidebar({
         </div>
       ))}
 
+      {/* Create Server Button */}
       <div
         className="server-name create-server"
         onClick={createServer}

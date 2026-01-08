@@ -1,13 +1,19 @@
 function RightPanel({ isOpen, toggle }) {
   return (
-    <aside className={`right-panel ${isOpen ? "open" : "collapsed"}`}>
+    /* 🔹 ADDED glass class */
+    <aside className={`right-panel glass ${isOpen ? "open" : "collapsed"}`}>
+      
+      {/* Toggle Button */}
       <div className="right-panel-toggle" onClick={toggle}>
         {isOpen ? "❯" : "❮"}
       </div>
 
+      {/* Panel Content */}
       {isOpen && (
         <>
-          <h3>AI Assistant</h3>
+          {/* 🔹 ADDED gradient-text */}
+          <h3 className="gradient-text">AI Assistant</h3>
+
           <p>This panel will host:</p>
           <ul>
             <li>🤖 Chatbot</li>
@@ -17,7 +23,7 @@ function RightPanel({ isOpen, toggle }) {
         </>
       )}
     </aside>
-  );
+  );    
 }
 
 export default RightPanel;
