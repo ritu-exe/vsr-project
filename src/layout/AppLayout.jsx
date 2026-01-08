@@ -1,4 +1,3 @@
-const [currentView, setCurrentView] = useState("home");
 
 import React, { useState } from "react";
 import TopNavbar from "./TopNavbar";
@@ -10,6 +9,7 @@ import "./layout.css";
 import Home from "../pages/Home";
 
 function AppLayout() { 
+  const [currentView, setCurrentView] = useState("home");
   const [servers, setServers] = useState(initialServers);
   const [selectedServer, setSelectedServer] = useState(initialServers[0]);
   const [selectedRoom, setSelectedRoom] = useState(initialServers[0].rooms[0]);
