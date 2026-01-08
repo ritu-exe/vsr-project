@@ -3,77 +3,107 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top, #020617, #000);
 }
 
 /* Top Navbar */
 .top-navbar {
-  height: 50px;
-  background: #020617;
+  height: 56px;
+  background: linear-gradient(135deg, #020617, #020617cc);
+  backdrop-filter: blur(10px);
   color: #e5e7eb;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
+  border-bottom: 1px solid #1e293b;
 }
 
 .top-nav-links span {
   margin-left: 20px;
   cursor: pointer;
-  color: #cbd5f5;
+  color: #94a3ff;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.top-nav-links span:hover {
+  color: #fff;
+  text-shadow: 0 0 8px #6366f1;
 }
 
 /* Body */
 .app-body {
   flex: 1;
   display: flex;
-  background: #0f172a;
+  background: linear-gradient(180deg, #020617, #0f172a);
 }
 
 /* Server Sidebar */
 .server-sidebar {
-  width: 70px;
-  background: #020617;
+  width: 72px;
+  background: linear-gradient(180deg, #020617, #020617dd);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 14px;
+  border-right: 1px solid #1e293b;
 }
 
+/* Server Icons */
 .server {
-  width: 45px;
-  height: 45px;
-  background: #1e293b;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #1e293b, #020617);
   border-radius: 50%;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.server:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 12px #3b82f6;
 }
 
 /* Main Room */
 .main-room {
   flex: 1;
-  padding: 20px;
+  padding: 24px;
   color: #e5e7eb;
+  background: linear-gradient(135deg, #020617, #0f172a);
 }
 
+/* Buttons */
 .toggle-btn {
   margin-top: 20px;
-  padding: 10px 14px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.6);
 }
 
 /* Right Panel */
 .right-panel {
-  background: #020617;
+  background: linear-gradient(180deg, #020617, #020617dd);
   color: #e5e7eb;
   height: 100%;
   position: relative;
-  transition: width 0.25s ease;
+  transition: width 0.3s ease;
   overflow: hidden;
+  border-left: 1px solid #1e293b;
 }
 
 .right-panel.open {
@@ -92,66 +122,99 @@
   top: 50%;
   transform: translateY(-50%);
   width: 24px;
-  height: 48px;
-  background: #020617;
-  border-radius: 6px 0 0 6px;
+  height: 56px;
+  background: linear-gradient(135deg, #1e293b, #020617);
+  border-radius: 10px 0 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #cbd5f5;
+  color: #94a3ff;
   font-size: 14px;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
 }
+
 /* Server & Room Styles */
 .server-block {
   width: 100%;
 }
 
 .server-name {
-  width: 45px;
-  height: 45px;
-  background: #1e293b;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #1e293b, #020617);
   border-radius: 50%;
-  margin: 10px auto;
+  margin: 12px auto;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.server-name:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 14px #6366f1;
 }
 
 .server-name.active {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  box-shadow: 0 0 18px #3b82f6;
 }
 
 .room-list {
-  margin-left: 10px;
+  margin-left: 12px;
   margin-bottom: 10px;
 }
 
 .room-item {
   font-size: 13px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   cursor: pointer;
-  color: #cbd5f5;
-  border-radius: 6px;
+  color: #c7d2fe;
+  border-radius: 8px;
+  transition: background 0.2s ease, transform 0.15s ease;
 }
 
 .room-item:hover {
-  background: #1e293b;
+  background: rgba(99, 102, 241, 0.15);
+  transform: translateX(4px);
 }
 
 .room-item.active {
-  background: #334155;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: #fff;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.6);
 }
+
+/* Create Buttons */
 .create-server {
   background: transparent;
-  border: 2px dashed #3b82f6;
-  color: #3b82f6;
+  border: 2px dashed #6366f1;
+  color: #6366f1;
   font-size: 26px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
+
+.create-server:hover {
+  background: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 14px #6366f1;
+}
+
 .create-room {
   font-style: italic;
-  color: #3b82f6;
+  color: #94a3ff;
+}
+.top-right-buttons {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.top-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }
