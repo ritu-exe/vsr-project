@@ -1,35 +1,45 @@
-import { useState } from "react";
+const [currentView, setCurrentView] = useState("home");
+
+import React, { useState } from "react";
 import TopNavbar from "./TopNavbar";
 import ServerSidebar from "./ServerSidebar";
 import RightPanel from "./RightPanel";
 import initialServers from "../data/servers";
 import ChatRoom from "../rooms/ChatRoom";
 import "./layout.css";
+import Home from "../pages/Home";
 
-function AppLayout() {
+function AppLayout() { 
   const [servers, setServers] = useState(initialServers);
   const [selectedServer, setSelectedServer] = useState(initialServers[0]);
   const [selectedRoom, setSelectedRoom] = useState(initialServers[0].rooms[0]);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
 
-
-  return (
-    <div className="app-root">
-      <TopNavbar />
-
-      <div className="app-body">
-        <ServerSidebar
-  servers={servers}
-  setServers={setServers}
-  selectedServer={selectedServer}
-  setSelectedServer={setSelectedServer}
-  selectedRoom={selectedRoom}
-  setSelectedRoom={setSelectedRoom}
+return (
+  <div className="app-root">
+   <TopNavbar
+  goHome={() => setCurrentView("home")}
+  goFocus={() => setCurrentView("focus")}
+  goCompiler={() => setCurrentView("compiler")}
+  goProgress={() => setCurrentView("progress")}
 />
 
 
+    {currentView === "home" ? (
+      <Home onEnter={() => setCurrentView("workspace")} />
+    ) : (
+      <div className="app-body">
+        <ServerSidebar
+          servers={servers}
+          setServers={setServers}
+          selectedServer={selectedServer}
+          setSelectedServer={setSelectedServer}
+          selectedRoom={selectedRoom}
+          setSelectedRoom={setSelectedRoom}
+        />
+
         <main className="main-room">
-          <h2>
+          <h2 className="gradient-text">
             {selectedServer.name} / {selectedRoom.name}
           </h2>
 
@@ -41,8 +51,10 @@ function AppLayout() {
           toggle={() => setIsRightPanelOpen((prev) => !prev)}
         />
       </div>
-    </div>
-  );
+    )}
+  </div>
+);
+
 }
 
 function RoomRenderer({ room }) {
@@ -59,7 +71,5 @@ function RoomRenderer({ room }) {
       return <p>Select a room</p>;
   }
 }
-
-
 
 export default AppLayout;

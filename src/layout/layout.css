@@ -302,8 +302,15 @@ body {
 }
 .gradient-text {
   background: linear-gradient(90deg, #6366f1, #22d3ee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.my-class {
+  /* For background gradient text */
+  background-clip: text;          /* Standard property */
+  -webkit-background-clip: text;  /* WebKit prefix for Safari/Chrome */
+  
+  color: transparent;             /* Standard fallback */
+  -webkit-text-fill-color: transparent; /* WebKit prefix */
+}
+
 }
 .app-root::after {
   content: "";
