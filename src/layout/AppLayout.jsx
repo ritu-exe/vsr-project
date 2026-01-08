@@ -1,9 +1,10 @@
+import React, { useState } from "react";
 import Home from "../pages/Home";            // Home.js -> export default Home
 import TopNavbar from "./TopNavbar";         // TopNavbar.js -> export default TopNavbar
 import ServerSidebar from "./ServerSidebar"; // ServerSidebar.js -> export default ServerSidebar
 import RightPanel from "./RightPanel";       // RightPanel.js -> export default RightPanel
 import ChatRoom from "../rooms/ChatRoom";    // ChatRoom.js -> export default ChatRoom
-
+import "./layout.css";
 
 function AppLayout() { 
   const [currentView, setCurrentView] = useState("home");
