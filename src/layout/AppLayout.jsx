@@ -1,18 +1,18 @@
+import Home from "../pages/Home";            // Home.js -> export default Home
+import TopNavbar from "./TopNavbar";         // TopNavbar.js -> export default TopNavbar
+import ServerSidebar from "./ServerSidebar"; // ServerSidebar.js -> export default ServerSidebar
+import RightPanel from "./RightPanel";       // RightPanel.js -> export default RightPanel
+import ChatRoom from "../rooms/ChatRoom";    // ChatRoom.js -> export default ChatRoom
 
-import React, { useState } from "react";
-import TopNavbar from "./TopNavbar";
-import ServerSidebar from "./ServerSidebar";
-import RightPanel from "./RightPanel";
-import initialServers from "../data/servers";
-import ChatRoom from "../rooms/ChatRoom";
-import "./layout.css";
-import Home from "../pages/Home";
 
 function AppLayout() { 
   const [currentView, setCurrentView] = useState("home");
   const [servers, setServers] = useState(initialServers);
-  const [selectedServer, setSelectedServer] = useState(initialServers[0]);
-  const [selectedRoom, setSelectedRoom] = useState(initialServers[0].rooms[0]);
+ const [selectedServer, setSelectedServer] = useState(initialServers[0] || {});
+const [selectedRoom, setSelectedRoom] = useState(
+  (initialServers[0]?.rooms?.[0]) || {}
+);
+
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
 
 return (
@@ -56,11 +56,12 @@ return (
 );
 
 }
-
 function RoomRenderer({ room }) {
+  if (!room || !room.type) return <p>Select a room</p>;
+
   switch (room.type) {
     case "chat":
-      return <ChatRoom roomId={room.id} />;
+      return <ChatRoom roomId={room.id || "default"} />;
     case "voice":
       return <p>🎧 Voice Room (coming soon)</p>;
     case "video":
