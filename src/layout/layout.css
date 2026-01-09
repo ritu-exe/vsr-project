@@ -58,6 +58,7 @@
   flex: 1;
   display: flex;
   background: linear-gradient(180deg, #020617, #0f172a);
+  margin-top: 60px;
 }
 
 /* Server Sidebar */
@@ -68,6 +69,7 @@
   flex-direction: column;
   align-items: center;
   padding-top: 14px;
+  margin-top: 60px;  
   border-right: 1px solid #1e293b;
 }
 
