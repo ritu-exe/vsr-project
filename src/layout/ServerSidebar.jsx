@@ -1,4 +1,84 @@
+import { useState } from "react";
 import { Hash, Mic, Video, PenTool, Plus } from "lucide-react";
+
+/* ================= HELPERS ================= */
+
+function getRoomIcon(type) {
+  switch (type) {
+    case "voice":
+      return <Mic size={14} />;
+    case "video":
+      return <Video size={14} />;
+    case "board":
+      return <PenTool size={14} />;
+    default:
+      return <Hash size={14} />;
+  }
+}
+
+function groupRoomsBySection(rooms) {
+  return {
+    general: rooms.filter((r) => r.name.includes("general")),
+    help: rooms.filter((r) => r.name.includes("help")),
+    text: rooms.filter(
+      (r) =>
+        r.type === "chat" &&
+        !r.name.includes("general") &&
+        !r.name.includes("help")
+    ),
+    voice: rooms.filter((r) => r.type === "voice"),
+    video: rooms.filter((r) => r.type === "video"),
+    board: rooms.filter((r) => r.type === "board"),
+  };
+}
+
+/* ================= SECTION COMPONENT ================= */
+
+function RoomSection({
+  title,
+  rooms,
+  serverId,
+  selectedRoom,
+  setSelectedRoom,
+  deleteRoom,
+}) {
+  const [open, setOpen] = useState(true);
+  if (!rooms.length) return null;
+
+  return (
+    <div className="room-section">
+      <div
+        className="section-title clickable"
+        onClick={() => setOpen(!open)}
+      >
+        <span className="arrow">{open ? "▾" : "▸"}</span>
+        {title}
+      </div>
+
+      {open &&
+        rooms.map((room) => (
+          <div
+            key={room.id}
+            className={`room-item ${
+              room.id === selectedRoom.id ? "active" : ""
+            }`}
+            onClick={() => setSelectedRoom(room)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              deleteRoom(serverId, room.id);
+            }}
+          >
+            <span className="room-icon">
+              {getRoomIcon(room.type)}
+            </span>
+            <span className="room-name">{room.name}</span>
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/* ================= MAIN SIDEBAR ================= */
 
 function ServerSidebar({
   servers,
@@ -16,11 +96,13 @@ function ServerSidebar({
       id: Date.now().toString(),
       name,
       rooms: [
-        {
-          id: Date.now().toString() + "-room",
-          name: "general",
-          type: "chat",
-        },
+        { id: "general", name: "general-chat", type: "chat" },
+        { id: "ann", name: "announcements", type: "chat" },
+        { id: "fe-help", name: "frontend-help", type: "chat" },
+        { id: "be-help", name: "backend-help", type: "chat" },
+        { id: "voice", name: "dev-meet", type: "voice" },
+        { id: "video", name: "daily-standup", type: "video" },
+        { id: "board", name: "whiteboard", type: "board" },
       ],
     };
 
@@ -33,10 +115,7 @@ function ServerSidebar({
     const name = prompt("Enter room name");
     if (!name) return;
 
-    const type = prompt(
-      "Enter room type: chat / voice / video / board",
-      "chat"
-    );
+    const type = prompt("chat / voice / video / board", "chat");
 
     const newRoom = {
       id: Date.now().toString(),
@@ -59,103 +138,76 @@ function ServerSidebar({
     if (!window.confirm("Delete this room?")) return;
 
     setServers((prev) =>
-      prev.map((server) => {
-        if (server.id !== serverId) return server;
-
-        const updatedRooms = server.rooms.filter(
-          (room) => room.id !== roomId
-        );
-
-        if (updatedRooms.length === 0) return server;
-
-        if (roomId === selectedRoom.id) {
-          setSelectedRoom(updatedRooms[0]);
-        }
-
-        return { ...server, rooms: updatedRooms };
-      })
+      prev.map((server) =>
+        server.id === serverId
+          ? {
+              ...server,
+              rooms: server.rooms.filter((r) => r.id !== roomId),
+            }
+          : server
+      )
     );
-  }
-
-  // 🔹 ICON BASED ON ROOM TYPE (PROFESSIONAL)
-  function getRoomIcon(type) {
-    switch (type) {
-      case "voice":
-        return <Mic size={14} />;
-      case "video":
-        return <Video size={14} />;
-      case "board":
-        return <PenTool size={14} />;
-      default:
-        return <Hash size={14} />;
-    }
   }
 
   return (
     <aside className="server-sidebar glass">
-      {servers.map((server) => (
-        <div key={server.id} className="server-block">
-          {/* SERVER ICON */}
-          <div
-            className={`server-name ${
-              server.id === selectedServer.id ? "active" : ""
-            }`}
-            onClick={() => {
-              setSelectedServer(server);
-              setSelectedRoom(server.rooms[0]);
-            }}
-            title={server.name}
-          >
-            {server.name[0].toUpperCase()}
-          </div>
+      {servers.map((server) => {
+        const grouped = groupRoomsBySection(server.rooms);
 
-          {/* ROOM LIST */}
-          {server.id === selectedServer.id && (
-            <div className="room-list">
-              <div
-                className="room-item create-room"
-                onClick={() => createRoom(server.id)}
-              >
-                <Plus size={14} />
-                <span>Add Room</span>
-              </div>
-
-              {server.rooms.map((room) => (
-                <div
-                  key={room.id}
-                  className={`room-item ${
-                    room.id === selectedRoom.id ? "active" : ""
-                  }`}
-                  onClick={() => setSelectedRoom(room)}
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    deleteRoom(server.id, room.id);
-                  }}
-                  title="Right click to delete"
-                >
-                  <span className="room-icon">
-                    {getRoomIcon(room.type)}
-                  </span>
-                  <span className="room-name">{room.name}</span>
-                </div>
-              ))}
+        return (
+          <div key={server.id} className="server-block">
+            {/* SERVER ICON */}
+            <div
+              className={`server-name ${
+                server.id === selectedServer.id ? "active" : ""
+              }`}
+              onClick={() => {
+                setSelectedServer(server);
+                setSelectedRoom(server.rooms[0]);
+              }}
+            >
+              {server.name[0].toUpperCase()}
             </div>
-          )}
-        </div>
-      ))}
 
-      {/* CREATE SERVER */}
-      <div
-        className="server-name create-server"
-        onClick={createServer}
-        title="Create Server"
-      >
+            {server.id === selectedServer.id && (
+              <div className="room-list">
+                <div
+                  className="room-item create-room"
+                  onClick={() => createRoom(server.id)}
+                >
+                  <Plus size={14} />
+                  <span>Add Room</span>
+                </div>
+
+                <RoomSection title="GENERAL" rooms={grouped.general}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+
+                <RoomSection title="HELP" rooms={grouped.help}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+
+                <RoomSection title="TEXT CHANNELS" rooms={grouped.text}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+
+                <RoomSection title="VOICE CHANNELS" rooms={grouped.voice}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+
+                <RoomSection title="VIDEO CHANNELS" rooms={grouped.video}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+
+                <RoomSection title="WHITEBOARD" rooms={grouped.board}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      <div className="server-name create-server" onClick={createServer}>
         +
       </div>
 
-      {/* STATUS */}
       <div className="sidebar-status">
-        🟢 Focus Mode Active
+        🧠 Focus Mode • Active
       </div>
     </aside>
   );

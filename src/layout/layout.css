@@ -320,3 +320,29 @@ body { overflow: hidden; }
 
   opacity: 0.9;
 }
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+
+  color: #64748b;
+  margin: 10px 10px 6px;
+}
+
+.section-title.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.section-title:hover {
+  color: #c7d2fe;
+}
+
+.arrow {
+  font-size: 11px;
+  opacity: 0.8;
+}

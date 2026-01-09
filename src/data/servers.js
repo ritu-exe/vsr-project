@@ -1,23 +1,25 @@
 const servers = [
   {
-    id: "server-1",
-    name: "DSA Study Group",
+    id: "dev",
+    name: "Development",
     rooms: [
-      { id: "room-1", name: "general-chat", type: "chat" },
-      { id: "room-2", name: "voice-room", type: "voice" },
-      { id: "room-3", name: "video-room", type: "video" },
-      { id: "room-4", name: "whiteboard", type: "board" },
-    ],
-  },
-  {
-    id: "server-2",
-    name: "Web Dev",
-    rooms: [
-      { id: "room-5", name: "frontend-chat", type: "chat" },
-      { id: "room-6", name: "backend-chat", type: "chat" },
-      { id: "room-7", name: "dev-meet", type: "voice" },
-    ],
-  },
+      { id: "ann", name: "announcements", type: "chat", category: "pinned" },
+
+      { id: "gen", name: "general-chat", type: "chat", category: "general" },
+
+      { id: "fh", name: "frontend-help", type: "chat", category: "help" },
+      { id: "bh", name: "backend-help", type: "chat", category: "help" },
+
+      { id: "fc", name: "frontend-chat", type: "chat", category: "text" },
+      { id: "bc", name: "backend-chat", type: "chat", category: "text" },
+
+      { id: "vm", name: "dev-meet", type: "voice", category: "voice" },
+
+      { id: "vs", name: "daily-standup", type: "video", category: "video" },
+
+      { id: "wb", name: "whiteboard", type: "board", category: "board" }
+    ]
+  }
 ];
 
 export default servers;
