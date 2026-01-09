@@ -64,6 +64,7 @@
   align-items: center;
   padding-top: 14px;
   border-right: 1px solid #1e293b;
+  height: 100%; /* IMPORTANT */
 }
 
 /* ================= SERVER ICONS ================= */
@@ -285,4 +286,18 @@ body { overflow: hidden; }
 /* Click feedback */
 .right-panel-toggle:active {
   transform: translateY(-50%) scale(0.95);
+}
+
+.sidebar-status {
+  margin-top: auto;       /* PUSH TO BOTTOM */
+  margin-bottom: 16px;
+
+  font-size: 11px;
+  color: #86efac;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  opacity: 0.9;
 }
