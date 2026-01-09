@@ -92,9 +92,9 @@
   padding: 24px;
   color: #e5e7eb;
 
-  background: rgba(2, 6, 23, 0.55); /* GLASS */
-  backdrop-filter: blur(14px);
+  background: rgba(2, 6, 23, 0.45); /* no blur */
 }
+
 
 /* ================= RIGHT PANEL ================= */
 .right-panel {
