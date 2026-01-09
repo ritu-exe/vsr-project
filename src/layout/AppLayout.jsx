@@ -1,4 +1,5 @@
 import AnimatedBackground from "./AnimatedBackground";
+import CursorGlow from "./CursorGlow";
 import React, { useState } from "react";
 import initialServers from "../data/servers";
 import TopNavbar from "./TopNavbar";         // TopNavbar.js -> export default TopNavbar
@@ -20,6 +21,7 @@ const [selectedRoom, setSelectedRoom] = useState(
 return (
  <div className="app-root">
     <AnimatedBackground />
+    <CursorGlow />
    <TopNavbar
   goHome={() => setCurrentView("home")}
   goFocus={() => setCurrentView("focus")}
