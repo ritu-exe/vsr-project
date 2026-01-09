@@ -545,3 +545,31 @@ body { overflow: hidden; }
       0 0 0 rgba(99, 102, 241, 0.0);
   }
 }
+.section-title {
+  padding: 6px 10px;        /* ⬅ reduced */
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin-top: 8px;          /* ⬅ reduced */
+  margin-bottom: 4px;
+}
+.room-item {
+  padding: 6px 10px;        /* ⬅ was likely 10–12px */
+  margin: 2px 6px;          /* ⬅ tighter */
+  gap: 6px;                 /* ⬅ icon-text gap */
+  font-size: 13px;
+  line-height: 1.2;
+}
+.room-icon {
+  width: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow {
+  margin-right: 4px;        /* ⬅ reduce arrow gap */
+  font-size: 10px;
+}
+.room-section {
+  margin-bottom: 6px;       /* ⬅ reduce gap between sections */
+}
