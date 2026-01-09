@@ -269,3 +269,41 @@ body { overflow: hidden; }
 .icon-btn:hover svg {
   filter: drop-shadow(0 0 8px currentColor);
 }
+
+/* ===============================
+   FORCE ICON VISIBILITY (FIX)
+   =============================== */
+
+/* Force stroke + fill to follow color */
+.icon-btn svg {
+  stroke: currentColor !important;
+  fill: none;
+  opacity: 1;
+}
+
+/* VERY BRIGHT COLORS (always visible) */
+.icon-btn.home {
+  color: #60a5fa;   /* bright blue */
+}
+
+.icon-btn.focus {
+  color: #fb923c;   /* bright orange */
+}
+
+.icon-btn.code {
+  color: #4ade80;   /* bright green */
+}
+
+.icon-btn.stats {
+  color: #c084fc;   /* bright purple */
+}
+
+.icon-btn.settings {
+  color: #67e8f9;   /* bright cyan */
+}
+
+/* Hover glow + motion */
+.icon-btn:hover svg {
+  filter: drop-shadow(0 0 10px currentColor);
+  transform: scale(1.15);
+}
