@@ -181,16 +181,18 @@ function ServerSidebar({
         return (
           <div key={server.id} className="server-block">
             <div
-              className={`server-name ${
-                server.id === selectedServer.id ? "active" : ""
-              }`}
-              onClick={() => {
-                setSelectedServer(server);
-                setSelectedRoom(server.rooms[0]);
-              }}
-            >
-              {server.name[0].toUpperCase()}
-            </div>
+  className={`server-avatar ${
+    server.id === selectedServer.id ? "active" : ""
+  }`}
+  onClick={() => {
+    setSelectedServer(server);
+    setSelectedRoom(server.rooms[0]);
+  }}
+  title={server.name}
+>
+  <span>{server.name[0].toUpperCase()}</span>
+</div>
+
 
             {server.id === selectedServer.id && (
               <div className="room-list">
