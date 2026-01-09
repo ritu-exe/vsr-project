@@ -54,7 +54,7 @@
     300px circle at var(--x) var(--y),
 
     /* Soft white center */
-    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.05) 0%,
 
     /* Gentle fade */
     rgba(255, 255, 255, 0.05) 25%,
