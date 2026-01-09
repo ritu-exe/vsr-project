@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import initialServers from "../data/servers";
-import Home from "../pages/Home";            // Home.js -> export default Home
 import TopNavbar from "./TopNavbar";         // TopNavbar.js -> export default TopNavbar
 import ServerSidebar from "./ServerSidebar"; // ServerSidebar.js -> export default ServerSidebar
 import RightPanel from "./RightPanel";       // RightPanel.js -> export default RightPanel
@@ -28,8 +27,10 @@ return (
 
 
     {currentView === "home" ? (
-      <Home onEnter={() => setCurrentView("workspace")} />
-    ) : (
+<div className="home-placeholder">
+    <h1>Welcome!</h1>
+    <p>Click a server to start.</p>
+  </div>    ) : (
       <div className="app-body">
         <ServerSidebar
           servers={servers}
