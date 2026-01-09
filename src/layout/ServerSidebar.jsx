@@ -16,9 +16,19 @@ function getRoomIcon(type) {
   }
 }
 
+function hasUnread(room) {
+  return room.name.includes("help");
+}
+
+function getPinnedRooms(rooms) {
+  return rooms.filter((r) => r.name === "announcements");
+}
+
 function groupRoomsBySection(rooms) {
   return {
-    general: rooms.filter((r) => r.name.includes("general")),
+    general: rooms.filter(
+      (r) => r.name.includes("general") && r.name !== "announcements"
+    ),
     help: rooms.filter((r) => r.name.includes("help")),
     text: rooms.filter(
       (r) =>
@@ -32,7 +42,7 @@ function groupRoomsBySection(rooms) {
   };
 }
 
-/* ================= SECTION COMPONENT ================= */
+/* ================= SECTION ================= */
 
 function RoomSection({
   title,
@@ -41,6 +51,7 @@ function RoomSection({
   selectedRoom,
   setSelectedRoom,
   deleteRoom,
+  focusMode,
 }) {
   const [open, setOpen] = useState(true);
   if (!rooms.length) return null;
@@ -59,9 +70,10 @@ function RoomSection({
         rooms.map((room) => (
           <div
             key={room.id}
-            className={`room-item ${
-              room.id === selectedRoom.id ? "active" : ""
-            }`}
+            className={`room-item
+              ${room.id === selectedRoom.id ? "active" : ""}
+              ${focusMode && room.id !== selectedRoom.id ? "dimmed" : ""}
+            `}
             onClick={() => setSelectedRoom(room)}
             onContextMenu={(e) => {
               e.preventDefault();
@@ -71,14 +83,18 @@ function RoomSection({
             <span className="room-icon">
               {getRoomIcon(room.type)}
             </span>
-            <span className="room-name">{room.name}</span>
+
+            <span className="room-name">
+              {room.name}
+              {hasUnread(room) && <span className="unread-dot" />}
+            </span>
           </div>
         ))}
     </div>
   );
 }
 
-/* ================= MAIN SIDEBAR ================= */
+/* ================= MAIN ================= */
 
 function ServerSidebar({
   servers,
@@ -88,6 +104,9 @@ function ServerSidebar({
   selectedRoom,
   setSelectedRoom,
 }) {
+  const [search, setSearch] = useState("");
+  const [focusMode] = useState(true);
+
   function createServer() {
     const name = prompt("Enter server name");
     if (!name) return;
@@ -152,11 +171,15 @@ function ServerSidebar({
   return (
     <aside className="server-sidebar glass">
       {servers.map((server) => {
-        const grouped = groupRoomsBySection(server.rooms);
+        const filteredRooms = server.rooms.filter((r) =>
+          r.name.toLowerCase().includes(search.toLowerCase())
+        );
+
+        const grouped = groupRoomsBySection(filteredRooms);
+        const pinned = getPinnedRooms(filteredRooms);
 
         return (
           <div key={server.id} className="server-block">
-            {/* SERVER ICON */}
             <div
               className={`server-name ${
                 server.id === selectedServer.id ? "active" : ""
@@ -171,6 +194,37 @@ function ServerSidebar({
 
             {server.id === selectedServer.id && (
               <div className="room-list">
+                <div className="sidebar-search">
+                  <input
+                    placeholder="Search rooms…"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+
+                {pinned.length > 0 && (
+                  <div className="room-section pinned">
+                    <div className="section-title pinned-title">
+                      📌 PINNED
+                    </div>
+
+                    {pinned.map((room) => (
+                      <div
+                        key={room.id}
+                        className={`room-item pinned ${
+                          room.id === selectedRoom.id ? "active" : ""
+                        }`}
+                        onClick={() => setSelectedRoom(room)}
+                      >
+                        <span className="room-icon">
+                          {getRoomIcon(room.type)}
+                        </span>
+                        <span className="room-name">{room.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 <div
                   className="room-item create-room"
                   onClick={() => createRoom(server.id)}
@@ -180,22 +234,22 @@ function ServerSidebar({
                 </div>
 
                 <RoomSection title="GENERAL" rooms={grouped.general}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
 
                 <RoomSection title="HELP" rooms={grouped.help}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
 
                 <RoomSection title="TEXT CHANNELS" rooms={grouped.text}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
 
                 <RoomSection title="VOICE CHANNELS" rooms={grouped.voice}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
 
                 <RoomSection title="VIDEO CHANNELS" rooms={grouped.video}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
 
                 <RoomSection title="WHITEBOARD" rooms={grouped.board}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom }} />
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
               </div>
             )}
           </div>

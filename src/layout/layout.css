@@ -346,3 +346,78 @@ body { overflow: hidden; }
   font-size: 11px;
   opacity: 0.8;
 }
+/* ===== SIDEBAR SEARCH ===== */
+.sidebar-search input {
+  width: calc(100% - 20px);
+  margin: 8px 10px;
+  padding: 6px 8px;
+
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(148, 163, 255, 0.2);
+
+  color: #e5e7eb;
+  font-size: 12px;
+  outline: none;
+}
+
+.sidebar-search input::placeholder {
+  color: #94a3b8;
+}
+/* ===== PINNED ROOMS ===== */
+.pinned-title {
+  color: #facc15;
+}
+
+.room-item.pinned {
+  background: rgba(250, 204, 21, 0.08);
+  border-left: 2px solid #facc15;
+}
+
+.room-item.pinned.active {
+  background: linear-gradient(
+    135deg,
+    rgba(250, 204, 21, 0.35),
+    rgba(250, 204, 21, 0.15)
+  );
+}
+/* ===== UNREAD BADGE ===== */
+.unread-dot {
+  width: 6px;
+  height: 6px;
+  background: #3b82f6;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 6px;
+}
+/* ===== FOCUS MODE ===== */
+.room-item.dimmed {
+  opacity: 0.35;
+  pointer-events: none;
+}
+/* ===== SECTION HEADERS ===== */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+
+  color: #64748b;
+  margin: 10px 10px 6px;
+}
+
+.section-title.clickable {
+  cursor: pointer;
+}
+
+.section-title:hover {
+  color: #c7d2fe;
+}
+
+.arrow {
+  font-size: 11px;
+  opacity: 0.8;
+}
