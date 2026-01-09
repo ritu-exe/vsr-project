@@ -50,14 +50,22 @@
   pointer-events: none;
   z-index: 9999;
 
-  /* DARK OVERLAY WITH A HOLE (LIGHT) */
   background: radial-gradient(
-    220px circle at var(--x) var(--y),
+    260px circle at var(--x) var(--y),
+
+    /* Soft white center */
     rgba(255, 255, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.12) 30%,
-    rgba(0, 0, 0, 0.55) 60%,
-    rgba(0, 0, 0, 0.85) 100%
+
+    /* Gentle fade */
+    rgba(255, 255, 255, 0.12) 25%,
+
+    /* Almost transparent dark */
+    rgba(0, 0, 0, 0.15) 55%,
+
+    /* Very light dim */
+    rgba(0, 0, 0, 0.25) 100%
   );
 
-  transition: background 0.06s linear;
+  transition: background 0.08s ease-out;
 }
+
