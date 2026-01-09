@@ -223,4 +223,49 @@ body { overflow: hidden; }
 ::selection {
   background: #6366f1;
   color: #fff;
+}/* ===============================
+   MAKE NAV ICONS VISIBLE (FIX)
+   =============================== */
+
+/* Button background brighter */
+.icon-btn {
+  background: rgba(15, 23, 42, 0.9); /* lighter dark */
+  border: 1px solid rgba(148, 163, 255, 0.4);
+}
+
+/* Base icon visibility */
+.icon-btn svg {
+  font-size: 20px;
+  opacity: 1;
+}
+
+/* ALWAYS VISIBLE COLORS */
+.icon-btn.home svg {
+  color: #60a5fa; /* blue */
+}
+
+.icon-btn.focus svg {
+  color: #fb923c; /* orange */
+}
+
+.icon-btn.code svg {
+  color: #4ade80; /* green */
+}
+
+.icon-btn.stats svg {
+  color: #c084fc; /* purple */
+}
+
+.icon-btn.settings svg {
+  color: #67e8f9; /* cyan */
+}
+
+/* Hover glow + lift */
+.icon-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 0 20px rgba(148, 163, 255, 0.5);
+}
+
+.icon-btn:hover svg {
+  filter: drop-shadow(0 0 8px currentColor);
 }
