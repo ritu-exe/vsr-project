@@ -629,3 +629,16 @@ body { overflow: hidden; }
 .server-sidebar::-webkit-scrollbar-track {
   background: transparent;
 }
+.pomodoro {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(99,102,241,0.15);
+  text-align: center;
+}
+
+.pomodoro .timer {
+  font-size: 18px;
+  font-weight: bold;
+  color: #c7d2fe;
+}

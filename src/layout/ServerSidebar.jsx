@@ -1,3 +1,4 @@
+import PomodoroTimer from "../components/PomodoroTimer";
 import { useState } from "react";
 import { Hash, Mic, Video, PenTool, Plus } from "lucide-react";
 
@@ -263,7 +264,7 @@ function ServerSidebar({
   <span>Create Server</span>
 </div>
 
-
+<PomodoroTimer />
       <div className="sidebar-status">
         🧠 Focus Mode • Active
       </div>
