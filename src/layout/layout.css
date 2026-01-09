@@ -138,26 +138,45 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
+  padding: 8px 10px;
+  margin: 4px 6px;
+
   font-size: 13px;
-  padding: 8px 12px;
-  cursor: pointer;
+  font-weight: 500;
+
   color: #c7d2fe;
-  border-radius: 8px;
-  background: rgba(99, 102, 241, 0.04);
-  transition: all 0.2s ease;
+  border-radius: 10px;
+
+  background: rgba(99, 102, 241, 0.05);
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
 }
 
 .room-item:hover {
+  background: rgba(99, 102, 241, 0.15);
   transform: translateX(4px);
-  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.3),
-              0 4px 14px rgba(99, 102, 241, 0.25);
 }
 
+
 .room-item.active {
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
-  color: #fff;
-  animation: neonPulse 2.5s infinite;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.9),
+    rgba(59, 130, 246, 0.9)
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.8),
+    0 6px 18px rgba(99, 102, 241, 0.45);
 }
+
 
 @keyframes neonPulse {
   0% { box-shadow: 0 0 6px #6366f1; }
