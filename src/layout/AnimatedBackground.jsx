@@ -1,11 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./animatedBackground.css";
 
 export default function AnimatedBackground() {
-  useEffect(() => {
-    const booksLayer = document.getElementById("booksLayer");
+  const booksRef = useRef(null);
 
-    for (let i = 0; i < 14; i++) {
+  useEffect(() => {
+    const layer = booksRef.current;
+    if (!layer) return;
+
+    for (let i = 0; i < 16; i++) {
       const book = document.createElement("div");
       book.className = "book";
 
@@ -16,7 +19,7 @@ export default function AnimatedBackground() {
       book.style.height = `${height}px`;
       book.style.left = `${Math.random() * 100}%`;
       book.style.top = `${Math.random() * 100}%`;
-      book.style.animationDelay = `${Math.random() * 10}s`;
+      book.style.animationDelay = `${Math.random() * 8}s`;
 
       for (let j = 0; j < 3; j++) {
         const line = document.createElement("div");
@@ -25,15 +28,18 @@ export default function AnimatedBackground() {
         book.appendChild(line);
       }
 
-      booksLayer?.appendChild(book);
+      layer.appendChild(book);
     }
   }, []);
 
   return (
     <div className="animated-bg-root">
-      <div className="background-layer gradient-layer"></div>
-      <div className="background-layer texture-layer"></div>
-      <div className="background-layer books-layer" id="booksLayer"></div>
+      <div className="background-layer gradient-layer" />
+      <div className="background-layer texture-layer" />
+      <div
+        className="background-layer books-layer"
+        ref={booksRef}
+      />
     </div>
   );
 }
