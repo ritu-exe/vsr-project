@@ -228,3 +228,54 @@ body { overflow: hidden; }
   background: #6366f1;
   color: #fff;
 }
+/* =========================================
+   RIGHT PANEL TOGGLE — CENTER + PREMIUM
+   ========================================= */
+
+.right-panel-toggle {
+  position: absolute;
+  top: 50%;
+  left: -18px;
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 72px;
+
+  background: linear-gradient(180deg, #1e293b, #020617);
+  border-radius: 14px 0 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  color: #94a3ff;
+  cursor: pointer;
+
+  box-shadow:
+    0 0 0 1px rgba(148, 163, 255, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.6);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    background 0.25s ease;
+}
+
+/* Hover = premium glow + slide */
+.right-panel-toggle:hover {
+  transform: translateY(-50%) translateX(-2px) scale(1.08);
+  color: #ffffff;
+  background: linear-gradient(180deg, #6366f1, #3b82f6);
+  box-shadow:
+    0 0 18px rgba(99, 102, 241, 0.8),
+    0 12px 36px rgba(0, 0, 0, 0.7);
+}
+
+/* Click feedback */
+.right-panel-toggle:active {
+  transform: translateY(-50%) scale(0.95);
+}
