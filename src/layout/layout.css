@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap");
+
 :root {
   --accent-primary: #6366f1;
   --accent-secondary: #3b82f6;
@@ -676,4 +678,17 @@ body { overflow: hidden; }
 .room-icon {
   font-size: 14px;
   opacity: 0.8;
+}
+/* PREMIUM SUB-HEADINGS */
+.section-title {
+  font-family: "Urbanist", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 10px 0 6px;
+}
+.section-title.clickable:hover {
+  color: #a5b4fc;
 }
