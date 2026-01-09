@@ -50,8 +50,9 @@
 /* ================= FLOATING BOOKS ================= */
 
 .books-layer {
-  z-index: 5;
-  opacity: 0.35; /* TEMP: make them obvious */
+  z-index: 2;          /* ABOVE gradient & texture */
+  opacity: 0.18;       /* visible but premium */
+  pointer-events: none;
 }
 
 
