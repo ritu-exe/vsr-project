@@ -50,12 +50,14 @@
 /* ================= FLOATING BOOKS ================= */
 
 .books-layer {
-  z-index: 3;
-  opacity: 0.08;
+  z-index: 5;
+  opacity: 0.35; /* TEMP: make them obvious */
 }
+
 
 .book {
   position: absolute;
+  border: 2px solid red; /* TEMP DEBUG */
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.35) 0%,
