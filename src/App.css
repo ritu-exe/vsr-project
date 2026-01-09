@@ -1,3 +1,12 @@
+:root {
+  --bg-main: #0b1020;
+  --bg-panel: #11162a;
+  --accent: #6c8cff;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border-soft: rgba(255,255,255,0.08);
+}
+
 .App {
   text-align: center;
   background: 
@@ -120,9 +129,14 @@
   border-radius: 6px;
   padding: 2px;
   background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+ /* For Chrome, Safari */
+-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+-webkit-mask-composite: xor;
+
+/* Standard */
+mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+mask-composite: exclude;
+
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -262,4 +276,47 @@
   .App-logo {
     height: 35vmin;
   }
+}
+body {
+  background: radial-gradient(
+      circle at top left,
+      rgba(88, 101, 242, 0.15),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0, 212, 255, 0.12),
+      transparent 40%
+    ),
+    #0b0f1a;
+  color: #eaeaf0;
+  overflow: hidden;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+}
+
+button,
+.room-item,
+.server-name {
+  transition: all 0.25s ease;
+}
+
+button:hover,
+.room-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(88, 101, 242, 0.3);
+}
+
+.room-item.active {
+  background: linear-gradient(
+    90deg,
+    rgba(88, 101, 242, 0.4),
+    rgba(88, 101, 242, 0.1)
+  );
 }
