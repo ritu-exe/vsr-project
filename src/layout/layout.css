@@ -1,3 +1,24 @@
+:root {
+  --accent-primary: #6366f1;
+  --accent-secondary: #3b82f6;
+  --accent-cyan: #22d3ee;
+
+  --bg-main: #020617;
+  --bg-panel: #0f172a;
+  --bg-glass: rgba(2, 6, 23, 0.65);
+
+  --text-main: #e5e7eb;
+  --text-muted: #94a3b8;
+  --border-soft: #1e293b;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  --transition-fast: 0.15s ease;
+  --transition-med: 0.25s ease;
+}
+
 /* Root */
 .app-root {
   height: 100vh;
@@ -364,4 +385,68 @@ body {
 .top-nav-links span:hover {
   color: #fff;
   text-shadow: 0 0 8px #6366f1;
+}
+body.focus-mode {
+  background: radial-gradient(circle at top, #020617, #000 70%);
+}
+
+body.focus-mode .server-sidebar,
+body.focus-mode .right-panel {
+  opacity: 0.6;
+  filter: grayscale(0.4);
+}
+
+body.focus-mode .main-room {
+  box-shadow: inset 0 0 120px rgba(99, 102, 241, 0.15);
+}
+.focus-room {
+  text-align: center;
+}
+
+.focus-timer {
+  font-size: 64px;
+  margin: 20px 0;
+  letter-spacing: 2px;
+}
+
+.focus-controls,
+.focus-sounds {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+ 
+.room-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.room-icon {
+  opacity: 0.7;
+}
+
+.room-item:hover .room-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.room-item span {
+  font-size: 13px;
+}
+
+.create-room {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-style: italic;
+}
+
+.sidebar-status {
+  margin-top: auto;
+  padding: 12px 0;
+  font-size: 11px;
+  color: #86efac;
+  text-align: center;
 }

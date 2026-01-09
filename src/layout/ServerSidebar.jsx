@@ -1,3 +1,5 @@
+import { Hash, Mic, Video, PenTool, Plus } from "lucide-react";
+
 function ServerSidebar({
   servers,
   setServers,
@@ -75,17 +77,17 @@ function ServerSidebar({
     );
   }
 
-  // 🔹 ICON BASED ON ROOM TYPE
+  // 🔹 ICON BASED ON ROOM TYPE (PROFESSIONAL)
   function getRoomIcon(type) {
     switch (type) {
       case "voice":
-        return "🎙";
+        return <Mic size={14} />;
       case "video":
-        return "🎥";
+        return <Video size={14} />;
       case "board":
-        return "🧠";
+        return <PenTool size={14} />;
       default:
-        return "#";
+        return <Hash size={14} />;
     }
   }
 
@@ -114,7 +116,8 @@ function ServerSidebar({
                 className="room-item create-room"
                 onClick={() => createRoom(server.id)}
               >
-                ➕ Add Room
+                <Plus size={14} />
+                <span>Add Room</span>
               </div>
 
               {server.rooms.map((room) => (
