@@ -247,3 +247,93 @@ body {
   background: linear-gradient(180deg, #020617, #020617dd);
   border-left: 1px solid var(--border-soft);
 }
+/* ================= PROFILE CIRCLE (D) ================= */
+
+.server-name {
+  position: relative;
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 16px;
+
+  background: linear-gradient(135deg, #6366f1, #22d3ee);
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Outer glowing ring */
+.server-name::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.8),
+    rgba(34, 211, 238, 0.8)
+  );
+
+  filter: blur(10px);
+  opacity: 0.5;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+/* Hover animation */
+.server-name:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 28px rgba(99, 102, 241, 0.9);
+}
+
+.server-name:hover::before {
+  opacity: 0.9;
+}
+/* ================= SEARCH BAR ================= */
+
+.sidebar-search {
+  width: 100%;
+  height: 34px;
+
+  padding: 0 12px;
+  margin-bottom: 12px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+
+  color: #e5e7eb;
+  font-size: 13px;
+
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+/* Focus glow */
+.sidebar-search:focus {
+  border-color: #6366f1;
+  box-shadow:
+    0 0 0 2px rgba(99, 102, 241, 0.35),
+    0 0 18px rgba(99, 102, 241, 0.5);
+
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Placeholder */
+.sidebar-search::placeholder {
+  color: #94a3b8;
+  opacity: 0.9;
+}
+.sidebar-search:hover,
+.server-name:hover {
+  filter: brightness(1.1);
+}
