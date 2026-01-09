@@ -450,3 +450,25 @@ body.focus-mode .main-room {
   color: #86efac;
   text-align: center;
 }
+
+.top-navbar {
+  position: fixed; /* keeps navbar on top */
+  top: 0;
+  left: 0;
+  width: 100%; /* full width */
+  height: 60px; /* adjust as needed */
+  background-color: #0f172a; /* or whatever dark bg you have */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000; /* makes sure it's above sidebar */
+}
+.main-content {
+  margin-top: 60px; /* same as navbar height */
+  margin-left: 80px; /* adjust based on sidebar width */
+}
+
+.sidebar {
+  z-index: 500; /* lower than navbar */
+}
