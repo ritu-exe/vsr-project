@@ -573,3 +573,7 @@ body { overflow: hidden; }
 .room-section {
   margin-bottom: 6px;       /* ⬅ reduce gap between sections */
 }
+.room-item {
+  padding: 5px 8px;
+  font-size: 12.5px;
+}
