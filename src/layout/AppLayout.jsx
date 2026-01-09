@@ -41,13 +41,21 @@ return (
           setSelectedRoom={setSelectedRoom}
         />
 
-        <main className="main-room">
-          <h2 className="gradient-text">
-            {selectedServer.name} / {selectedRoom.name}
-          </h2>
-
-          <RoomRenderer room={selectedRoom} />
-        </main>
+         <main className="main-room">
+        {currentView === "home" ? (
+          <div className="home-placeholder">
+            <h1 className="gradient-text">Welcome!</h1>
+            <p>Click a server to start.</p>
+          </div>
+        ) : (
+          <>
+            <h2 className="gradient-text">
+              {selectedServer.name} / {selectedRoom.name}
+            </h2>
+            <RoomRenderer room={selectedRoom} />
+          </>
+        )}
+      </main>
 
         <RightPanel
           isOpen={isRightPanelOpen}
