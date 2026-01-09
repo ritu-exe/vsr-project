@@ -15,7 +15,7 @@ function TopNavbar({ goHome, goFocus, goCompiler, goProgress, goSettings }) {
       {/* LEFT LOGO */}
       <div className="logo">
         <h2 className="gradient-text" style={{ margin: 0 }}>
-          VSR
+          Virtual Study Room
         </h2>
       </div>
 
