@@ -118,18 +118,12 @@
 }
 
 /* ================= TEXT ================= */
-/* ================= TEXT ================= */
 .gradient-text {
   background: linear-gradient(90deg, #6366f1, #22d3ee);
-
-  /* Standard property */
   background-clip: text;
-
-  /* WebKit support */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 
 /* ================= ROOM LIST ================= */
 .room-item {
@@ -163,7 +157,7 @@
   100% { box-shadow: 0 0 6px #6366f1; }
 }
 
-/* ================= TOP NAV ICONS ================= */
+/* ================= TOP NAV ICONS (FINAL FIX) ================= */
 .top-nav-icons {
   display: flex;
   gap: 14px;
@@ -174,42 +168,52 @@
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: rgba(2, 6, 23, 0.65);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(99, 102, 241, 0.25);
+
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 255, 0.45);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* FORCE react-icons (Fi) visibility */
 .icon-btn svg {
-  font-size: 20px;
+  width: 20px;
+  height: 20px;
+
+  stroke: currentColor !important;
+  fill: none !important;
+  stroke-width: 2.2;
+
+  opacity: 1;
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-/* ICON COLORS (ALWAYS VISIBLE) */
-.icon-btn.home svg     { color: #3b82f6; }
-.icon-btn.focus svg    { color: #f97316; }
-.icon-btn.code svg     { color: #22c55e; }
-.icon-btn.stats svg    { color: #a855f7; }
-.icon-btn.settings svg { color: #22d3ee; }
+/* ICON COLORS — ALWAYS VISIBLE */
+.icon-btn.home     { color: #60a5fa; }
+.icon-btn.focus    { color: #fb923c; }
+.icon-btn.code     { color: #4ade80; }
+.icon-btn.stats    { color: #c084fc; }
+.icon-btn.settings { color: #67e8f9; }
 
-/* HOVER ANIMATION */
+/* Hover animation */
 .icon-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 0 24px currentColor;
 }
 
 .icon-btn:hover svg {
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 8px currentColor);
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px currentColor);
 }
 
-/* SETTINGS ROTATION */
+/* Settings spin */
 .icon-btn.settings:hover svg {
-  animation: spin 1.2s linear infinite;
+  animation: spin 1.1s linear infinite;
 }
 
 @keyframes spin {
@@ -223,87 +227,4 @@ body { overflow: hidden; }
 ::selection {
   background: #6366f1;
   color: #fff;
-}/* ===============================
-   MAKE NAV ICONS VISIBLE (FIX)
-   =============================== */
-
-/* Button background brighter */
-.icon-btn {
-  background: rgba(15, 23, 42, 0.9); /* lighter dark */
-  border: 1px solid rgba(148, 163, 255, 0.4);
-}
-
-/* Base icon visibility */
-.icon-btn svg {
-  font-size: 20px;
-  opacity: 1;
-}
-
-/* ALWAYS VISIBLE COLORS */
-.icon-btn.home svg {
-  color: #60a5fa; /* blue */
-}
-
-.icon-btn.focus svg {
-  color: #fb923c; /* orange */
-}
-
-.icon-btn.code svg {
-  color: #4ade80; /* green */
-}
-
-.icon-btn.stats svg {
-  color: #c084fc; /* purple */
-}
-
-.icon-btn.settings svg {
-  color: #67e8f9; /* cyan */
-}
-
-/* Hover glow + lift */
-.icon-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 0 20px rgba(148, 163, 255, 0.5);
-}
-
-.icon-btn:hover svg {
-  filter: drop-shadow(0 0 8px currentColor);
-}
-
-/* ===============================
-   FORCE ICON VISIBILITY (FIX)
-   =============================== */
-
-/* Force stroke + fill to follow color */
-.icon-btn svg {
-  stroke: currentColor !important;
-  fill: none;
-  opacity: 1;
-}
-
-/* VERY BRIGHT COLORS (always visible) */
-.icon-btn.home {
-  color: #60a5fa;   /* bright blue */
-}
-
-.icon-btn.focus {
-  color: #fb923c;   /* bright orange */
-}
-
-.icon-btn.code {
-  color: #4ade80;   /* bright green */
-}
-
-.icon-btn.stats {
-  color: #c084fc;   /* bright purple */
-}
-
-.icon-btn.settings {
-  color: #67e8f9;   /* bright cyan */
-}
-
-/* Hover glow + motion */
-.icon-btn:hover svg {
-  filter: drop-shadow(0 0 10px currentColor);
-  transform: scale(1.15);
 }
