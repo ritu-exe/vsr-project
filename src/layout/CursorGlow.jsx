@@ -3,26 +3,24 @@ import "./cursorGlow.css";
 
 function CursorGlow() {
   useEffect(() => {
-    const handleClick = (e) => {
-      const ripple = document.createElement("div");
-      ripple.className = "click-ripple";
-      ripple.style.left = e.clientX + "px";
-      ripple.style.top = e.clientY + "px";
+    const spotlight = document.createElement("div");
+    spotlight.className = "cursor-spotlight";
+    document.body.appendChild(spotlight);
 
-      document.body.appendChild(ripple);
-
-      setTimeout(() => ripple.remove(), 600);
+    const move = (e) => {
+      spotlight.style.left = e.clientX + "px";
+      spotlight.style.top = e.clientY + "px";
     };
 
-    document.addEventListener("click", handleClick);
+    window.addEventListener("mousemove", move);
 
-    // CLEANUP (VERY IMPORTANT)
     return () => {
-      document.removeEventListener("click", handleClick);
+      window.removeEventListener("mousemove", move);
+      spotlight.remove();
     };
   }, []);
 
-  return null; // nothing to render
+  return null;
 }
 
 export default CursorGlow;
