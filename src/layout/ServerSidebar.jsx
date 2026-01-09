@@ -256,9 +256,11 @@ function ServerSidebar({
         );
       })}
 
-      <div className="server-name create-server" onClick={createServer}>
-        +
-      </div>
+      <div className="create-server-btn" onClick={createServer}>
+  <Plus size={16} />
+  <span>Create Server</span>
+</div>
+
 
       <div className="sidebar-status">
         🧠 Focus Mode • Active
