@@ -21,23 +21,23 @@ function TopNavbar({ goHome, goFocus, goCompiler, goProgress, goSettings }) {
 
       {/* RIGHT ICON BUTTONS */}
       <div className="top-nav-icons">
-        <button className="icon-btn" onClick={goHome} title="Home">
+        <button className="icon-btn home" onClick={goHome} title="Home">
           <FiHome />
         </button>
 
-        <button className="icon-btn" onClick={goFocus} title="Focus Mode">
+        <button className="icon-btn focus" onClick={goFocus} title="Focus Mode">
           <FiTarget />
         </button>
 
-        <button className="icon-btn" onClick={goCompiler} title="Compiler">
+        <button className="icon-btn code" onClick={goCompiler} title="Compiler">
           <FiCode />
         </button>
 
-        <button className="icon-btn" onClick={goProgress} title="Progress">
+        <button className="icon-btn stats" onClick={goProgress} title="Progress">
           <FiBarChart2 />
         </button>
 
-        <button className="icon-btn" onClick={goSettings} title="Settings">
+        <button className="icon-btn settings" onClick={goSettings} title="Settings">
           <FiSettings />
         </button>
       </div>
