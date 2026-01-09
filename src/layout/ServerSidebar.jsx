@@ -75,12 +75,25 @@ function ServerSidebar({
     );
   }
 
+  // 🔹 ICON BASED ON ROOM TYPE
+  function getRoomIcon(type) {
+    switch (type) {
+      case "voice":
+        return "🎙";
+      case "video":
+        return "🎥";
+      case "board":
+        return "🧠";
+      default:
+        return "#";
+    }
+  }
+
   return (
-    /* 🔹 ADDED glass class here */
     <aside className="server-sidebar glass">
       {servers.map((server) => (
         <div key={server.id} className="server-block">
-          {/* Server Icon */}
+          {/* SERVER ICON */}
           <div
             className={`server-name ${
               server.id === selectedServer.id ? "active" : ""
@@ -94,14 +107,14 @@ function ServerSidebar({
             {server.name[0].toUpperCase()}
           </div>
 
-          {/* Room List */}
+          {/* ROOM LIST */}
           {server.id === selectedServer.id && (
             <div className="room-list">
               <div
                 className="room-item create-room"
                 onClick={() => createRoom(server.id)}
               >
-                + Add Room
+                ➕ Add Room
               </div>
 
               {server.rooms.map((room) => (
@@ -117,7 +130,10 @@ function ServerSidebar({
                   }}
                   title="Right click to delete"
                 >
-                  # {room.name}
+                  <span className="room-icon">
+                    {getRoomIcon(room.type)}
+                  </span>
+                  <span className="room-name">{room.name}</span>
                 </div>
               ))}
             </div>
@@ -125,13 +141,18 @@ function ServerSidebar({
         </div>
       ))}
 
-      {/* Create Server Button */}
+      {/* CREATE SERVER */}
       <div
         className="server-name create-server"
         onClick={createServer}
         title="Create Server"
       >
         +
+      </div>
+
+      {/* STATUS */}
+      <div className="sidebar-status">
+        🟢 Focus Mode Active
       </div>
     </aside>
   );

@@ -5,6 +5,16 @@ function Focus() {
   const [running, setRunning] = useState(false);
   const [audio, setAudio] = useState(null);
 
+  /* 🔥 ADD THIS: Enable Focus Mode UI */
+  useEffect(() => {
+    document.body.classList.add("focus-mode");
+
+    return () => {
+      document.body.classList.remove("focus-mode");
+    };
+  }, []);
+
+  /* TIMER LOGIC (UNCHANGED) */
   useEffect(() => {
     if (!running) return;
 
@@ -56,24 +66,38 @@ function Focus() {
   }
 
   return (
-    <div>
-      <h2>🧘 Focus Room</h2>
+    <div className="main-room focus-room">
+      <h2 className="gradient-text">🧘 Focus Room</h2>
 
-      <h1>
+      <h1 className="focus-timer">
         {minutes}:{seconds < 10 ? "0" : ""}
         {seconds}
       </h1>
 
-      <button onClick={start}>Start</button>
-      <button onClick={pause}>Pause</button>
-      <button onClick={reset}>Reset</button>
+      <div className="focus-controls">
+        {!running ? (
+          <button className="toggle-btn" onClick={start}>
+            ▶ Start
+          </button>
+        ) : (
+          <button className="toggle-btn" onClick={pause}>
+            ⏸ Pause
+          </button>
+        )}
+        <button className="toggle-btn" onClick={reset}>
+          🔁 Reset
+        </button>
+      </div>
 
       <hr />
 
       <h3>🎧 Focus Sounds</h3>
-      <button onClick={() => playSound("rain")}>Rain</button>
-      <button onClick={() => playSound("birds")}>Birds</button>
-      <button onClick={stopSound}>Stop Sound</button>
+
+      <div className="focus-sounds">
+        <button onClick={() => playSound("rain")}>🌧 Rain</button>
+        <button onClick={() => playSound("birds")}>🐦 Birds</button>
+        <button onClick={stopSound}>⏹ Stop</button>
+      </div>
     </div>
   );
 }
