@@ -21,10 +21,10 @@ const [selectedRoom, setSelectedRoom] = useState(
 
 return (
  <div className="app-root">
+  <CursorGlow />
   <Particles />
-    <AnimatedBackground />
-    <CursorGlow />
-   <TopNavbar
+  <AnimatedBackground />
+  <TopNavbar
   goHome={() => setCurrentView("home")}
   goFocus={() => setCurrentView("focus")}
   goCompiler={() => setCurrentView("compiler")}

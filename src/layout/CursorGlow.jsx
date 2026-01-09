@@ -8,8 +8,8 @@ function CursorGlow() {
     document.body.appendChild(spotlight);
 
     const move = (e) => {
-      spotlight.style.left = e.clientX + "px";
-      spotlight.style.top = e.clientY + "px";
+      spotlight.style.setProperty("--x", `${e.clientX}px`);
+      spotlight.style.setProperty("--y", `${e.clientY}px`);
     };
 
     window.addEventListener("mousemove", move);

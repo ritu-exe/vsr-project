@@ -46,21 +46,18 @@
 }
 .cursor-spotlight {
   position: fixed;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
+  inset: 0;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9999;
 
+  /* DARK OVERLAY WITH A HOLE (LIGHT) */
   background: radial-gradient(
-    circle,
-    rgba(99, 102, 241, 0.35) 0%,
-    rgba(99, 102, 241, 0.18) 30%,
-    rgba(99, 102, 241, 0.08) 45%,
-    transparent 65%
+    220px circle at var(--x) var(--y),
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.12) 30%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0.85) 100%
   );
 
-  transform: translate(-50%, -50%);
-  filter: blur(12px);
-  transition: transform 0.05s linear;
+  transition: background 0.06s linear;
 }
