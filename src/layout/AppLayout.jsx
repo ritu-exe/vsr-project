@@ -1,3 +1,4 @@
+import AnimatedBackground from "./AnimatedBackground";
 import React, { useState } from "react";
 import initialServers from "../data/servers";
 import TopNavbar from "./TopNavbar";         // TopNavbar.js -> export default TopNavbar
@@ -17,7 +18,8 @@ const [selectedRoom, setSelectedRoom] = useState(
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
 
 return (
-  <div className="app-root">
+ <div className="app-root">
+    <AnimatedBackground />
    <TopNavbar
   goHome={() => setCurrentView("home")}
   goFocus={() => setCurrentView("focus")}
