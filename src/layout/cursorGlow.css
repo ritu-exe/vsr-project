@@ -51,7 +51,7 @@
   z-index: 9999;
 
   background: radial-gradient(
-    260px circle at var(--x) var(--y),
+    220px circle at var(--x) var(--y),
 
     /* Soft white center */
     rgba(255, 255, 255, 0.18) 0%,
