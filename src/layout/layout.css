@@ -10,34 +10,47 @@
   --text-main: #e5e7eb;
   --text-muted: #94a3b8;
   --border-soft: #1e293b;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-
-  --transition-fast: 0.15s ease;
-  --transition-med: 0.25s ease;
 }
 
-/* Root */
+/* ================= ROOT ================= */
 .app-root {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   background: radial-gradient(circle at top, #020617, #000);
 }
 
+/* ================= TOP NAVBAR ================= */
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
 
-/* Body */
+  background: linear-gradient(135deg, #020617, #020617cc);
+  backdrop-filter: blur(10px);
+
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+  border-bottom: 1px solid #1e293b;
+  z-index: 1000;
+}
+
+/* ================= BODY ================= */
 .app-body {
   flex: 1;
   display: flex;
-  background: linear-gradient(180deg, #020617, #0f172a);
   margin-top: 60px;
+  background: linear-gradient(180deg, #020617, #0f172a);
 }
 
-/* Server Sidebar */
+/* ================= SERVER SIDEBAR ================= */
 .server-sidebar {
   width: 72px;
   background: linear-gradient(180deg, #020617, #020617dd);
@@ -48,12 +61,12 @@
   border-right: 1px solid #1e293b;
 }
 
-/* Server Icons */
+/* ================= SERVER ICONS ================= */
 .server {
   width: 48px;
   height: 48px;
   background: linear-gradient(135deg, #1e293b, #020617);
-  border-radius: 50%;
+  border-radius: 18px;
   margin-bottom: 14px;
   display: flex;
   align-items: center;
@@ -64,10 +77,11 @@
 
 .server:hover {
   transform: scale(1.08);
-  box-shadow: 0 0 12px #3b82f6;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  box-shadow: 0 0 14px #3b82f6;
 }
 
-/* Main Room */
+/* ================= MAIN ROOM ================= */
 .main-room {
   flex: 1;
   padding: 24px;
@@ -75,25 +89,7 @@
   background: linear-gradient(135deg, #020617, #0f172a);
 }
 
-/* Buttons */
-.toggle-btn {
-  margin-top: 20px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #6366f1, #3b82f6);
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.toggle-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.6);
-}
-
-/* Right Panel */
+/* ================= RIGHT PANEL ================= */
 .right-panel {
   background: linear-gradient(180deg, #020617, #020617dd);
   color: #e5e7eb;
@@ -113,468 +109,118 @@
   width: 24px;
 }
 
-/* Toggle button */
-.right-panel-toggle {
-  position: absolute;
-  left: -12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 56px;
-  background: linear-gradient(135deg, #1e293b, #020617);
-  border-radius: 10px 0 0 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #94a3ff;
-  font-size: 14px;
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+/* ================= GLASS ================= */
+.glass {
+  background: rgba(2, 6, 23, 0.65);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
-/* Server & Room Styles */
-.server-block {
-  width: 100%;
+/* ================= TEXT ================= */
+/* ================= TEXT ================= */
+.gradient-text {
+  background: linear-gradient(90deg, #6366f1, #22d3ee);
+
+  /* Standard property */
+  background-clip: text;
+
+  /* WebKit support */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.server-name {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #1e293b, #020617);
-  border-radius: 50%;
-  margin: 12px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
 
-.server-name:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 14px #6366f1;
-}
-
-.server-name.active {
-  background: linear-gradient(135deg, #6366f1, #3b82f6);
-  box-shadow: 0 0 18px #3b82f6;
-}
-
-.room-list {
-  margin-left: 12px;
-  margin-bottom: 10px;
-}
-
+/* ================= ROOM LIST ================= */
 .room-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   padding: 8px 12px;
   cursor: pointer;
   color: #c7d2fe;
   border-radius: 8px;
-  transition: background 0.2s ease, transform 0.15s ease;
+  background: rgba(99, 102, 241, 0.04);
+  transition: all 0.2s ease;
 }
 
 .room-item:hover {
-  background: rgba(99, 102, 241, 0.15);
   transform: translateX(4px);
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.3),
+              0 4px 14px rgba(99, 102, 241, 0.25);
 }
 
 .room-item.active {
   background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: #fff;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.6);
+  animation: neonPulse 2.5s infinite;
 }
 
-/* Create Buttons */
-.create-server {
-  background: transparent;
-  border: 2px dashed #6366f1;
-  color: #6366f1;
-  font-size: 26px;
+@keyframes neonPulse {
+  0% { box-shadow: 0 0 6px #6366f1; }
+  50% { box-shadow: 0 0 18px #3b82f6; }
+  100% { box-shadow: 0 0 6px #6366f1; }
+}
+
+/* ================= TOP NAV ICONS ================= */
+.top-nav-icons {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(2, 6, 23, 0.65);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.create-server:hover {
-  background: rgba(99, 102, 241, 0.15);
-  box-shadow: 0 0 14px #6366f1;
+.icon-btn svg {
+  font-size: 20px;
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.create-room {
-  font-style: italic;
-  color: #94a3ff;
-}
-.top-right-buttons {
-    display: flex;
-    gap: 10px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-.top-btn {
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-* {
-  box-sizing: border-box;
+/* ICON COLORS (ALWAYS VISIBLE) */
+.icon-btn.home svg     { color: #3b82f6; }
+.icon-btn.focus svg    { color: #f97316; }
+.icon-btn.code svg     { color: #22c55e; }
+.icon-btn.stats svg    { color: #a855f7; }
+.icon-btn.settings svg { color: #22d3ee; }
+
+/* HOVER ANIMATION */
+.icon-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
 }
 
-body {
-  overflow: hidden;
+.icon-btn:hover svg {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px currentColor);
 }
+
+/* SETTINGS ROTATION */
+.icon-btn.settings:hover svg {
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ================= MISC ================= */
+* { box-sizing: border-box; }
+body { overflow: hidden; }
 
 ::selection {
   background: #6366f1;
   color: #fff;
-}
-.glass {
-  background: rgba(2, 6, 23, 0.65);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-}
-@keyframes neonPulse {
-  0% { box-shadow: 0 0 6px #6366f1; }
-  50% { box-shadow: 0 0 18px #6366f1, 0 0 36px #3b82f6; }
-  100% { box-shadow: 0 0 6px #6366f1; }
-}
-.server-name.active,
-.room-item.active {
-  animation: neonPulse 2.5s infinite;
-}
-.server {
-  border-radius: 18px;
-}
-
-.server:hover {
-  border-radius: 10px;
-  background: linear-gradient(135deg, #6366f1, #3b82f6);
-}
-.server::before {
-  content: "";
-  position: absolute;
-  left: -8px;
-  width: 4px;
-  height: 0;
-  background: #6366f1;
-  border-radius: 4px;
-  transition: height 0.25s ease;
-}
-
-.server:hover::before {
-  height: 60%;
-}
-.toggle-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.toggle-btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 120%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.4),
-    transparent
-  );
-  transition: left 0.6s ease;
-}
-
-.toggle-btn:hover::after {
-  left: 120%;
-}
-.room-item {
-  background: rgba(99, 102, 241, 0.04);
-}
-
-.room-item:hover {
-  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.3),
-              0 4px 14px rgba(99, 102, 241, 0.25);
-}
-.gradient-text {
-  background: linear-gradient(90deg, #6366f1, #22d3ee);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.my-class {
-  background-clip: text;          /* Standard property */
-  -webkit-background-clip: text;  /* WebKit prefix */
-  color: transparent;             /* Standard fallback */
-  -webkit-text-fill-color: transparent; /* WebKit prefix */
-}
-
-.app-root::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-.home-container {
-  height: calc(100vh - 60px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.enter-btn {
-  margin-top: 20px;
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #22d3ee, #a855f7);
-  border: none;
-  cursor: pointer;
-  color: black;
-  font-weight: bold;
-}
-
-.top-nav-links span {
-  margin-left: 20px;
-  cursor: pointer;
-  color: #94a3ff;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
-}
-
-.top-nav-links span:hover {
-  color: #fff;
-  text-shadow: 0 0 8px #6366f1;
-}
-body.focus-mode {
-  background: radial-gradient(circle at top, #020617, #000 70%);
-}
-
-body.focus-mode .server-sidebar,
-body.focus-mode .right-panel {
-  opacity: 0.6;
-  filter: grayscale(0.4);
-}
-
-body.focus-mode .main-room {
-  box-shadow: inset 0 0 120px rgba(99, 102, 241, 0.15);
-}
-.focus-room {
-  text-align: center;
-}
-
-.focus-timer {
-  font-size: 64px;
-  margin: 20px 0;
-  letter-spacing: 2px;
-}
-
-.focus-controls,
-.focus-sounds {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
- 
-.room-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.room-icon {
-  opacity: 0.7;
-}
-
-.room-item:hover .room-icon {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.room-item span {
-  font-size: 13px;
-}
-
-.create-room {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-style: italic;
-}
-
-.sidebar-status {
-  margin-top: auto;
-  padding: 12px 0;
-  font-size: 11px;
-  color: #86efac;
-  text-align: center;
-}
-
-.top-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background: linear-gradient(135deg, #020617, #020617cc);
-  backdrop-filter: blur(10px);
-  color: #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 28px;
-  border-bottom: 1px solid #1e293b;
-  z-index: 1000;
-}
-
-.main-content {
-  margin-top: 60px; /* same as navbar height */
-  margin-left: 80px; /* adjust based on sidebar width */
-}
-
-.sidebar {
-  z-index: 500; /* lower than navbar */
-}
-/* ===============================
-   MULTI-COLORED NAV ICONS
-   =============================== */
-
-/* Default icon size polish */
-.icon-btn svg {
-  font-size: 20px;
-  transition: transform 0.25s ease, filter 0.25s ease;
-}
-
-/* HOME – Cyan → Blue */
-.icon-btn.home {
-  color: #22d3ee;
-}
-.icon-btn.home:hover {
-  box-shadow: 0 0 18px rgba(34, 211, 238, 0.9);
-}
-
-/* FOCUS – Orange → Yellow */
-.icon-btn.focus {
-  color: #f97316;
-}
-.icon-btn.focus:hover {
-  box-shadow: 0 0 18px rgba(249, 115, 22, 0.9);
-}
-
-/* COMPILER – Green */
-.icon-btn.code {
-  color: #22c55e;
-}
-.icon-btn.code:hover {
-  box-shadow: 0 0 18px rgba(34, 197, 94, 0.9);
-}
-
-/* PROGRESS – Purple */
-.icon-btn.stats {
-  color: #a855f7;
-}
-.icon-btn.stats:hover {
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.9);
-}
-
-/* SETTINGS – Neutral Gray */
-.icon-btn.settings {
-  color: #cbd5f5;
-}
-.icon-btn.settings:hover {
-  color: #020617;
-}
-.icon-btn:hover svg {
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 6px currentColor);
-}
-
-/* ===============================
-   FORCE MULTI-COLORED NAV ICONS
-   =============================== */
-
-/* General icon polish */
-.icon-btn svg {
-  font-size: 20px;
-  transition: transform 0.25s ease, filter 0.25s ease;
-}
-
-/* HOME – BLUE */
-.icon-btn.home svg {
-  color: #3b82f6; /* blue */
-}
-
-/* FOCUS – ORANGE */
-.icon-btn.focus svg {
-  color: #f97316; /* orange */
-}
-
-/* COMPILER – GREEN */
-.icon-btn.code svg {
-  color: #22c55e; /* green */
-}
-
-/* PROGRESS – PURPLE */
-.icon-btn.stats svg {
-  color: #a855f7; /* purple */
-}
-
-/* SETTINGS – CYAN */
-.icon-btn.settings svg {
-  color: #22d3ee; /* cyan */
-}
-
-/* Hover pop + glow */
-.icon-btn:hover svg {
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 6px currentColor);
-}
-.icon-btn {
-  background: rgba(2, 6, 23, 0.6);
-  border: 1px solid rgba(99, 102, 241, 0.25);
-}
- /* ===============================
-   ALWAYS-VISIBLE MULTI COLOR ICONS
-   =============================== */
-
-/* Base icon button (no white override) */
-.icon-btn {
-  background: rgba(2, 6, 23, 0.65);
-  border: 1px solid rgba(99, 102, 241, 0.25);
-}
-
-/* Make sure SVGs are visible by default */
-.icon-btn svg {
-  font-size: 20px;
-  transition: 
-    transform 0.25s ease,
-    filter 0.25s ease,
-    color 0.25s ease;
-}
-
-/* 🔵 HOME — BLUE (always visible) */
-.icon-btn.home svg {
-  color: #3b82f6;
-}
-
-/* 🟠 FOCUS — ORANGE */
-.icon-btn.focus svg {
-  color: #f97316;
-}
-
-/* 🟢 COMPILER — GREEN */
-.icon-btn.code svg {
-  color: #22c55e;
-}
-
-/* 🟣 PROGRESS — PURPLE */
-.icon-btn.stats svg {
-  color: #a855
 }
