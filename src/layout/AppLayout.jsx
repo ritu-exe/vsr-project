@@ -26,47 +26,45 @@ return (
 />
 
 
+    <div className="app-body">
+  {/* LEFT */}
+  <ServerSidebar
+    servers={servers}
+    setServers={setServers}
+    selectedServer={selectedServer}
+    setSelectedServer={setSelectedServer}
+    selectedRoom={selectedRoom}
+    setSelectedRoom={setSelectedRoom}
+  />
+
+  {/* CENTER */}
+  <main className="main-room">
     {currentView === "home" ? (
-<div className="home-placeholder">
-    <h1>Welcome!</h1>
-    <p>Click a server to start.</p>
-  </div>    ) : (
-      <div className="app-body">
-        <ServerSidebar
-          servers={servers}
-          setServers={setServers}
-          selectedServer={selectedServer}
-          setSelectedServer={setSelectedServer}
-          selectedRoom={selectedRoom}
-          setSelectedRoom={setSelectedRoom}
-        />
+      <div className="home-container">
+        <h1 className="gradient-text">Welcome!</h1>
+        <p>Click a server to start.</p>
+      </div>
+    ) : (
+      <>
+        <h2 className="gradient-text">
+          {selectedServer.name} / {selectedRoom.name}
+        </h2>
+        <RoomRenderer room={selectedRoom} />
+      </>
+    )}
+  </main>
 
-         <main className="main-room">
-        {currentView === "home" ? (
-          <div className="home-placeholder">
-            <h1 className="gradient-text">Welcome!</h1>
-            <p>Click a server to start.</p>
-          </div>
-        ) : (
-          <>
-            <h2 className="gradient-text">
-              {selectedServer.name} / {selectedRoom.name}
-            </h2>
-            <RoomRenderer room={selectedRoom} />
-          </>
-        )}
-      </main>
-
-        <RightPanel
-          isOpen={isRightPanelOpen}
-          toggle={() => setIsRightPanelOpen((prev) => !prev)}
+  {/* RIGHT */}
+  <RightPanel
+    isOpen={isRightPanelOpen}
+     toggle={() => setIsRightPanelOpen((prev) => !prev)}
         />
       </div>
-    )}
-  </div>
-);
-
+    </div>
+  );
 }
+
+
 function RoomRenderer({ room }) {
   if (!room || !room.type) return <p>Select a room</p>;
 
