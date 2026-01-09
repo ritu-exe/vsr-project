@@ -3,18 +3,26 @@ import "./cursorGlow.css";
 
 function CursorGlow() {
   useEffect(() => {
-    const glow = document.getElementById("cursor-glow");
+    const handleClick = (e) => {
+      const ripple = document.createElement("div");
+      ripple.className = "click-ripple";
+      ripple.style.left = e.clientX + "px";
+      ripple.style.top = e.clientY + "px";
 
-    const move = (e) => {
-      glow.style.left = `${e.clientX}px`;
-      glow.style.top = `${e.clientY}px`;
+      document.body.appendChild(ripple);
+
+      setTimeout(() => ripple.remove(), 600);
     };
 
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
+    document.addEventListener("click", handleClick);
+
+    // CLEANUP (VERY IMPORTANT)
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
   }, []);
 
-  return <div id="cursor-glow" />;
+  return null; // nothing to render
 }
 
 export default CursorGlow;

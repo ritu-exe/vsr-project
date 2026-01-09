@@ -1,3 +1,4 @@
+import Particles from "./Particles";
 import AnimatedBackground from "./AnimatedBackground";
 import CursorGlow from "./CursorGlow";
 import React, { useState } from "react";
@@ -20,6 +21,7 @@ const [selectedRoom, setSelectedRoom] = useState(
 
 return (
  <div className="app-root">
+  <Particles />
     <AnimatedBackground />
     <CursorGlow />
    <TopNavbar
