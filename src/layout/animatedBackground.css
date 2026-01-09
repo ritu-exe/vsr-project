@@ -1,96 +1,67 @@
+/* ================= REAL BOOK IMAGE BACKGROUND ================= */
+
+.real-books-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+
+  background-image:
+    linear-gradient(
+      rgba(2, 6, 23, 0.78),
+      rgba(2, 6, 23, 0.78)
+    ),
+    url("../assets/books-bg.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  filter: blur(3px) saturate(1.1);
+  transform: scale(1.05); /* prevents blur edges */
+}
+
+/* ================= ANIMATED OVERLAY ================= */
+
 .animated-bg-root {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   pointer-events: none;
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
+/* ================= GRADIENT LAYER ================= */
+
 .background-layer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: background 2s ease-in-out;
+  inset: 0;
 }
 
 .gradient-layer {
-  z-index: 1;
   background: linear-gradient(
     135deg,
-    #1e3c72 0%,
-    #2a5298 50%,
-    #7e22ce 100%
+    rgba(30, 60, 114, 0.75),
+    rgba(42, 82, 152, 0.65),
+    rgba(126, 34, 206, 0.65)
   );
+  animation: gradientShift 20s ease-in-out infinite;
 }
+
+/* ================= TEXTURE LAYER ================= */
 
 .texture-layer {
-  z-index: 2;
-  opacity: 0.3;
+  opacity: 0.25;
   background-image:
-    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(120,180,255,0.15) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(180,120,255,0.1) 0%, transparent 50%);
-  background-size: 100% 100%;
-  animation: textureMove 20s ease-in-out infinite;
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(120,180,255,0.1) 0%, transparent 50%);
 }
 
-@keyframes textureMove {
+/* ================= ANIMATIONS ================= */
+
+@keyframes gradientShift {
   0%, 100% {
-    background-position: 0% 0%, 100% 100%, 50% 0%;
+    filter: hue-rotate(0deg);
   }
   50% {
-    background-position: 100% 100%, 0% 0%, 0% 100%;
+    filter: hue-rotate(15deg);
   }
-}
-/* ================= FLOATING BOOKS ================= */
-
-.books-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-
-.book {
-  position: absolute;
-  width: 110px;
-  height: 150px;
-
-  background: linear-gradient(
-    180deg,
-    rgba(99, 102, 241, 0.85),
-    rgba(59, 130, 246, 0.85)
-  );
-
-  border-radius: 10px;
-  box-shadow:
-    0 8px 24px rgba(99, 102, 241, 0.45),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-
-  animation: floatBook 20s ease-in-out infinite;
-}
-
-
-@keyframes floatBook {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-30px) rotate(4deg);
-  }
-}
-
-.book-lines {
-  position: absolute;
-  width: 70%;
-  height: 2px;
-  left: 15%;
-  background: rgba(255, 255, 255, 0.4);
 }
