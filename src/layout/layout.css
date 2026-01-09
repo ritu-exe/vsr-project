@@ -540,3 +540,41 @@ body.focus-mode .main-room {
   background: rgba(2, 6, 23, 0.6);
   border: 1px solid rgba(99, 102, 241, 0.25);
 }
+ /* ===============================
+   ALWAYS-VISIBLE MULTI COLOR ICONS
+   =============================== */
+
+/* Base icon button (no white override) */
+.icon-btn {
+  background: rgba(2, 6, 23, 0.65);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+/* Make sure SVGs are visible by default */
+.icon-btn svg {
+  font-size: 20px;
+  transition: 
+    transform 0.25s ease,
+    filter 0.25s ease,
+    color 0.25s ease;
+}
+
+/* 🔵 HOME — BLUE (always visible) */
+.icon-btn.home svg {
+  color: #3b82f6;
+}
+
+/* 🟠 FOCUS — ORANGE */
+.icon-btn.focus svg {
+  color: #f97316;
+}
+
+/* 🟢 COMPILER — GREEN */
+.icon-btn.code svg {
+  color: #22c55e;
+}
+
+/* 🟣 PROGRESS — PURPLE */
+.icon-btn.stats svg {
+  color: #a855
+}
