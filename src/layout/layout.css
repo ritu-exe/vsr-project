@@ -442,3 +442,56 @@ body.focus-mode .main-room {
 .sidebar {
   z-index: 500; /* lower than navbar */
 }
+/* ===============================
+   MULTI-COLORED NAV ICONS
+   =============================== */
+
+/* Default icon size polish */
+.icon-btn svg {
+  font-size: 20px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+/* HOME – Cyan → Blue */
+.icon-btn.home {
+  color: #22d3ee;
+}
+.icon-btn.home:hover {
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.9);
+}
+
+/* FOCUS – Orange → Yellow */
+.icon-btn.focus {
+  color: #f97316;
+}
+.icon-btn.focus:hover {
+  box-shadow: 0 0 18px rgba(249, 115, 22, 0.9);
+}
+
+/* COMPILER – Green */
+.icon-btn.code {
+  color: #22c55e;
+}
+.icon-btn.code:hover {
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.9);
+}
+
+/* PROGRESS – Purple */
+.icon-btn.stats {
+  color: #a855f7;
+}
+.icon-btn.stats:hover {
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.9);
+}
+
+/* SETTINGS – Neutral Gray */
+.icon-btn.settings {
+  color: #cbd5f5;
+}
+.icon-btn.settings:hover {
+  color: #020617;
+}
+.icon-btn:hover svg {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 6px currentColor);
+}
