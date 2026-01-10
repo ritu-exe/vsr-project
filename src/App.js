@@ -1,8 +1,8 @@
 import "./index.css";
-import Home from "./pages/Home";
+import AppLayout from "./layout/AppLayout";
 
 function App() {
-  return <Home onEnter={() => {}} />;
+  return <AppLayout />;
 }
 
 export default App;
