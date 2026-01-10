@@ -714,3 +714,112 @@ body { overflow: hidden; }
 .animated-background::after {
   opacity: 0.25 !important;
 }
+/* =========================================
+   FORCE BOOK BACKGROUND VISIBILITY (FINAL)
+   ========================================= */
+
+/* 1. Make animated background fully visible */
+.animated-background {
+  opacity: 1 !important;
+  filter: none !important;
+  z-index: 0 !important;
+}
+
+/* 2. REMOVE dark overlay created by pseudo-element */
+.animated-background::before,
+.animated-background::after {
+  opacity: 0 !important;
+}
+
+/* 3. Remove dark glass from center area */
+.main-room {
+  background: transparent !important;
+}
+
+/* 4. Keep UI panels above background */
+.app-body {
+  position: relative;
+  z-index: 5;
+}
+
+.server-sidebar,
+.main-room,
+.right-panel {
+  position: relative;
+  z-index: 10;
+}
+/* =====================================================
+   🔥 FINAL BOOK BACKGROUND FIX (ADD ONLY — SAFE)
+   ===================================================== */
+
+/* 1️⃣ Force books / animated background to be visible */
+.animated-background {
+  position: fixed !important;
+  inset: 0;
+  z-index: -1 !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* 2️⃣ Kill dark overlay hiding the books */
+.animated-background::before,
+.animated-background::after {
+  opacity: 0 !important;
+  background: none !important;
+}
+
+/* 3️⃣ Let books show through center area ONLY */
+.main-room {
+  background: transparent !important;
+}
+
+/* 4️⃣ Keep UI panels above background */
+.app-body {
+  position: relative;
+  z-index: 5;
+}
+
+.server-sidebar,
+.right-panel,
+.top-navbar {
+  position: relative;
+  z-index: 10;
+}
+/* =====================================================
+   🔥 FIX: MAKE REAL BOOKS BACKGROUND VISIBLE
+   ===================================================== */
+
+.real-books-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  /* 👇 PUT YOUR BOOK IMAGE PATH HERE */
+  background-image: url("/backgrounds/books.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 1;
+  filter: none;
+}
+
+/* REMOVE DARK OVERLAY FROM ANIMATED LAYERS */
+.animated-bg-root,
+.background-layer {
+  background: transparent !important;
+}
+
+/* CENTER AREA SHOULD BE TRANSPARENT */
+.main-room {
+  background: transparent !important;
+}
+
+/* KEEP UI ABOVE BACKGROUND */
+.server-sidebar,
+.right-panel,
+.top-navbar {
+  position: relative;
+  z-index: 10;
+}
