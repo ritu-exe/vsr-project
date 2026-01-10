@@ -137,7 +137,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 18px 10px;
-
+  padding-top: 72px; 
   background: rgba(2, 6, 23, 0.9);
   backdrop-filter: blur(14px);
 
@@ -392,4 +392,64 @@ body {
 
 .right-panel-toggle:active {
   transform: translateY(-50%) scale(0.95);
+}
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.app-root {
+  height: 100dvh; /* dynamic viewport height */
+}
+
+.app-body {
+  height: calc(100dvh - 60px);
+}
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      rgba(2, 6, 23, 0.75),
+      rgba(2, 6, 23, 0.75)
+    ),
+    url("/images/book-bg.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* premium feel */
+}
+.app-root {
+  background: transparent;
+}
+
+.app-body {
+  background: transparent;
+}
+
+.server-sidebar,
+.main-room,
+.right-panel {
+  background-color: rgba(2, 6, 23, 0.55); /* glass layer */
+  backdrop-filter: blur(14px);
+}
+.app-root {
+  height: 100dvh;
+}
+
+.app-body {
+  height: calc(100dvh - 60px);
+}
+.server-sidebar {
+  padding-top: calc(60px + 12px);
 }
