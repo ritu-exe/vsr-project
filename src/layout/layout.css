@@ -705,3 +705,9 @@ body { overflow: hidden; }
   position: relative;
   z-index: 10;
 }
+/* ===== RESTORE BOOK BACKGROUND (ADD ONLY) ===== */
+
+.animated-background {
+  opacity: 1 !important;
+  filter: brightness(1) contrast(1);
+}
