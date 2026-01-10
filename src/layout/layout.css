@@ -731,3 +731,22 @@ body { overflow: hidden; }
   overflow-x: hidden;
 }
 
+/* =========================================
+   FIX: REMOVE BLANK SPACE BELOW FOCUS MODE
+   ========================================= */
+
+/* Stop sidebar from forcing extra empty space */
+.server-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Remove auto-push that creates gap */
+.sidebar-status {
+  margin-top: 8px !important;
+}
+
+/* Ensure no phantom spacing at bottom */
+.server-sidebar > *:last-child {
+  margin-bottom: 8px;
+}
