@@ -1,6 +1,11 @@
+/* =========================================================
+   FONTS
+   ========================================================= */
 @import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap");
 
-/* ================= VARIABLES ================= */
+/* =========================================================
+   CSS VARIABLES
+   ========================================================= */
 :root {
   --accent-primary: #6366f1;
   --accent-secondary: #3b82f6;
@@ -15,36 +20,104 @@
   --border-soft: #1e293b;
 }
 
-/* ================= ROOT ================= */
-* { box-sizing: border-box; }
-body { overflow: hidden; }
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+* {
+  box-sizing: border-box;
+}
 
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--accent-primary);
+  color: #fff;
+}
+
+/* =========================================================
+   APP ROOT
+   ========================================================= */
 .app-root {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Inter", system-ui, sans-serif;
   background: transparent;
+  position: relative;
+  z-index: 1;
 }
 
-/* ================= TOP NAVBAR ================= */
+/* =========================================================
+   TOP NAVBAR
+   ========================================================= */
 .top-navbar {
   position: fixed;
-  inset: 0 0 auto 0;
+  top: 0;
+  left: 0;
   height: 60px;
-  padding: 0 28px;
+  width: 100%;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 28px;
 
   background: linear-gradient(135deg, #020617, #020617cc);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid #1e293b;
+
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border-soft);
   z-index: 1000;
 }
 
-/* ================= BODY ================= */
+/* Top Nav Icons */
+.top-nav-icons {
+  display: flex;
+  gap: 14px;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 255, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.icon-btn:hover {
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 0 24px currentColor;
+}
+
+/* Icon Colors */
+.icon-btn.home     { color: #60a5fa; }
+.icon-btn.focus    { color: #fb923c; }
+.icon-btn.code     { color: #4ade80; }
+.icon-btn.stats    { color: #c084fc; }
+.icon-btn.settings { color: #67e8f9; }
+
+/* =========================================================
+   BODY LAYOUT
+   ========================================================= */
 .app-body {
   flex: 1;
   display: flex;
@@ -53,7 +126,9 @@ body { overflow: hidden; }
   z-index: 5;
 }
 
-/* ================= SERVER SIDEBAR ================= */
+/* =========================================================
+   SERVER SIDEBAR
+   ========================================================= */
 .server-sidebar {
   width: 260px;
   min-width: 260px;
@@ -61,14 +136,15 @@ body { overflow: hidden; }
 
   display: flex;
   flex-direction: column;
-
-  padding: 18px 10px 8px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  padding: 18px 10px;
 
   background: rgba(2, 6, 23, 0.9);
   backdrop-filter: blur(14px);
-  border-right: 1px solid #1e293b;
+
+  border-right: 1px solid var(--border-soft);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10;
 }
 
 /* Scrollbar */
@@ -76,15 +152,17 @@ body { overflow: hidden; }
   width: 6px;
 }
 .server-sidebar::-webkit-scrollbar-thumb {
-  background: rgba(99,102,241,.5);
+  background: rgba(99, 102, 241, 0.5);
   border-radius: 6px;
 }
 
-/* ================= SERVER AVATAR ================= */
+/* =========================================================
+   SERVER AVATAR
+   ========================================================= */
 .server-avatar {
   width: 48px;
   height: 48px;
-  margin: 6px auto 12px;
+  margin: 8px auto 12px;
 
   border-radius: 50%;
   display: flex;
@@ -95,38 +173,53 @@ body { overflow: hidden; }
   font-weight: 700;
   color: #fff;
 
-  background: linear-gradient(135deg,#6366f1,#3b82f6,#22d3ee);
-  box-shadow: 0 0 0 2px rgba(99,102,241,.4),
-              0 8px 24px rgba(99,102,241,.45);
+  background: linear-gradient(135deg, #6366f1, #3b82f6, #22d3ee);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4),
+              0 8px 24px rgba(99, 102, 241, 0.45);
+
+  cursor: pointer;
 }
 
-/* ================= SEARCH ================= */
-.sidebar-search {
-  margin-bottom: 8px;
-}
+/* =========================================================
+   SIDEBAR SEARCH
+   ========================================================= */
 .sidebar-search input {
   width: 100%;
   padding: 6px 8px;
-  font-size: 12px;
+  margin: 6px 0;
 
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(148,163,255,.2);
   border-radius: 8px;
-  color: #e5e7eb;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(148,163,255,0.2);
+
+  color: var(--text-main);
+  font-size: 12px;
 }
 
-/* ================= SECTION HEADERS ================= */
+/* =========================================================
+   SECTION TITLES (PREMIUM)
+   ========================================================= */
 .section-title {
   font-family: "Urbanist", sans-serif;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: .14em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.55);
-  margin: 10px 6px 6px;
+
+  color: rgba(255,255,255,0.55);
+  margin: 10px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* ================= ROOMS ================= */
+.section-title.clickable {
+  cursor: pointer;
+}
+
+/* =========================================================
+   ROOMS
+   ========================================================= */
 .room-list {
   display: flex;
   flex-direction: column;
@@ -138,70 +231,48 @@ body { overflow: hidden; }
   align-items: center;
   gap: 6px;
 
-  padding: 6px 8px;
-  margin: 0 6px;
-  border-radius: 10px;
+  padding: 5px 8px;
+  margin: 2px 6px;
 
   font-size: 12.5px;
   color: #c7d2fe;
-  cursor: pointer;
 
-  background: rgba(99,102,241,.05);
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .room-item:hover {
-  background: rgba(99,102,241,.15);
+  background: rgba(99, 102, 241, 0.15);
+  transform: translateX(4px);
 }
 
 .room-item.active {
-  background: linear-gradient(135deg,#6366f1,#3b82f6);
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
   color: #fff;
 }
 
-/* ================= CREATE SERVER ================= */
-.create-server {
-  margin: 10px 6px;
-  height: 34px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 13px;
-  color: #e5e7eb;
-  cursor: pointer;
-
-  background: rgba(99,102,241,.18);
-  border-radius: 12px;
-}
-
-/* ================= FOCUS MODE (NO GAP) ================= */
-.sidebar-status {
-  margin-top: 8px;
-  font-size: 11px;
-  color: #86efac;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* ================= MAIN ROOM ================= */
+/* =========================================================
+   MAIN ROOM
+   ========================================================= */
 .main-room {
   flex: 1;
   padding: 24px;
   min-width: 0;
-  color: #e5e7eb;
-  background: rgba(2,6,23,.45);
+
+  color: var(--text-main);
+  background: rgba(2, 6, 23, 0.45);
+  z-index: 10;
 }
 
-/* ================= RIGHT PANEL ================= */
+/* =========================================================
+   RIGHT PANEL
+   ========================================================= */
 .right-panel {
-  width: 24px;
-  height: calc(100vh - 60px);
-  flex-shrink: 0;
-
-  background: linear-gradient(180deg,#020617,#020617dd);
-  border-left: 1px solid #1e293b;
+  background: linear-gradient(180deg, #020617, #020617dd);
+  border-left: 1px solid var(--border-soft);
+  transition: width 0.3s ease;
+  position: relative;
 }
 
 .right-panel.open {
@@ -209,22 +280,28 @@ body { overflow: hidden; }
   padding: 20px;
 }
 
-/* ================= TEXT ================= */
-.gradient-text {
-  background: linear-gradient(90deg, #6366f1, #22d3ee);
-
-  /* standard */
-  background-clip: text;
-  color: transparent;
-
-  /* webkit fallback */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.right-panel.collapsed {
+  width: 24px;
 }
 
+/* =========================================================
+   RIGHT PANEL TOGGLE
+   ========================================================= */
+.right-panel-toggle {
+  position: absolute;
+  top: 50%;
+  left: -18px;
+  transform: translateY(-50%);
 
-/* ================= SELECTION ================= */
-::selection {
-  background: #6366f1;
-  color: #fff;
+  width: 34px;
+  height: 72px;
+  border-radius: 14px 0 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(180deg, #1e293b, #020617);
+  color: #94a3ff;
+  cursor: pointer;
 }
