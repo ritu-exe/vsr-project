@@ -429,27 +429,3 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed; /* premium feel */
 }
-.app-root {
-  background: transparent;
-}
-
-.app-body {
-  background: transparent;
-}
-
-.server-sidebar,
-.main-room,
-.right-panel {
-  background-color: rgba(2, 6, 23, 0.55); /* glass layer */
-  backdrop-filter: blur(14px);
-}
-.app-root {
-  height: 100dvh;
-}
-
-.app-body {
-  height: calc(100dvh - 60px);
-}
-.server-sidebar {
-  padding-top: calc(60px + 12px);
-}
