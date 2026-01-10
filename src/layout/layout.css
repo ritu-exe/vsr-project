@@ -703,3 +703,31 @@ body { overflow: hidden; }
   position: relative;
   z-index: 10;
 }
+/* =========================================
+   FIX: SHOW SERVER AVATAR (D CIRCLE)
+   ========================================= */
+
+/* Ensure sidebar content starts lower */
+.server-sidebar {
+  padding-top: 18px !important;
+}
+
+/* Force server avatar visibility */
+.server-avatar {
+  margin-top: 8px !important;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 20;
+}
+
+/* Prevent search bar from overlapping avatar */
+.sidebar-search {
+  margin-top: 6px;
+}
+
+/* Safety: ensure nothing clips the top */
+.server-sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
