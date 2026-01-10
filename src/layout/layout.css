@@ -115,6 +115,8 @@
 .right-panel.open {
   width: 280px;
   padding: 20px;
+  min-width: 280px; 
+  flex-shrink: 0;  
 }
 
 .right-panel.collapsed {
