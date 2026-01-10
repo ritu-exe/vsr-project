@@ -97,7 +97,7 @@
   flex: 1;
   padding: 24px;
   color: #e5e7eb;
-
+  min-width: 0;
   background: rgba(2, 6, 23, 0.45); /* no blur */
 }
 
@@ -110,6 +110,8 @@
   position: relative;
   transition: width 0.3s ease;
   border-left: 1px solid #1e293b;
+  flex-shrink: 0;
+  height: calc(100vh - 60px);
 }
 
 .right-panel.open {
