@@ -711,3 +711,6 @@ body { overflow: hidden; }
   opacity: 1 !important;
   filter: brightness(1) contrast(1);
 }
+.animated-background::after {
+  opacity: 0.25 !important;
+}
