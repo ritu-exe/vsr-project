@@ -1,9 +1,8 @@
-import './index.css';  // use the name of your CSS file
-
-import AppLayout from "./layout/AppLayout";
+import "./index.css";
+import Home from "./pages/Home";
 
 function App() {
-  return <AppLayout />;
+  return <Home onEnter={() => {}} />;
 }
 
 export default App;
