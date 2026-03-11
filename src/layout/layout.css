@@ -734,7 +734,6 @@ body { overflow: hidden; }
   display: flex;
   flex-direction: column;
 }
-
 /* Remove auto-push that creates gap */
 .sidebar-status {
   margin-top: 8px !important;

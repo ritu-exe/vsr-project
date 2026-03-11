@@ -1,3 +1,4 @@
+import Home from "../pages/Home";
 import Particles from "./Particles";
 import AnimatedBackground from "./AnimatedBackground";
 import CursorGlow from "./CursorGlow";
@@ -45,12 +46,9 @@ return (
 
   {/* CENTER */}
   <main className="main-room">
-    {currentView === "home" ? (
-      <div className="home-container">
-        <h1 className="gradient-text">Welcome!</h1>
-        <p>Click a server to start.</p>
-      </div>
-    ) : (
+   {currentView === "home" ? (
+  <Home />
+) : (
       <>
         <h2 className="gradient-text">
           {selectedServer.name} / {selectedRoom.name}
