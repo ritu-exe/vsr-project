@@ -1,3 +1,4 @@
+import { FiFileText } from "react-icons/fi";
 import Whiteboard from "../rooms/Whiteboard";
 import Home from "../pages/Home";
 import Particles from "./Particles";
@@ -53,9 +54,10 @@ return (
     <Home />
   ) : (
     <>
-      <h2 className="gradient-text">
-        {selectedServer.name} / {selectedRoom.name}
-      </h2>
+<h2 className="whiteboard-title">
+  <FiFileText className="wb-heading-icon"/>
+  Whiteboard
+</h2>
 
       <RoomRenderer room={selectedRoom} />
     </>

@@ -743,5 +743,195 @@ body { overflow: hidden; }
 .server-sidebar > *:last-child {
   margin-bottom: 8px;
 }
+.wb-toolbar{
+display:flex;
+gap:12px;
+padding:10px;
+background:rgba(2,6,23,0.85);
+border-radius:14px;
+backdrop-filter:blur(10px);
+align-items:center;
+}
+
+.wb-toolbar .icon-btn{
+width:42px;
+height:42px;
+border-radius:12px;
+
+background:rgba(15,23,42,0.95);
+border:1px solid rgba(148,163,255,0.45);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+cursor:pointer;
+transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.icon-btn svg{
+  width:20px;
+  height:20px;
+}
+
+.wb-toolbar .icon-btn:hover{
+transform:translateY(-3px) scale(1.05);
+box-shadow:0 0 18px #3b82f6;
+}
+
+.wb-toolbar{
+display:flex;
+gap:12px;
+padding:10px;
+background:rgba(2,6,23,0.85);
+border-radius:14px;
+backdrop-filter:blur(10px);
+align-items:center;
+}
+
+.icon-btn{
+width:42px;
+height:42px;
+border-radius:12px;
+
+background:rgba(15,23,42,0.95);
+border:1px solid rgba(148,163,255,0.45);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+cursor:pointer;
+transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.icon-btn svg{
+width:20px;
+height:20px;
+}
+
+.icon-btn:hover{
+transform:translateY(-3px) scale(1.05);
+box-shadow:0 0 18px #3b82f6;
+}
+.whiteboard-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  font-size:28px;
+  font-weight:600;
+
+  color:#38bdf8;
+  margin-bottom:16px;
+
+  letter-spacing:0.5px;
+
+  text-shadow:0 0 10px rgba(56,189,248,0.5);
+}
+
+.wb-heading-icon{
+  width:28px;
+  height:28px;
+
+  color:#38bdf8;
+
+  filter:drop-shadow(0 0 6px rgba(56,189,248,0.7));
+}
+.nav-icon{
+  width:20px;
+  height:20px;
+}
+
+/* Individual icon colors */
+
+.nav-icon.home{
+  color:#38bdf8;
+}
+
+.nav-icon.focus{
+  color:#22c55e;
+}
+3️⃣ Remove global SVG override (important)
+
+If you have something like this anywhere:
 
 
+
+Change it to:
+
+.icon-btn svg{
+  width:20px;
+  height:20px;
+}
+
+
+
+.nav-icon.code{
+  color:#a855f7;
+}
+
+.nav-icon.stats{
+  color:#f59e0b;
+}
+
+.nav-icon.settings{
+  color:#ef4444;
+}
+/* ICON COLORS */
+
+.icon-btn.undo svg{
+color:#38bdf8;
+}
+
+.icon-btn.redo svg{
+color:#22c55e;
+}
+
+.icon-btn.clear svg{
+color:#ef4444;
+}
+
+.icon-btn.save svg{
+color:#eab308;
+}
+
+.icon-btn.pen svg{
+color:#a855f7;
+}
+
+.icon-btn.rect svg{
+color:#f97316;
+}
+
+.icon-btn.circle svg{
+color:#06b6d4;
+}
+
+.icon-btn.note{
+color:#facc15;
+}
+/* DARK MODE */
+body.dark-mode{
+  background:#0f172a;
+  color:#e2e8f0;
+}
+
+/* LIGHT MODE */
+body.light-mode{
+  background:#f8fafc;
+  color:#0f172a;
+}
+
+body.light-mode .top-navbar{
+  background:#ffffff;
+}
+
+body.light-mode .icon-btn{
+  background:#f1f5f9;
+  border-color:#cbd5f5;
+}
+.theme-toggle svg{
+  color:#facc15;
+  filter:drop-shadow(0 0 6px #facc15);
+}

@@ -1,30 +1,54 @@
 import React from "react";
+import "./home.css";
 
 function Home() {
+
+  const username = "Yatree";
+
+  const motivation = [
+    "Small progress every day leads to big results.",
+    "Focus. Learn. Build.",
+    "Consistency beats motivation.",
+    "Discipline is the bridge between goals and success."
+  ];
+
+  const randomMotivation =
+    motivation[Math.floor(Math.random() * motivation.length)];
+
   return (
     <div className="home-container">
 
-      <h1 className="gradient-text">Welcome to Virtual Study Room 👋</h1>
+      <h1 className="home-title">
+        Welcome back, {username} 👋
+      </h1>
 
-      <h2>Quick Actions</h2>
-      <ul>
-        <li>Join Study Room</li>
-        <li>Start Focus Timer</li>
-        <li>Open AI Assistant</li>
-      </ul>
-
-      <h2>Active Study Rooms</h2>
-      <ul>
-        <li>#frontend-chat</li>
-        <li>#backend-chat</li>
-      </ul>
-
-      <h2>Focus Timer</h2>
-      <p>Stay focused for 25 minutes and take a 5-minute break.</p>
-
-      <p style={{ marginTop: "30px", fontStyle: "italic" }}>
-        ✨ “Success doesn’t come from what you do occasionally, it comes from what you do consistently.”
+      <p className="home-motivation">
+        "{randomMotivation}"
       </p>
+
+      <div className="home-buttons">
+
+        <button className="home-btn">
+          🧠 Whiteboard
+        </button>
+
+        <button className="home-btn">
+          💻 Compiler
+        </button>
+
+        <button className="home-btn">
+          🎯 Focus Mode
+        </button>
+
+        <button className="home-btn">
+          💬 Chat Room
+        </button>
+
+      </div>
+
+      <button className="logout-btn">
+        Logout
+      </button>
 
     </div>
   );
