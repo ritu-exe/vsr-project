@@ -1,3 +1,4 @@
+import Whiteboard from "../rooms/Whiteboard";
 import Home from "../pages/Home";
 import Particles from "./Particles";
 import AnimatedBackground from "./AnimatedBackground";
@@ -42,21 +43,25 @@ return (
     setSelectedServer={setSelectedServer}
     selectedRoom={selectedRoom}
     setSelectedRoom={setSelectedRoom}
+    setCurrentView={setCurrentView}
   />
 
   {/* CENTER */}
-  <main className="main-room">
-   {currentView === "home" ? (
-  <Home />
-) : (
-      <>
-        <h2 className="gradient-text">
-          {selectedServer.name} / {selectedRoom.name}
-        </h2>
-        <RoomRenderer room={selectedRoom} />
-      </>
-    )}
-  </main>
+<main className="main-room">
+
+  {currentView === "home" ? (
+    <Home />
+  ) : (
+    <>
+      <h2 className="gradient-text">
+        {selectedServer.name} / {selectedRoom.name}
+      </h2>
+
+      <RoomRenderer room={selectedRoom} />
+    </>
+  )}
+
+</main>
 
   {/* RIGHT */}
   <RightPanel
@@ -68,19 +73,26 @@ return (
   );
 }
 
-
 function RoomRenderer({ room }) {
-  if (!room || !room.type) return <p>Select a room</p>;
+
+  if (!room || !room.type) {
+    return <p>Select a room</p>;
+  }
 
   switch (room.type) {
+
     case "chat":
       return <ChatRoom roomId={room.id || "default"} />;
+
     case "voice":
       return <p>🎧 Voice Room (coming soon)</p>;
+
     case "video":
       return <p>🎥 Video Room (coming soon)</p>;
+
     case "board":
-      return <p>🧠 Whiteboard (coming soon)</p>;
+      return <Whiteboard />;
+
     default:
       return <p>Select a room</p>;
   }

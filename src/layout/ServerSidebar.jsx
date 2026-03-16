@@ -53,6 +53,7 @@ function RoomSection({
   setSelectedRoom,
   deleteRoom,
   focusMode,
+  setCurrentView
 }) {
   const [open, setOpen] = useState(true);
   if (!rooms.length) return null;
@@ -75,7 +76,10 @@ function RoomSection({
               ${room.id === selectedRoom.id ? "active" : ""}
               ${focusMode && room.id !== selectedRoom.id ? "dimmed" : ""}
             `}
-            onClick={() => setSelectedRoom(room)}
+            onClick={() => {
+              setSelectedRoom(room);
+              setCurrentView("room");   // ⭐ FIX
+            }}
             onContextMenu={(e) => {
               e.preventDefault();
               deleteRoom(serverId, room.id);
@@ -104,9 +108,10 @@ function ServerSidebar({
   setSelectedServer,
   selectedRoom,
   setSelectedRoom,
+  setCurrentView   // ⭐ added
 }) {
   const [search, setSearch] = useState("");
-  const [focusMode] = useState(true);
+  const [focusMode] = useState(false);
 
   function createServer() {
     const name = prompt("Enter server name");
@@ -182,18 +187,18 @@ function ServerSidebar({
         return (
           <div key={server.id} className="server-block">
             <div
-  className={`server-avatar ${
-    server.id === selectedServer.id ? "active" : ""
-  }`}
-  onClick={() => {
-    setSelectedServer(server);
-    setSelectedRoom(server.rooms[0]);
-  }}
-  title={server.name}
->
-  <span>{server.name[0].toUpperCase()}</span>
-</div>
-
+              className={`server-avatar ${
+                server.id === selectedServer.id ? "active" : ""
+              }`}
+              onClick={() => {
+                setSelectedServer(server);
+                setSelectedRoom(server.rooms[0]);
+                setCurrentView("room");  // ⭐ FIX
+              }}
+              title={server.name}
+            >
+              <span>{server.name[0].toUpperCase()}</span>
+            </div>
 
             {server.id === selectedServer.id && (
               <div className="room-list">
@@ -205,54 +210,41 @@ function ServerSidebar({
                   />
                 </div>
 
-                {pinned.length > 0 && (
-                  <div className="room-section pinned">
-                    <div className="section-title pinned-title">
-                      📌 PINNED
-                    </div>
+                <RoomSection
+                  title="GENERAL"
+                  rooms={grouped.general}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
+                />
 
-                    {pinned.map((room) => (
-                      <div
-                        key={room.id}
-                        className={`room-item pinned ${
-                          room.id === selectedRoom.id ? "active" : ""
-                        }`}
-                        onClick={() => setSelectedRoom(room)}
-                      >
-                        <span className="room-icon">
-                          {getRoomIcon(room.type)}
-                        </span>
-                        <span className="room-name">{room.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <RoomSection
+                  title="HELP"
+                  rooms={grouped.help}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
+                />
 
-                <div
-                  className="room-item create-room"
-                  onClick={() => createRoom(server.id)}
-                >
-                  <Plus size={14} />
-                  <span>Add Room</span>
-                </div>
+                <RoomSection
+                  title="TEXT CHANNELS"
+                  rooms={grouped.text}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
+                />
 
-                <RoomSection title="GENERAL" rooms={grouped.general}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
+                <RoomSection
+                  title="VOICE CHANNELS"
+                  rooms={grouped.voice}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
+                />
 
-                <RoomSection title="HELP" rooms={grouped.help}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
+                <RoomSection
+                  title="VIDEO CHANNELS"
+                  rooms={grouped.video}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
+                />
 
-                <RoomSection title="TEXT CHANNELS" rooms={grouped.text}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
-
-                <RoomSection title="VOICE CHANNELS" rooms={grouped.voice}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
-
-                <RoomSection title="VIDEO CHANNELS" rooms={grouped.video}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
-
-                <RoomSection title="WHITEBOARD" rooms={grouped.board}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode }} />
+                <RoomSection
+                  title="WHITEBOARD"
+                  rooms={grouped.board}
+                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
+                />
               </div>
             )}
           </div>
@@ -260,11 +252,12 @@ function ServerSidebar({
       })}
 
       <div className="create-server-btn" onClick={createServer}>
-  <Plus size={16} />
-  <span>Create Server</span>
-</div>
+        <Plus size={16} />
+        <span>Create Server</span>
+      </div>
 
-<PomodoroTimer />
+      <PomodoroTimer />
+
       <div className="sidebar-status">
         🧠 Focus Mode • Active
       </div>
