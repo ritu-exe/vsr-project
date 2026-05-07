@@ -14,7 +14,6 @@ import "./layout.css";
 import Focus from "../pages/Focus";
 import Compiler from "../pages/Compiler";
 import Progress from "../pages/Progress";
-import ChatBot from "../ChatBot";
 
 function AppLayout({ children, page, setPage }) {
 
@@ -80,12 +79,7 @@ function AppLayout({ children, page, setPage }) {
         {/* CENTER */}
         <main className="main-room">
 
-          {page === "home" && (
-            <>
-              <Home setPage={setPage} />
-              <ChatBot />
-            </>
-          )}
+          {page === "home" && <Home setPage={setPage} />}
 
           {page === "focus" && <Focus />}
 

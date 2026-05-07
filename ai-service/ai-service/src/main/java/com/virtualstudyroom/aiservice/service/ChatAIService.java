@@ -51,6 +51,7 @@ public class ChatAIService {
 
             ObjectNode requestBody = mapper.createObjectNode();
             requestBody.put("model", "openai/gpt-4o-mini");
+            requestBody.put("max_tokens", 2048);
             requestBody.set("messages", messages);
 
             RequestBody body = RequestBody.create(

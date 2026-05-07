@@ -87,21 +87,41 @@ function ChatBot() {
             display: "flex",
             justifyContent: msg.sender === "user" ? "flex-end" : "flex-start"
           }}>
-            <div style={{
-              maxWidth: "85%",
-              padding: "10px 14px",
-              borderRadius: msg.sender === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-              background: msg.sender === "user"
-                ? "linear-gradient(135deg, #6366f1, #3b82f6)"
-                : "rgba(30, 41, 59, 0.9)",
-              color: "white",
-              fontSize: "13px",
-              lineHeight: "1.6",
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-word",
-              border: msg.sender === "bot" ? "1px solid rgba(99,102,241,0.15)" : "none"
-            }}>
-              {msg.text}
+            <div style={{ maxWidth: "85%", position: "relative" }}>
+              <div style={{
+                padding: "10px 14px",
+                borderRadius: msg.sender === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
+                background: msg.sender === "user"
+                  ? "linear-gradient(135deg, #6366f1, #3b82f6)"
+                  : "rgba(30, 41, 59, 0.9)",
+                color: "white",
+                fontSize: "13px",
+                lineHeight: "1.6",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+                border: msg.sender === "bot" ? "1px solid rgba(99,102,241,0.15)" : "none"
+              }}>
+                {msg.text}
+              </div>
+              {msg.sender === "bot" && (
+                <button
+                  onClick={() => navigator.clipboard.writeText(msg.text)}
+                  style={{
+                    position: "absolute",
+                    top: "6px",
+                    right: "6px",
+                    padding: "2px 8px",
+                    fontSize: "10px",
+                    borderRadius: "6px",
+                    border: "1px solid rgba(99,102,241,0.3)",
+                    background: "rgba(99,102,241,0.2)",
+                    color: "#c7d2fe",
+                    cursor: "pointer"
+                  }}
+                >
+                  copy
+                </button>
+              )}
             </div>
           </div>
         ))}
