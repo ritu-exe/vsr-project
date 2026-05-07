@@ -3,6 +3,7 @@ import "./home.css";
 
 function Home({ setPage }) {
 
+  // eslint-disable-next-line no-unused-vars
   const username = "Yatree";
 
   const motivation = [

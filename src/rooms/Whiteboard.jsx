@@ -53,6 +53,7 @@ function Whiteboard() {
     setNotes([...notes,newNote]);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleBoardClick = (e) => {
 
     if(tool !== "rect" && tool !== "circle") return;
@@ -194,7 +195,6 @@ height:"100%"
         {/* SHAPES */}
 
         {shapes.map(shape => {
-
           if(shape.type === "rect"){
             return (
               <div
@@ -210,7 +210,6 @@ height:"100%"
               />
             )
           }
-
           if(shape.type === "circle"){
             return (
               <div
@@ -227,7 +226,7 @@ height:"100%"
               />
             )
           }
-
+          return null;
         })}
 
         {/* NOTES */}
