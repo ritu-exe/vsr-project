@@ -320,3 +320,12 @@ button:hover,
     rgba(88, 101, 242, 0.1)
   );
 }
+
+#chat-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+#chat-container::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 10px;
+}

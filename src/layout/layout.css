@@ -95,8 +95,11 @@
   flex: 1;
   padding: 24px;
   color: #e5e7eb;
- min-width: 0;
-  background: rgba(2, 6, 23, 0.45); /* no blur */
+  min-width: 0;
+  background: rgba(2, 6, 23, 0.45);
+
+  position: relative;   /* 🔥 ADD THIS */
+  z-index: 5;           /* 🔥 ADD THIS */
 }
 
 /* ================= RIGHT PANEL ================= */
@@ -852,20 +855,7 @@ box-shadow:0 0 18px #3b82f6;
 .nav-icon.focus{
   color:#22c55e;
 }
-3️⃣ Remove global SVG override (important)
-
-If you have something like this anywhere:
-
-
-
-Change it to:
-
-.icon-btn svg{
-  width:20px;
-  height:20px;
-}
-
-
+/* ICON COLORS */
 
 .nav-icon.code{
   color:#a855f7;
@@ -934,4 +924,264 @@ body.light-mode .icon-btn{
 .theme-toggle svg{
   color:#facc15;
   filter:drop-shadow(0 0 6px #facc15);
+}
+
+.top-navbar {
+  position: fixed;   /* important */
+  top: 0;
+  width: 100%;
+  z-index: 9999;     /* very high */
+}
+
+.focus-sounds {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.sound-btn {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+/* Rain */
+.sound-btn.rain {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+/* Birds */
+.sound-btn.birds {
+  background: linear-gradient(135deg, #56ab2f, #a8e063);
+  color: black;
+}
+
+/* Stop */
+.sound-btn.stop {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+}
+
+/* Hover effect */
+.sound-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}.focus-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.focus-btn {
+  padding: 12px 22px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 500;
+}
+
+/* Start */
+.focus-btn.start {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+/* Stop */
+.focus-btn.pause {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+}
+
+/* Reset */
+.focus-btn.reset {
+  background: linear-gradient(135deg, #7f00ff, #e100ff);
+  color: white;
+}
+
+/* Hover */
+.focus-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+.focus-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.focus-title {
+  font-size: 24px;
+  color: #8ab4ff;
+}
+
+.focus-timer {
+  font-size: 64px;
+  margin: 20px 0;
+  color: #00eaff;
+}
+
+/* BUTTONS */
+.focus-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn.start {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+.btn.stop {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+}
+
+.btn.reset {
+  background: linear-gradient(135deg, #7f00ff, #e100ff);
+  color: white;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* SOUND */
+.sound-title {
+  margin-top: 20px;
+  color: #00eaff;
+}
+
+.sound-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.sound {
+  padding: 12px 22px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.sound.rain {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+.sound.birds {
+  background: linear-gradient(135deg, #56ab2f, #a8e063);
+}
+
+.sound.stop {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+}
+
+.sound:hover {
+  transform: scale(1.08);
+}
+/* ===== FOCUS CONTROLS ===== */
+.focus-controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.toggle-btn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Start */
+.toggle-btn:first-child {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+/* Reset */
+.toggle-btn:last-child {
+  background: linear-gradient(135deg, #7f00ff, #e100ff);
+  color: white;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+}
+
+/* ===== SOUND BUTTONS ===== */
+.focus-sounds {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 15px;
+}
+
+.focus-sounds button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+/* Rain */
+.focus-sounds button:nth-child(1) {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+/* Birds */
+.focus-sounds button:nth-child(2) {
+  background: linear-gradient(135deg, #56ab2f, #a8e063);
+}
+
+/* Stop */
+.focus-sounds button:nth-child(3) {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+}
+
+.focus-sounds button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+}
+
+/* FIX MAIN CONTENT AREA FOR PAGES (Compiler etc.) */
+.main-content {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import "./home.css";
 
-function Home() {
+function Home({ setPage }) {
 
   const username = "Yatree";
 
@@ -18,34 +18,25 @@ function Home() {
   return (
     <div className="home-container">
 
+      {/* 🔹 Top Right Whiteboard Button */}
+      <button 
+        className="top-whiteboard-btn"
+        onClick={() => setPage("whiteboard")}
+      >
+        🧠 Whiteboard
+      </button>
+
+      {/* 🔹 Welcome */}
       <h1 className="home-title">
-        Welcome back, {username} 👋
+        Welcome back, {} 👋
       </h1>
 
+      {/* 🔹 Motivation */}
       <p className="home-motivation">
         "{randomMotivation}"
       </p>
 
-      <div className="home-buttons">
-
-        <button className="home-btn">
-          🧠 Whiteboard
-        </button>
-
-        <button className="home-btn">
-          💻 Compiler
-        </button>
-
-        <button className="home-btn">
-          🎯 Focus Mode
-        </button>
-
-        <button className="home-btn">
-          💬 Chat Room
-        </button>
-
-      </div>
-
+      {/* 🔹 Logout */}
       <button className="logout-btn">
         Logout
       </button>

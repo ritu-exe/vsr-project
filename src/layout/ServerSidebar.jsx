@@ -1,6 +1,7 @@
 import PomodoroTimer from "../components/PomodoroTimer";
 import { useState } from "react";
 import { Hash, Mic, Video, PenTool, Plus } from "lucide-react";
+import { createRoom as apiCreateRoom } from "../services/api";
 
 /* ================= HELPERS ================= */
 
@@ -19,10 +20,6 @@ function getRoomIcon(type) {
 
 function hasUnread(room) {
   return room.name.includes("help");
-}
-
-function getPinnedRooms(rooms) {
-  return rooms.filter((r) => r.name === "announcements");
 }
 
 function groupRoomsBySection(rooms) {
@@ -53,7 +50,7 @@ function RoomSection({
   setSelectedRoom,
   deleteRoom,
   focusMode,
-  setCurrentView
+  setPage   // 🔥 IMPORTANT
 }) {
   const [open, setOpen] = useState(true);
   if (!rooms.length) return null;
@@ -77,8 +74,11 @@ function RoomSection({
               ${focusMode && room.id !== selectedRoom.id ? "dimmed" : ""}
             `}
             onClick={() => {
+              console.log("CLICKED ROOM:", room);
+
               setSelectedRoom(room);
-              setCurrentView("room");   // ⭐ FIX
+
+              setPage("chat");   // 🔥 MAIN FIX (NO HACKS)
             }}
             onContextMenu={(e) => {
               e.preventDefault();
@@ -108,10 +108,12 @@ function ServerSidebar({
   setSelectedServer,
   selectedRoom,
   setSelectedRoom,
-  setCurrentView   // ⭐ added
+  setPage   // 🔥 IMPORTANT
 }) {
   const [search, setSearch] = useState("");
   const [focusMode] = useState(false);
+
+  /* ================= CREATE SERVER ================= */
 
   function createServer() {
     const name = prompt("Enter server name");
@@ -122,12 +124,7 @@ function ServerSidebar({
       name,
       rooms: [
         { id: "general", name: "general-chat", type: "chat" },
-        { id: "ann", name: "announcements", type: "chat" },
-        { id: "fe-help", name: "frontend-help", type: "chat" },
-        { id: "be-help", name: "backend-help", type: "chat" },
-        { id: "voice", name: "dev-meet", type: "voice" },
-        { id: "video", name: "daily-standup", type: "video" },
-        { id: "board", name: "whiteboard", type: "board" },
+        { id: "ann", name: "announcements", type: "chat" }
       ],
     };
 
@@ -136,28 +133,39 @@ function ServerSidebar({
     setSelectedRoom(newServer.rooms[0]);
   }
 
-  function createRoom(serverId) {
+  /* ================= CREATE ROOM ================= */
+
+  async function createRoom(serverId) {
     const name = prompt("Enter room name");
     if (!name) return;
 
-    const type = prompt("chat / voice / video / board", "chat");
+    try {
+      const newRoomFromAPI = await apiCreateRoom(name);
 
-    const newRoom = {
-      id: Date.now().toString(),
-      name,
-      type,
-    };
+      const newRoom = {
+        id: newRoomFromAPI.id,
+        name: newRoomFromAPI.name,
+        type: "chat",   // 🔥 REQUIRED
+      };
 
-    setServers((prev) =>
-      prev.map((server) =>
-        server.id === serverId
-          ? { ...server, rooms: [...server.rooms, newRoom] }
-          : server
-      )
-    );
+      setServers((prev) =>
+        prev.map((server) =>
+          server.id === serverId
+            ? { ...server, rooms: [...server.rooms, newRoom] }
+            : server
+        )
+      );
 
-    setSelectedRoom(newRoom);
+      setSelectedRoom(newRoom);
+      setPage("chat");   // 🔥 OPEN CHAT DIRECTLY
+
+    } catch (err) {
+      console.error(err);
+      alert("Failed to create room");
+    }
   }
+
+  /* ================= DELETE ROOM ================= */
 
   function deleteRoom(serverId, roomId) {
     if (!window.confirm("Delete this room?")) return;
@@ -176,16 +184,18 @@ function ServerSidebar({
 
   return (
     <aside className="server-sidebar glass">
+
       {servers.map((server) => {
         const filteredRooms = server.rooms.filter((r) =>
           r.name.toLowerCase().includes(search.toLowerCase())
         );
 
         const grouped = groupRoomsBySection(filteredRooms);
-        const pinned = getPinnedRooms(filteredRooms);
 
         return (
           <div key={server.id} className="server-block">
+
+            {/* SERVER ICON */}
             <div
               className={`server-avatar ${
                 server.id === selectedServer.id ? "active" : ""
@@ -193,15 +203,18 @@ function ServerSidebar({
               onClick={() => {
                 setSelectedServer(server);
                 setSelectedRoom(server.rooms[0]);
-                setCurrentView("room");  // ⭐ FIX
+                setPage("chat");   // 🔥 IMPORTANT
               }}
               title={server.name}
             >
               <span>{server.name[0].toUpperCase()}</span>
             </div>
 
+            {/* ROOM LIST */}
             {server.id === selectedServer.id && (
               <div className="room-list">
+
+                {/* SEARCH */}
                 <div className="sidebar-search">
                   <input
                     placeholder="Search rooms…"
@@ -210,47 +223,29 @@ function ServerSidebar({
                   />
                 </div>
 
-                <RoomSection
-                  title="GENERAL"
-                  rooms={grouped.general}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
-                />
+                {/* CREATE ROOM */}
+                <div
+                  className="create-room-btn"
+                  onClick={() => createRoom(server.id)}
+                  style={{ cursor: "pointer", padding: "6px", color: "#22c55e" }}
+                >
+                  + Create Room
+                </div>
 
-                <RoomSection
-                  title="HELP"
-                  rooms={grouped.help}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
-                />
+                <RoomSection title="GENERAL" rooms={grouped.general} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="HELP" rooms={grouped.help} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="TEXT CHANNELS" rooms={grouped.text} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="VOICE CHANNELS" rooms={grouped.voice} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="VIDEO CHANNELS" rooms={grouped.video} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="WHITEBOARD" rooms={grouped.board} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
 
-                <RoomSection
-                  title="TEXT CHANNELS"
-                  rooms={grouped.text}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
-                />
-
-                <RoomSection
-                  title="VOICE CHANNELS"
-                  rooms={grouped.voice}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
-                />
-
-                <RoomSection
-                  title="VIDEO CHANNELS"
-                  rooms={grouped.video}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
-                />
-
-                <RoomSection
-                  title="WHITEBOARD"
-                  rooms={grouped.board}
-                  {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setCurrentView }}
-                />
               </div>
             )}
           </div>
         );
       })}
 
+      {/* CREATE SERVER */}
       <div className="create-server-btn" onClick={createServer}>
         <Plus size={16} />
         <span>Create Server</span>
@@ -261,6 +256,7 @@ function ServerSidebar({
       <div className="sidebar-status">
         🧠 Focus Mode • Active
       </div>
+
     </aside>
   );
 }

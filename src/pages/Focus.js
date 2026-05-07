@@ -1,20 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import rainSound from "../assets/rain.mp3";
+import birdSound from "../assets/birds.mp3";
+import { updateProgress } from "../services/progressService";
 
 function Focus() {
-  const [time, setTime] = useState(25 * 60); // 25 minutes
+  const [time, setTime] = useState(25 * 60);
   const [running, setRunning] = useState(false);
-  const [audio, setAudio] = useState(null);
 
-  /* 🔥 ADD THIS: Enable Focus Mode UI */
+  const rainRef = useRef(null);
+  const birdRef = useRef(null);
+  const currentAudio = useRef(null);
+
+  /* ENABLE FOCUS MODE UI */
   useEffect(() => {
     document.body.classList.add("focus-mode");
-
     return () => {
       document.body.classList.remove("focus-mode");
     };
   }, []);
 
-  /* TIMER LOGIC (UNCHANGED) */
+  /* TIMER */
   useEffect(() => {
     if (!running) return;
 
@@ -22,6 +27,11 @@ function Focus() {
       setTime((prev) => {
         if (prev === 0) {
           clearInterval(interval);
+
+          // 🔥 TRACK PROGRESS WHEN SESSION COMPLETES
+          updateProgress("focusTime", 25);
+          updateProgress("sessions", 1);
+
           return 0;
         }
         return prev - 1;
@@ -47,33 +57,51 @@ function Focus() {
     setTime(25 * 60);
   }
 
-  function playSound(type) {
-    if (audio) audio.pause();
+  /* 🔥 SOUND ENGINE */
+  function playRain() {
+    stopSound();
 
-    const sound =
-      type === "rain"
-        ? new Audio("https://www.soundjay.com/nature/rain-01.mp3")
-        : new Audio("https://www.soundjay.com/nature/birds-01.mp3");
+    const audio = rainRef.current;
+    if (!audio) return;
 
-    sound.loop = true;
-    sound.play();
-    setAudio(sound);
+    audio.currentTime = 0;
+    audio.volume = 0.7;
+    audio.play().catch(() => {});
+
+    currentAudio.current = audio;
+  }
+
+  function playBirds() {
+    stopSound();
+
+    const audio = birdRef.current;
+    if (!audio) return;
+
+    audio.currentTime = 0;
+    audio.volume = 0.7;
+    audio.play().catch(() => {});
+
+    currentAudio.current = audio;
   }
 
   function stopSound() {
-    if (audio) audio.pause();
-    setAudio(null);
+    if (currentAudio.current) {
+      currentAudio.current.pause();
+      currentAudio.current.currentTime = 0;
+      currentAudio.current = null;
+    }
   }
 
   return (
     <div className="main-room focus-room">
+
       <h2 className="gradient-text">🧘 Focus Room</h2>
 
       <h1 className="focus-timer">
-        {minutes}:{seconds < 10 ? "0" : ""}
-        {seconds}
+        {minutes}:{seconds < 10 ? "0" : ""}{seconds}
       </h1>
 
+      {/* CONTROLS */}
       <div className="focus-controls">
         {!running ? (
           <button className="toggle-btn" onClick={start}>
@@ -84,6 +112,7 @@ function Focus() {
             ⏸ Pause
           </button>
         )}
+
         <button className="toggle-btn" onClick={reset}>
           🔁 Reset
         </button>
@@ -91,13 +120,19 @@ function Focus() {
 
       <hr />
 
+      {/* SOUND SECTION */}
       <h3>🎧 Focus Sounds</h3>
 
       <div className="focus-sounds">
-        <button onClick={() => playSound("rain")}>🌧 Rain</button>
-        <button onClick={() => playSound("birds")}>🐦 Birds</button>
+        <button onClick={playRain}>🌧 Rain</button>
+        <button onClick={playBirds}>🐦 Birds</button>
         <button onClick={stopSound}>⏹ Stop</button>
       </div>
+
+      {/* AUDIO ELEMENTS */}
+      <audio ref={rainRef} src={rainSound} loop />
+      <audio ref={birdRef} src={birdSound} loop />
+
     </div>
   );
 }

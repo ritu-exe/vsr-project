@@ -4,87 +4,139 @@ import Home from "../pages/Home";
 import Particles from "./Particles";
 import AnimatedBackground from "./AnimatedBackground";
 import CursorGlow from "./CursorGlow";
-import React, { useState } from "react";
-import initialServers from "../data/servers";
-import TopNavbar from "./TopNavbar";         // TopNavbar.js -> export default TopNavbar
-import ServerSidebar from "./ServerSidebar"; // ServerSidebar.js -> export default ServerSidebar
-import RightPanel from "./RightPanel";       // RightPanel.js -> export default RightPanel
-import ChatRoom from "../rooms/ChatRoom";    // ChatRoom.js -> export default ChatRoom
+import React, { useState, useEffect } from "react";
+import { getRooms } from "../services/api";
+import TopNavbar from "./TopNavbar";
+import ServerSidebar from "./ServerSidebar";
+import RightPanel from "./RightPanel";
+import ChatRoom from "../rooms/ChatRoom";
 import "./layout.css";
+import Focus from "../pages/Focus";
+import Compiler from "../pages/Compiler";
+import Progress from "../pages/Progress";
+import ChatBot from "../ChatBot";
 
-function AppLayout() { 
-  const [currentView, setCurrentView] = useState("home");
-  const [servers, setServers] = useState(initialServers);
- const [selectedServer, setSelectedServer] = useState(initialServers[0] || {});
-const [selectedRoom, setSelectedRoom] = useState(
-  (initialServers[0]?.rooms?.[0]) || {}
-);
+function AppLayout({ children, page, setPage }) {
 
+  const [servers, setServers] = useState([]);
+  const [selectedServer, setSelectedServer] = useState({});
+  const [selectedRoom, setSelectedRoom] = useState({});
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
 
-return (
- <div className="app-root">
-  <CursorGlow />
-  <Particles />
-  <AnimatedBackground />
-  <TopNavbar
-  goHome={() => setCurrentView("home")}
-  goFocus={() => setCurrentView("focus")}
-  goCompiler={() => setCurrentView("compiler")}
-  goProgress={() => setCurrentView("progress")}
-/>
+  /* ================= LOAD ROOMS ================= */
 
+  useEffect(() => {
+    getRooms().then((data) => {
+      const formattedServers = [
+        {
+          id: "backend",
+          name: "Study Room",
+          rooms: data.map((room) => ({
+            id: room.id,
+            name: room.name,
+            type: room.type || "chat",
+            category: "general",
+          })),
+        },
+      ];
 
-    <div className="app-body">
-  {/* LEFT */}
-  <ServerSidebar
-    servers={servers}
-    setServers={setServers}
-    selectedServer={selectedServer}
-    setSelectedServer={setSelectedServer}
-    selectedRoom={selectedRoom}
-    setSelectedRoom={setSelectedRoom}
-    setCurrentView={setCurrentView}
-  />
+      setServers(formattedServers);
+      setSelectedServer(formattedServers[0]);
 
-  {/* CENTER */}
-<main className="main-room">
+      if (formattedServers[0].rooms.length > 0) {
+        setSelectedRoom(formattedServers[0].rooms[0]);
+      }
+    });
+  }, []);
 
-  {currentView === "home" ? (
-    <Home />
-  ) : (
-    <>
-<h2 className="whiteboard-title">
-  <FiFileText className="wb-heading-icon"/>
-  Whiteboard
-</h2>
+  return (
+    <div className="app-root">
+      <CursorGlow />
+      <Particles />
+      <AnimatedBackground />
 
-      <RoomRenderer room={selectedRoom} />
-    </>
-  )}
+      {/* TOP NAV */}
+      <TopNavbar
+        goHome={() => setPage("home")}
+        goFocus={() => setPage("focus")}
+        goCompiler={() => setPage("compiler")}
+        goProgress={() => setPage("progress")}
+        goSettings={() => alert("Settings coming soon")}
+      />
 
-</main>
+      <div className="app-body">
 
-  {/* RIGHT */}
-  <RightPanel
-    isOpen={isRightPanelOpen}
-     toggle={() => setIsRightPanelOpen((prev) => !prev)}
+        {/* LEFT SIDEBAR */}
+        <ServerSidebar
+          servers={servers}
+          setServers={setServers}
+          selectedServer={selectedServer}
+          setSelectedServer={setSelectedServer}
+          selectedRoom={selectedRoom}
+          setSelectedRoom={setSelectedRoom}
+          setPage={setPage}   // ✅ correct
         />
+
+        {/* CENTER */}
+        <main className="main-room">
+
+          {page === "home" && (
+            <>
+              <Home setPage={setPage} />
+              <ChatBot />
+            </>
+          )}
+
+          {page === "focus" && <Focus />}
+
+          {page === "compiler" && (
+            <div className="compiler-wrapper">
+              <Compiler />
+            </div>
+          )}
+
+        
+
+{page === "progress" && <Progress />}
+          {page === "chat" && (
+            <>
+              <h2 className="whiteboard-title">
+                <FiFileText className="wb-heading-icon" />
+                Chat Room
+              </h2>
+
+              <RoomRenderer room={selectedRoom} />
+            </>
+          )}
+
+          {/* ✅ OPTIONAL: direct whiteboard page */}
+          {page === "whiteboard" && <Whiteboard />}
+
+        </main>
+
+        {/* RIGHT PANEL */}
+        <RightPanel
+          isOpen={isRightPanelOpen}
+          toggle={() => setIsRightPanelOpen((prev) => !prev)}
+        />
+
       </div>
     </div>
   );
 }
 
+/* ================= ROOM RENDERER ================= */
+
 function RoomRenderer({ room }) {
+  console.log("RENDERING ROOM:", room);
 
   if (!room || !room.type) {
     return <p>Select a room</p>;
   }
 
   switch (room.type) {
-
     case "chat":
-      return <ChatRoom roomId={room.id || "default"} />;
+      return <ChatRoom roomId={room.id} />;
 
     case "voice":
       return <p>🎧 Voice Room (coming soon)</p>;

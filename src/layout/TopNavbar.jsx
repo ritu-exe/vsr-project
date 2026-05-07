@@ -39,13 +39,25 @@ function TopNavbar({ goHome, goFocus, goCompiler, goProgress, goSettings }) {
 
   
 
-  <button className="icon-btn home" onClick={goHome} title="Home">
-    <FiHome />
-  </button>
+<button
+  className="icon-btn home"
+  onClick={() => {
+    console.log("HOME CLICKED");
+    goHome();
+  }}
+>
+  <FiHome />
+</button>
 
-  <button className="icon-btn focus" onClick={goFocus} title="Focus Mode">
-    <FiTarget />
-  </button>
+ <button
+  className="icon-btn focus"
+ onClick={() => {
+  console.log("focus clicked");
+  goFocus();
+}}
+>
+  <FiTarget />
+</button>
 
   <button className="icon-btn code" onClick={goCompiler} title="Compiler">
     <FiCode />

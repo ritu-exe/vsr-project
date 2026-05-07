@@ -15,6 +15,7 @@ body {
 
 /* Animated background effect */
 body::before {
+  pointer-events: none;
   content: '';
   position: fixed;
   top: 0;
@@ -244,4 +245,12 @@ h3,
   align-items: center;
   justify-content: center;
   pointer-events: auto;
+}
+.right-panel div::-webkit-scrollbar {
+  width: 6px;
+}
+
+.right-panel div::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 10px;
 }

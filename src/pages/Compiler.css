@@ -1,0 +1,82 @@
+.compiler-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+/* TOP BAR */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.top-bar select {
+  padding: 6px;
+  border-radius: 6px;
+  background: #0f172a;
+  color: white;
+  border: 1px solid #334155;
+}
+
+.top-bar button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #22c55e;
+  color: black;
+  cursor: pointer;
+}
+
+/* MAIN */
+.main-container {
+  flex: 1;
+  display: flex;
+  min-height: 0; /* VERY IMPORTANT */
+}
+
+/* EDITOR */
+.editor-section {
+  width: 60%;
+  height: 100%;
+}
+
+/* RIGHT PANEL */
+.right-section {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* INPUT */
+.input-section {
+  flex: 1;
+  padding: 10px;
+}
+
+.input-section textarea {
+  width: 100%;
+  height: 100%;
+  background: #020617;
+  color: #22c55e;
+  border: none;
+  padding: 10px;
+  font-family: monospace;
+  resize: none;
+}
+
+/* OUTPUT */
+.output-section {
+  flex: 1;
+  padding: 10px;
+}
+
+.output-section pre {
+  background: #020617;
+  color: #38bdf8;
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+}
