@@ -1,0 +1,8 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "ai-service/ai-service/Dockerfile"
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
