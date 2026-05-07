@@ -42,7 +42,7 @@ function RightPanel({ isOpen, toggle }) {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:8082/ai/pdf",
+        `${process.env.REACT_APP_AI_URL || "http://localhost:8082"}/ai/pdf`,
         formData
       );
 
@@ -73,7 +73,7 @@ function RightPanel({ isOpen, toggle }) {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:8082/ai/pdf",
+        `${process.env.REACT_APP_AI_URL || "http://localhost:8082"}/ai/pdf`,
         formData
       );
 
@@ -94,7 +94,7 @@ function RightPanel({ isOpen, toggle }) {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/chat",
+        `${process.env.REACT_APP_BACKEND_URL || "http://localhost:5000"}/api/chat`,
         { message: "notes:" + notesInput }
       );
 

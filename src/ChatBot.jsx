@@ -61,6 +61,7 @@ return (
     display: "flex",
     flexDirection: "column",
     height: "100%",
+    minHeight: 0,
     flex: 1,
     overflow: "hidden",
     background: "#0f172a",
@@ -73,6 +74,7 @@ return (
       id="chat-container"
       style={{
         flex: 1,
+        minHeight: 0,
         overflowY: "auto",
         paddingRight: "5px",
       }}
