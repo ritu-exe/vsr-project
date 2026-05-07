@@ -6,3 +6,7 @@ dockerfilePath = "Dockerfile"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
+
+[[services]]
+port = 8082
+internalPort = 8082
