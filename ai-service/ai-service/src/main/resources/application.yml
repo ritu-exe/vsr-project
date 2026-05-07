@@ -1,0 +1,11 @@
+server:
+  port: ${PORT:8082}
+
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+
+openrouter:
+  api:
+    key: ${OPENROUTER_API_KEY}
