@@ -60,7 +60,7 @@ function AppLayout({ children, page, setPage }) {
         goFocus={() => setPage("focus")}
         goCompiler={() => setPage("compiler")}
         goProgress={() => setPage("progress")}
-        goSettings={() => alert("Settings coming soon")}
+        currentPage={page}
       />
 
       <div className="app-body">

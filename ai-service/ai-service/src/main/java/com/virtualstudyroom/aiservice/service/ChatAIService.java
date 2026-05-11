@@ -37,8 +37,8 @@ public class ChatAIService {
             system.put("content",
                 "You are a helpful AI assistant inside a virtual study room. " +
                 "Give clear, concise, and human-like answers. " +
-                "Do NOT use headings like ANSWER or NEXT YOU CAN. " +
-                "Avoid unnecessary formatting. " +
+                "When writing code, ALWAYS write the complete code, never truncate or use '...' or 'rest of code here'. " +
+                "Do NOT use markdown formatting like ```code blocks```. Write plain text only. " +
                 "Be natural, like a tutor helping a student.");
             messages.add(system);
 

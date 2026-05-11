@@ -1,82 +1,264 @@
+/* ===== COMPILER PAGE ===== */
 .compiler-page {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  color: white;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Inter", system-ui, sans-serif;
+  padding: 0;
 }
 
-/* TOP BAR */
+/* ===== TOP BAR ===== */
 .top-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 12px;
+  padding: 14px 24px;
+  background: rgba(11,15,26,0.95);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+  backdrop-filter: blur(12px);
+}
+
+.top-bar h2 {
+  font-size: 16px !important;
+  font-weight: 700;
+  color: #10b981 !important;
+  -webkit-text-fill-color: #10b981 !important;
+  background: none !important;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .top-bar select {
-  padding: 6px;
-  border-radius: 6px;
-  background: #0f172a;
-  color: white;
-  border: 1px solid #334155;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px) center;
+  padding-right: 30px;
+}
+
+.top-bar select:focus {
+  border-color: rgba(16,185,129,0.4);
+  color: #e2e8f0;
+  background-color: rgba(16,185,129,0.05);
+}
+
+.top-bar select option {
+  background: #0b0f1a;
+  color: #e2e8f0;
 }
 
 .top-bar button {
-  padding: 6px 12px;
+  padding: 9px 22px;
+  border-radius: 10px;
   border: none;
-  border-radius: 6px;
-  background: #22c55e;
-  color: black;
+  background: linear-gradient(135deg, #10b981, #22d3ee);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 12px rgba(16,185,129,0.3);
+  flex-shrink: 0;
 }
 
-/* MAIN */
+.top-bar button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(16,185,129,0.45);
+}
+
+.top-bar button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Status indicator */
+.compiler-status {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse 2s infinite;
+}
+
+/* ===== MAIN CONTAINER ===== */
 .main-container {
   flex: 1;
   display: flex;
-  min-height: 0; /* VERY IMPORTANT */
+  min-height: 0;
+  overflow: hidden;
 }
 
-/* EDITOR */
+/* ===== EDITOR SECTION ===== */
 .editor-section {
-  width: 60%;
-  height: 100%;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #0d1117;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
 }
 
-/* RIGHT PANEL */
+.editor-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #22d3ee, transparent);
+  z-index: 10;
+}
+
+/* ===== RIGHT SECTION ===== */
 .right-section {
-  width: 40%;
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #080c14;
+}
+
+/* ===== INPUT SECTION ===== */
+.input-section {
+  flex: 0 0 auto;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-section h3 {
+  font-size: 11px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #475569 !important;
+  background: none !important;
+  -webkit-text-fill-color: #475569 !important;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-section h3::before {
+  content: '▶';
+  font-size: 9px;
+  color: #10b981;
+}
+
+.input-section textarea {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: #94a3b8;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 12.5px;
+  resize: none;
+  min-height: 90px;
+  outline: none;
+  line-height: 1.6;
+  transition: border-color 0.2s;
+}
+
+.input-section textarea:focus {
+  border-color: rgba(16,185,129,0.3);
+  background: rgba(16,185,129,0.03);
+}
+
+.input-section textarea::placeholder {
+  color: #334155;
+}
+
+/* ===== OUTPUT SECTION ===== */
+.output-section {
+  flex: 1;
+  min-height: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.output-section h3 {
+  font-size: 11px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #475569 !important;
+  background: none !important;
+  -webkit-text-fill-color: #475569 !important;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.output-section h3::before {
+  content: '◉';
+  font-size: 10px;
+  color: #22d3ee;
+}
+
+.output-section pre {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #86efac;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Compiler wrapper */
+.compiler-wrapper {
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* INPUT */
-.input-section {
-  flex: 1;
-  padding: 10px;
-}
-
-.input-section textarea {
-  width: 100%;
-  height: 100%;
-  background: #020617;
-  color: #22c55e;
-  border: none;
-  padding: 10px;
-  font-family: monospace;
-  resize: none;
-}
-
-/* OUTPUT */
-.output-section {
-  flex: 1;
-  padding: 10px;
-}
-
-.output-section pre {
-  background: #020617;
-  color: #38bdf8;
-  padding: 10px;
-  height: 100%;
-  overflow-y: auto;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }

@@ -1,39 +1,276 @@
 .progress-container {
-  padding: 30px;
-  color: white;
+  padding: 36px 40px;
+  color: #e2e8f0;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ===== HEADER ===== */
+.progress-header {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 6px;
+  animation: fadeUp 0.45s ease forwards;
+}
+
+.progress-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #a855f7;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-label::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  background: #a855f7;
+  border-radius: 2px;
 }
 
 .progress-title {
-  font-size: 28px;
-  margin-bottom: 25px;
-  color: #38bdf8;
+  font-size: 30px;
+  font-weight: 800;
+  color: #f1f5f9 !important;
+  background: none !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
+.progress-subtitle {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+}
+
+/* ===== STATS GRID ===== */
 .progress-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.05s;
 }
 
 .progress-card {
-  background: rgba(15, 23, 42, 0.9);
-  padding: 20px;
-  border-radius: 14px;
-  text-align: center;
-  transition: 0.3s;
+  background: rgba(17, 24, 39, 0.8);
+  padding: 28px 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
 }
 
+.progress-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--card-top, linear-gradient(90deg, #6366f1, #22d3ee));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.progress-card:hover::before { opacity: 1; }
+
 .progress-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px #3b82f6;
+  transform: translateY(-6px);
+  border-color: rgba(99,102,241,0.25);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.08);
+}
+
+.progress-card:nth-child(1) { --card-top: linear-gradient(90deg, #6366f1, #22d3ee); }
+.progress-card:nth-child(2) { --card-top: linear-gradient(90deg, #a855f7, #6366f1); }
+.progress-card:nth-child(3) { --card-top: linear-gradient(90deg, #10b981, #22d3ee); }
+.progress-card:nth-child(4) { --card-top: linear-gradient(90deg, #f97316, #ec4899); }
+
+.progress-card-icon {
+  font-size: 24px;
+  margin-bottom: 14px;
+  display: block;
 }
 
 .progress-card h3 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #475569 !important;
   margin-bottom: 10px;
-  color: #94a3b8;
+  background: none !important;
+  -webkit-text-fill-color: #475569 !important;
 }
 
 .progress-card p {
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+  background: var(--card-top, linear-gradient(135deg, #6366f1, #22d3ee));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.03em;
+}
+
+.progress-card-suffix {
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  margin-top: 4px;
+  -webkit-text-fill-color: #475569 !important;
+  background: none !important;
+}
+
+/* ===== WEEKLY CHART ===== */
+.progress-chart-section {
+  background: rgba(17,24,39,0.7);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 24px 28px;
+  animation: fadeUp 0.55s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.chart-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e2e8f0 !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+  background: none !important;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.progress-bar-chart {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  height: 100px;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.bar-track {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px 6px 0 0;
+  height: 80px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-fill {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(180deg, #6366f1, #3b82f6);
+  opacity: 0.8;
+  min-height: 4px;
+}
+
+.bar-label {
+  font-size: 10px;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* ===== ACHIEVEMENTS ===== */
+.achievements-section {
+  background: rgba(17,24,39,0.7);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 24px 28px;
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 0.15s;
+}
+
+.achievements-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e2e8f0 !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+  background: none !important;
+  margin-bottom: 18px;
+}
+
+.achievements-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.achievement-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.achievement-badge:hover {
+  transform: translateY(-2px);
+}
+
+.badge-earned {
+  background: rgba(99,102,241,0.1);
+  border-color: rgba(99,102,241,0.3);
+  color: #a5b4fc;
+}
+
+.badge-locked {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.06);
+  color: #334155;
+  opacity: 0.6;
 }

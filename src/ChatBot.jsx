@@ -17,17 +17,15 @@ function ChatBot() {
   const handleFile = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const formData = new FormData();
     formData.append("file", file);
     formData.append("action", "summary");
-
     setLoading(true);
     try {
       const res = await axios.post(`${AI_URL}/ai/pdf`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setChat((prev) => [...prev, { sender: "bot", text: `📄 PDF Summary:\n\n${res.data.reply}` }]);
+      setChat((prev) => [...prev, { sender: "bot", text: `PDF Summary:\n\n${res.data.reply}` }]);
     } catch {
       setChat((prev) => [...prev, { sender: "bot", text: "Failed to process PDF." }]);
     } finally {
@@ -38,13 +36,11 @@ function ChatBot() {
 
   const sendMessage = async () => {
     if (!message.trim() || loading) return;
-
     const userMsg = message.trim();
     const updatedChat = [...chat, { sender: "user", text: userMsg }];
     setChat(updatedChat);
     setMessage("");
     setLoading(true);
-
     try {
       const res = await axios.post(`${BACKEND}/api/chat`, { message: userMsg });
       setChat([...updatedChat, { sender: "bot", text: res.data.reply }]);
@@ -56,71 +52,49 @@ function ChatBot() {
   };
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      height: "100%",
-      minHeight: 0,
-      background: "#0a0f1e",
-      borderRadius: "12px",
-      overflow: "hidden"
-    }}>
+    <div className="chat-root" style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0, overflow: "hidden" }}>
 
       {/* MESSAGES */}
-      <div style={{
-        flex: 1,
-        minHeight: 0,
-        overflowY: "auto",
-        padding: "12px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px"
-      }}>
+      <div className="chat-messages" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "12px", display: "flex", flexDirection: "column", gap: 8 }}>
+
         {chat.length === 0 && (
-          <div style={{ color: "#334155", fontSize: "13px", textAlign: "center", marginTop: "20px" }}>
+          <div className="chat-empty" style={{ color: "#475569", fontSize: 13, textAlign: "center", marginTop: 24 }}>
             Ask anything, or upload a PDF 📎
           </div>
         )}
 
         {chat.map((msg, i) => (
-          <div key={i} style={{
-            display: "flex",
-            justifyContent: msg.sender === "user" ? "flex-end" : "flex-start"
-          }}>
+          <div key={i} style={{ display: "flex", justifyContent: msg.sender === "user" ? "flex-end" : "flex-start" }}>
             <div style={{ maxWidth: "85%", position: "relative" }}>
-              <div style={{
-                padding: "10px 14px",
-                borderRadius: msg.sender === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-                background: msg.sender === "user"
-                  ? "linear-gradient(135deg, #6366f1, #3b82f6)"
-                  : "rgba(30, 41, 59, 0.9)",
-                color: "white",
-                fontSize: "13px",
-                lineHeight: "1.6",
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-                border: msg.sender === "bot" ? "1px solid rgba(99,102,241,0.15)" : "none"
-              }}>
+              <div
+                className={msg.sender === "bot" ? "chat-msg-bot" : ""}
+                style={{
+                  padding: "9px 13px",
+                  borderRadius: msg.sender === "user" ? "14px 14px 3px 14px" : "14px 14px 14px 3px",
+                  background: msg.sender === "user" ? "linear-gradient(135deg, #6366f1, #3b82f6)" : "rgba(26,32,53,0.9)",
+                  color: "white",
+                  fontSize: 13,
+                  lineHeight: 1.65,
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  border: msg.sender === "bot" ? "1px solid rgba(255,255,255,0.06)" : "none"
+                }}
+              >
                 {msg.text}
               </div>
               {msg.sender === "bot" && (
                 <button
                   onClick={() => navigator.clipboard.writeText(msg.text)}
                   style={{
-                    position: "absolute",
-                    top: "6px",
-                    right: "6px",
-                    padding: "2px 8px",
-                    fontSize: "10px",
-                    borderRadius: "6px",
+                    position: "absolute", top: 6, right: 6,
+                    padding: "2px 7px", fontSize: 10,
+                    borderRadius: 5,
                     border: "1px solid rgba(99,102,241,0.3)",
-                    background: "rgba(99,102,241,0.2)",
-                    color: "#c7d2fe",
+                    background: "rgba(99,102,241,0.15)",
+                    color: "#818cf8",
                     cursor: "pointer"
                   }}
-                >
-                  copy
-                </button>
+                >copy</button>
               )}
             </div>
           </div>
@@ -128,15 +102,14 @@ function ChatBot() {
 
         {loading && (
           <div style={{ display: "flex", justifyContent: "flex-start" }}>
-            <div style={{
-              padding: "10px 16px",
-              borderRadius: "16px 16px 16px 4px",
-              background: "rgba(30,41,59,0.9)",
-              border: "1px solid rgba(99,102,241,0.15)",
-              color: "#64748b",
-              fontSize: "13px"
+            <div className="chat-thinking" style={{
+              padding: "9px 14px",
+              borderRadius: "14px 14px 14px 3px",
+              background: "rgba(26,32,53,0.9)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              color: "#475569", fontSize: 13
             }}>
-              <span style={{ animation: "pulse 1.5s infinite" }}>AI is thinking...</span>
+              <span style={{ animation: "pulse 1.5s infinite", display: "inline-block" }}>Thinking...</span>
             </div>
           </div>
         )}
@@ -145,19 +118,15 @@ function ChatBot() {
       </div>
 
       {/* INPUT */}
-      <div style={{
-        display: "flex",
-        gap: "8px",
-        padding: "10px",
-        borderTop: "1px solid #1e293b",
+      <div className="chat-input-bar" style={{
+        display: "flex", gap: 8, padding: "10px 12px",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
         alignItems: "center",
-        background: "rgba(2,6,23,0.8)"
+        background: "rgba(8,12,20,0.8)"
       }}>
-        <label style={{ cursor: "pointer", fontSize: "18px", color: "#64748b", flexShrink: 0 }}
-          title="Upload PDF">
+        <label style={{ cursor: "pointer", fontSize: 16, color: "#475569", flexShrink: 0 }} title="Upload PDF">
           📎
-          <input type="file" accept=".pdf" onChange={handleFile} disabled={loading}
-            style={{ display: "none" }} />
+          <input type="file" accept=".pdf" onChange={handleFile} disabled={loading} style={{ display: "none" }} />
         </label>
 
         <input
@@ -166,36 +135,23 @@ function ChatBot() {
           placeholder="Ask anything..."
           onKeyDown={(e) => e.key === "Enter" && !loading && sendMessage()}
           style={{
-            flex: 1,
-            padding: "9px 14px",
-            borderRadius: "20px",
-            border: "1px solid #1e293b",
-            outline: "none",
-            background: "#1e293b",
-            color: "white",
-            fontSize: "13px"
+            flex: 1, padding: "8px 12px",
+            borderRadius: 20,
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.05)",
+            color: "inherit",
+            fontSize: 13
           }}
         />
 
-        <button
-          onClick={sendMessage}
-          disabled={loading}
-          style={{
-            width: "36px", height: "36px",
-            borderRadius: "50%",
-            background: loading ? "#1e293b" : "linear-gradient(135deg, #6366f1, #3b82f6)",
-            color: "white",
-            border: "none",
-            cursor: loading ? "not-allowed" : "pointer",
-            fontSize: "16px",
-            flexShrink: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
-          ➤
-        </button>
+        <button onClick={sendMessage} disabled={loading} style={{
+          width: 34, height: 34, borderRadius: "50%",
+          background: loading ? "rgba(99,102,241,0.3)" : "linear-gradient(135deg, #6366f1, #3b82f6)",
+          color: "white", border: "none",
+          cursor: loading ? "not-allowed" : "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 14, flexShrink: 0
+        }}>➤</button>
       </div>
     </div>
   );
