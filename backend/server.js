@@ -1,4 +1,10 @@
 require("dotenv").config();
+// Force local MongoDB (Atlas cluster is paused)
+process.env.MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/virtual-study-room";
+if (process.env.MONGO_URI.includes("mongodb+srv")) {
+  console.log("⚠️  Atlas URI detected, switching to local MongoDB...");
+  process.env.MONGO_URI = "mongodb://localhost:27017/virtual-study-room";
+}
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
@@ -29,7 +35,10 @@ const { JWT_SECRET, MONGO_URI, PORT, AI_SERVICE_URL } = process.env;
 // --------------------
 mongoose
   .connect(MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
+  .then(async () => {
+    console.log("MongoDB Connected");
+    await seedDefaultRooms();
+  })
   .catch((err) => console.error("MongoDB error:", err));
 
 // --------------------
@@ -37,6 +46,7 @@ mongoose
 // --------------------
 const User = require("./models/users");
 const Message = require("./models/Message");
+const ServerModel = require("./models/Server");
 
 const sessionSchema = new mongoose.Schema({
   user: String,
@@ -112,26 +122,64 @@ app.post("/api/login", async (req, res) => {
 });
 
 // --------------------
-// ROOMS API
+// SERVERS API
+// --------------------
+app.get("/api/servers", async (req, res) => {
+  try {
+    const servers = await ServerModel.find().sort({ createdAt: 1 });
+    res.json(servers);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/servers", async (req, res) => {
+  try {
+    const { name, ownerId } = req.body;
+    if (!name) return res.status(400).json({ error: "Server name required" });
+    const newServer = await ServerModel.create({
+      name,
+      ownerId: ownerId || "system",
+      rooms: [
+        { name: "general-chat",  type: "chat"  },
+        { name: "announcements", type: "chat"  },
+        { name: "Lounge",        type: "voice" },
+      ],
+    });
+    res.json(newServer);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add a room to an existing server
+app.post("/api/servers/:serverId/rooms", async (req, res) => {
+  try {
+    const { name, type } = req.body;
+    if (!name) return res.status(400).json({ error: "Room name required" });
+    const srv = await ServerModel.findById(req.params.serverId);
+    if (!srv) return res.status(404).json({ error: "Server not found" });
+    srv.rooms.push({ name, type: type || "chat" });
+    await srv.save();
+    res.json(srv.rooms[srv.rooms.length - 1]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --------------------
+// ROOMS API (legacy — kept for message routing)
 // --------------------
 app.get("/api/rooms", async (req, res) => {
   try {
     const rooms = await Room.find();
-    if (rooms.length === 0) {
-      // seed default rooms on first run
-      const defaults = await Room.insertMany([
-        { name: "General Chat", type: "chat" },
-        { name: "Frontend Help", type: "chat" },
-      ]);
-      return res.json(defaults);
-    }
     res.json(rooms);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.post("/api/rooms", authMiddleware, async (req, res) => {
+app.post("/api/rooms", async (req, res) => {
   try {
     const { name } = req.body;
     if (!name) return res.status(400).json({ error: "Room name required" });
@@ -147,14 +195,14 @@ app.post("/api/rooms", authMiddleware, async (req, res) => {
 // --------------------
 app.get("/api/messages/:roomId", async (req, res) => {
   try {
-    const messages = await Message.find({ roomId: req.params.roomId }).limit(100);
+    const messages = await Message.find({ roomId: req.params.roomId }).sort({ createdAt: 1 }).limit(100);
     res.json(messages);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.post("/api/messages/:roomId", authMiddleware, async (req, res) => {
+app.post("/api/messages/:roomId", async (req, res) => {
   try {
     const message = await new Message({
       roomId: req.params.roomId,
@@ -213,19 +261,120 @@ app.post("/api/chat", async (req, res) => {
 });
 
 // --------------------
-// ONLINE USERS (Socket.io)
+// SEED DEFAULT ROOMS
+// --------------------
+async function seedDefaultRooms() {
+  // Seed default server with rooms
+  const existing = await ServerModel.findOne({ name: "Study Room" });
+  if (!existing) {
+    await ServerModel.create({
+      name: "Study Room",
+      ownerId: "system",
+      rooms: [
+        { name: "general-chat",  type: "chat"  },
+        { name: "announcements", type: "chat"  },
+        { name: "Lounge",        type: "voice" },
+      ],
+    });
+    console.log("✅ Seeded default Study Room server with Lounge");
+  }
+}
+
+// --------------------
+// ONLINE USERS + WebRTC SIGNALING (Socket.io)
 // --------------------
 let onlineUsers = 0;
+
+// voiceRooms: { roomId -> Set of socketIds }
+const voiceRooms = new Map();
+// socketToRoom: { socketId -> roomId }
+const socketToRoom = new Map();
+// socketToUser: { socketId -> username }
+const socketToUser = new Map();
 
 io.on("connection", (socket) => {
   onlineUsers++;
   io.emit("userCount", onlineUsers);
 
+  // ── WebRTC: Join a voice room ──────────────────────────
+  socket.on("join-voice-room", ({ roomId, username }) => {
+    // Leave any existing room first
+    const prevRoom = socketToRoom.get(socket.id);
+    if (prevRoom) {
+      const prevSet = voiceRooms.get(prevRoom);
+      if (prevSet) {
+        prevSet.delete(socket.id);
+        socket.to(prevRoom).emit("voice-peer-left", { peerId: socket.id });
+        socket.leave(prevRoom);
+      }
+    }
+
+    // Join new room
+    socket.join(roomId);
+    socketToRoom.set(socket.id, roomId);
+    socketToUser.set(socket.id, username || "User");
+
+    if (!voiceRooms.has(roomId)) voiceRooms.set(roomId, new Set());
+    const roomSet = voiceRooms.get(roomId);
+
+    // Send existing peers to the new user
+    const existingPeers = [...roomSet].map((id) => ({
+      peerId: id,
+      username: socketToUser.get(id) || "User",
+    }));
+    socket.emit("voice-room-peers", existingPeers);
+
+    // Tell existing peers about the new user
+    socket.to(roomId).emit("voice-new-peer", {
+      peerId: socket.id,
+      username: username || "User",
+    });
+
+    roomSet.add(socket.id);
+    console.log(`🔊 ${username} joined voice room ${roomId}`);
+  });
+
+  // ── WebRTC: Leave voice room ───────────────────────────
+  socket.on("leave-voice-room", () => {
+    handleLeaveVoice(socket);
+  });
+
+  // ── WebRTC: Offer ──────────────────────────────────────
+  socket.on("voice-offer", ({ targetId, sdp }) => {
+    io.to(targetId).emit("voice-offer", { fromId: socket.id, sdp });
+  });
+
+  // ── WebRTC: Answer ─────────────────────────────────────
+  socket.on("voice-answer", ({ targetId, sdp }) => {
+    io.to(targetId).emit("voice-answer", { fromId: socket.id, sdp });
+  });
+
+  // ── WebRTC: ICE Candidate ──────────────────────────────
+  socket.on("voice-ice-candidate", ({ targetId, candidate }) => {
+    io.to(targetId).emit("voice-ice-candidate", { fromId: socket.id, candidate });
+  });
+
+  // ── Disconnect ─────────────────────────────────────────
   socket.on("disconnect", () => {
     onlineUsers--;
     io.emit("userCount", onlineUsers);
+    handleLeaveVoice(socket);
+    socketToUser.delete(socket.id);
   });
 });
+
+function handleLeaveVoice(socket) {
+  const roomId = socketToRoom.get(socket.id);
+  if (!roomId) return;
+  const roomSet = voiceRooms.get(roomId);
+  if (roomSet) {
+    roomSet.delete(socket.id);
+    socket.to(roomId).emit("voice-peer-left", { peerId: socket.id });
+  }
+  socket.leave(roomId);
+  socketToRoom.delete(socket.id);
+}
+
 
 // --------------------
 // START SERVER

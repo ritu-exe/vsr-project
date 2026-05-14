@@ -10,13 +10,17 @@ const navItems = [
 ];
 
 function TopNavbar({ goHome, goFocus, goCompiler, goProgress, currentPage }) {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return saved ? saved === "dark" : true; // default dark
+  });
   const username = localStorage.getItem("username") || "User";
   const initials = username.slice(0, 2).toUpperCase();
 
   useEffect(() => {
     document.body.classList.toggle("light-mode", !darkMode);
     document.body.classList.toggle("dark-mode", darkMode);
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
   const handlers = { home: goHome, focus: goFocus, compiler: goCompiler, progress: goProgress };

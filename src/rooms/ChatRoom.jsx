@@ -1,10 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
+import { socket } from "../context/VoiceContext";
 import { getMessages, sendMessage } from "../services/api";
 
-const socket = io(process.env.REACT_APP_BACKEND_URL || "http://localhost:5000");
-
-function ChatRoom({ roomId }) {
+function ChatRoom({ roomId, roomName }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [userCount, setUserCount] = useState(0);
@@ -19,15 +17,32 @@ function ChatRoom({ roomId }) {
   useEffect(() => {
     if (!roomId) return;
 
-    // fetch messages from backend
+    // fetch persisted messages from MongoDB on load
     getMessages(roomId).then((data) => {
-      setMessages(data);
+      const msgList = Array.isArray(data) ? data : (data?.messages || data?.data || []);
+      setMessages(msgList);
     });
 
-    // realtime message listener
+    // realtime: server broadcasts saved message back to all clients (including sender)
     socket.on("newMessage", ({ roomId: msgRoomId, message }) => {
       if (msgRoomId === roomId) {
-        setMessages((prev) => [...prev, message]);
+        // replace optimistic message with real saved one, or just append
+        setMessages((prev) => {
+          // avoid duplicates if socket fires fast
+          const exists = prev.some(
+            (m) => m._id && m._id === message._id
+          );
+          if (exists) return prev;
+          // replace last optimistic (no _id) message with the real one
+          const lastIdx = [...prev].reverse().findIndex((m) => !m._id && m.user === message.user && m.text === message.text);
+          if (lastIdx !== -1) {
+            const realIdx = prev.length - 1 - lastIdx;
+            const updated = [...prev];
+            updated[realIdx] = message;
+            return updated;
+          }
+          return [...prev, message];
+        });
       }
     });
 
@@ -57,15 +72,26 @@ function ChatRoom({ roomId }) {
       time: new Date().toLocaleTimeString(),
     };
 
-    await sendMessage(roomId, newMessage);
+    // ✅ Optimistic update — show message immediately in UI
+    setMessages((prev) => [...prev, newMessage]);
     setInput("");
+
+    try {
+      const result = await sendMessage(roomId, newMessage);
+      if (result?.error) {
+        console.error("Send failed:", result.error);
+        // If auth error, still keep the optimistic message visible
+      }
+    } catch (err) {
+      console.error("Network error sending message:", err);
+    }
   }
 
   return (
     <div>
       {/* 🔷 HEADER */}
       <div style={{ marginBottom: "10px" }}>
-        <h3>Room: {roomId}</h3>
+        <h3># {roomName || "Chat Room"}</h3>
         <p style={{ fontSize: "12px", color: "#4caf50" }}>
           🟢 {userCount} users online
         </p>

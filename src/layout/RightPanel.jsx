@@ -22,10 +22,7 @@ function RightPanel({ isOpen, toggle }) {
   const [notesOutput, setNotesOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (mode === "pdf") setNotesOutput("");
-    else if (mode === "notes") setPdfOutput("");
-  }, [mode]);
+
 
   const handlePDF = async (e) => {
     const file = e.target.files[0];
@@ -189,16 +186,13 @@ function RightPanel({ isOpen, toggle }) {
           {/* CONTENT */}
           <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
-            {/* CHAT */}
-            {mode === "chat" && (
-              <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
-                <ChatBot />
-              </div>
-            )}
+            {/* CHAT — always mounted, just hidden */}
+            <div style={{ flex: 1, minHeight: 0, overflow: "hidden", display: mode === "chat" ? "flex" : "none", flexDirection: "column" }}>
+              <ChatBot />
+            </div>
 
-            {/* PDF */}
-            {mode === "pdf" && (
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "14px 16px", gap: 10, overflow: "hidden" }}>
+            {/* PDF — always mounted, just hidden */}
+            <div style={{ flex: 1, display: mode === "pdf" ? "flex" : "none", flexDirection: "column", padding: "14px 16px", gap: 10, overflow: "hidden" }}>
                 <select value={pdfAction} onChange={(e) => setPdfAction(e.target.value)} style={inputStyle}>
                   <option value="summary">📝 Summarize PDF</option>
                   <option value="notes">📋 Generate Notes</option>
@@ -234,11 +228,9 @@ function RightPanel({ isOpen, toggle }) {
                   {pdfOutput || <span style={{ color: "#1e293b" }}>Output will appear here…</span>}
                 </div>
               </div>
-            )}
 
-            {/* NOTES */}
-            {mode === "notes" && (
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "14px 16px", gap: 10, overflow: "hidden" }}>
+            {/* NOTES — always mounted, just hidden */}
+            <div style={{ flex: 1, display: mode === "notes" ? "flex" : "none", flexDirection: "column", padding: "14px 16px", gap: 10, overflow: "hidden" }}>
                 <textarea
                   value={notesInput}
                   onChange={(e) => setNotesInput(e.target.value)}
@@ -257,7 +249,6 @@ function RightPanel({ isOpen, toggle }) {
                   {notesOutput || <span style={{ color: "#1e293b" }}>Notes will appear here…</span>}
                 </div>
               </div>
-            )}
           </div>
         </>
       )}

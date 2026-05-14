@@ -5,6 +5,7 @@ const messageSchema = new mongoose.Schema({
   user: String,
   text: String,
   time: String,
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Message", messageSchema);

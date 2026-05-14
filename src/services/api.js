@@ -13,6 +13,32 @@ export const getRooms = async () => {
   return res.json();
 };
 
+export const getServers = async () => {
+  const res = await fetch(`${BASE}/api/servers`);
+  return res.json();
+};
+
+export const createServer = async (name) => {
+  const username = localStorage.getItem("username") || "system";
+  const res = await fetch(`${BASE}/api/servers`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, ownerId: username }),
+  });
+  if (!res.ok) throw new Error("Failed to create server");
+  return res.json();
+};
+
+export const createRoomInServer = async (serverId, name, type = "chat") => {
+  const res = await fetch(`${BASE}/api/servers/${serverId}/rooms`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, type }),
+  });
+  if (!res.ok) throw new Error("Failed to create room in server");
+  return res.json();
+};
+
 export const getMessages = async (roomId) => {
   const res = await fetch(`${BASE}/api/messages/${roomId}`);
   return res.json();

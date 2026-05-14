@@ -1,7 +1,8 @@
 import PomodoroTimer from "../components/PomodoroTimer";
 import { useState } from "react";
 import { Hash, Mic, Video, PenTool, Plus, Search, ChevronDown, ChevronRight } from "lucide-react";
-import { createRoom as apiCreateRoom } from "../services/api";
+import { createRoom as apiCreateRoom, createServer as apiCreateServer, createRoomInServer } from "../services/api";
+import FloatingCallBar from "./FloatingCallBar";
 
 /* ─── helpers ──────────────────────────────────────────────── */
 
@@ -189,20 +190,27 @@ export default function ServerSidebar({
   const [focusMode] = useState(false);
 
   /* ---- Create server ---- */
-  function createServer() {
+  async function createServer() {
     const name = prompt("Enter server name");
     if (!name) return;
-    const newServer = {
-      id: Date.now().toString(),
-      name,
-      rooms: [
-        { id: "general", name: "general-chat", type: "chat" },
-        { id: "ann",     name: "announcements", type: "chat" },
-      ],
-    };
-    setServers((prev) => [...prev, newServer]);
-    setSelectedServer(newServer);
-    setSelectedRoom(newServer.rooms[0]);
+    try {
+      const saved = await apiCreateServer(name);
+      const newServer = {
+        id: saved._id || saved.id,
+        name: saved.name,
+        rooms: (saved.rooms || []).map((r) => ({
+          id: r._id || r.id,
+          name: r.name,
+          type: r.type || "chat",
+        })),
+      };
+      setServers((prev) => [...prev, newServer]);
+      setSelectedServer(newServer);
+      setSelectedRoom(newServer.rooms[0]);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to create server");
+    }
   }
 
   /* ---- Create room ---- */
@@ -210,8 +218,8 @@ export default function ServerSidebar({
     const name = prompt("Enter room name");
     if (!name) return;
     try {
-      const newRoomFromAPI = await apiCreateRoom(name);
-      const newRoom = { id: newRoomFromAPI.id, name: newRoomFromAPI.name, type: "chat" };
+      const newRoomFromAPI = await createRoomInServer(serverId, name);
+      const newRoom = { id: newRoomFromAPI._id || newRoomFromAPI.id, name: newRoomFromAPI.name, type: newRoomFromAPI.type || "chat" };
       setServers((prev) =>
         prev.map((s) => s.id === serverId ? { ...s, rooms: [...s.rooms, newRoom] } : s)
       );
@@ -322,6 +330,9 @@ export default function ServerSidebar({
 
       {/* ── Divider ── */}
       <div style={dividerStyle} />
+
+      {/* ── Floating Call Bar ── */}
+      <FloatingCallBar setPage={setPage} setSelectedRoom={setSelectedRoom} servers={servers} />
 
       {/* ── User badge ── */}
       <UserBadge />
