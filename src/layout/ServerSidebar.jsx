@@ -1,7 +1,7 @@
 import PomodoroTimer from "../components/PomodoroTimer";
 import { useState } from "react";
 import { Hash, Mic, Video, PenTool, Plus, Search, ChevronDown, ChevronRight } from "lucide-react";
-import { createRoom as apiCreateRoom, createServer as apiCreateServer, createRoomInServer } from "../services/api";
+import { createServer as apiCreateServer, createRoomInServer } from "../services/api";
 import FloatingCallBar from "./FloatingCallBar";
 
 /* ─── helpers ──────────────────────────────────────────────── */

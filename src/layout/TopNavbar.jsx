@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiHome, FiTarget, FiCode, FiBarChart2, FiSun, FiMoon, FiBell, FiSettings } from "react-icons/fi";
+import { FiHome, FiTarget, FiCode, FiBarChart2, FiSun, FiMoon, FiBell } from "react-icons/fi";
 import "./layout.css";
 
 const navItems = [

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import rainSound from "../assets/rain.mp3";
 import birdSound from "../assets/birds.mp3";
 import { updateProgress } from "../services/progressService";
@@ -96,8 +96,8 @@ function createBinauralBeat(audioCtx, gainNode, beatHz) {
   const baseFreq = 200;
   const L = audioCtx.createOscillator();
   const R = audioCtx.createOscillator();
-  const mergerL = audioCtx.createChannelMerger(2);
-  const mergerR = audioCtx.createChannelMerger(2);
+  const mergerL = audioCtx.createChannelMerger(2); // eslint-disable-line no-unused-vars
+  const mergerR = audioCtx.createChannelMerger(2); // eslint-disable-line no-unused-vars
   const gainL = audioCtx.createGain();
   const gainR = audioCtx.createGain();
 
@@ -317,7 +317,7 @@ export default function Focus() {
             fontFamily:"Inter,sans-serif", letterSpacing:"0.02em",
             background: running ? `${mode.color}18` : `linear-gradient(135deg, ${mode.color}, #3b82f6)`,
             color: running ? mode.color : "white",
-            border: running ? `1px solid ${mode.color}44` : "none",
+            borderColor: running ? `${mode.color}44` : "transparent",
             boxShadow: running ? "none" : `0 4px 20px ${mode.color}55`,
             transition:"all 0.2s",
           }}
