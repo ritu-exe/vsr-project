@@ -1,4 +1,3 @@
-import { FiFileText } from "react-icons/fi";
 import Whiteboard from "../rooms/Whiteboard";
 import VoiceRoom from "../rooms/VoiceRoom";
 import Home from "../pages/Home";

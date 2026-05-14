@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const MODES = [
   { label: "Focus", duration: 25 * 60, color: "#6366f1" },

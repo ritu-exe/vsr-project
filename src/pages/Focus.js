@@ -188,7 +188,7 @@ export default function Focus() {
       });
     }, 1000);
     return () => clearInterval(id);
-  }, [running]); // eslint-disable-line
+  }, [running, modeIdx]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── Volume sync ─────────────────────────────────────────── */
   useEffect(() => {
