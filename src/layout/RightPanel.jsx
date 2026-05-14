@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ChatBot from "../ChatBot";
 import axios from "axios";
 import { FiMessageSquare, FiFileText, FiEdit, FiChevronLeft, FiChevronRight } from "react-icons/fi";
