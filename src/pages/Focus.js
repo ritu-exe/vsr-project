@@ -170,6 +170,7 @@ export default function Focus() {
   }, [modeIdx]);
 
   /* ── Countdown interval ──────────────────────────────────── */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!running) return;
     const id = setInterval(() => {
