@@ -144,6 +144,8 @@ app.post("/api/servers", async (req, res) => {
         { name: "general-chat",  type: "chat"  },
         { name: "announcements", type: "chat"  },
         { name: "Lounge",        type: "voice" },
+        { name: "Study Session", type: "video" },
+        { name: "Whiteboard",    type: "board" },
       ],
     });
     res.json(newServer);
@@ -274,6 +276,8 @@ async function seedDefaultRooms() {
         { name: "general-chat",  type: "chat"  },
         { name: "announcements", type: "chat"  },
         { name: "Lounge",        type: "voice" },
+        { name: "Study Session", type: "video" },
+        { name: "Whiteboard",    type: "board" },
       ],
     });
     console.log("✅ Seeded default Study Room server with Lounge");
