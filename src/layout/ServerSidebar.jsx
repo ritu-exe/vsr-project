@@ -217,8 +217,13 @@ export default function ServerSidebar({
   async function createRoom(serverId) {
     const name = prompt("Enter room name");
     if (!name) return;
+    
+    // Quick prompt for type
+    const typeStr = prompt("Enter type: chat, voice, video, board", "chat");
+    const type = ["chat", "voice", "video", "board"].includes(typeStr) ? typeStr : "chat";
+
     try {
-      const newRoomFromAPI = await createRoomInServer(serverId, name);
+      const newRoomFromAPI = await createRoomInServer(serverId, name, type);
       const newRoom = { id: newRoomFromAPI._id || newRoomFromAPI.id, name: newRoomFromAPI.name, type: newRoomFromAPI.type || "chat" };
       setServers((prev) =>
         prev.map((s) => s.id === serverId ? { ...s, rooms: [...s.rooms, newRoom] } : s)
