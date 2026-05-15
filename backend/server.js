@@ -1,10 +1,6 @@
 require("dotenv").config();
-// Force local MongoDB (Atlas cluster is paused)
+// Allow fallback to local MongoDB if MONGO_URI is missing (for local dev only)
 process.env.MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/virtual-study-room";
-if (process.env.MONGO_URI.includes("mongodb+srv")) {
-  console.log("⚠️  Atlas URI detected, switching to local MongoDB...");
-  process.env.MONGO_URI = "mongodb://localhost:27017/virtual-study-room";
-}
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
