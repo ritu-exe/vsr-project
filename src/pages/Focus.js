@@ -167,7 +167,7 @@ export default function Focus() {
   useEffect(() => {
     setTime(mode.duration);
     setRunning(false);
-  }, [modeIdx]);
+  }, [modeIdx, mode.duration]);
 
   /* ── Countdown interval ──────────────────────────────────── */
   // eslint-disable-next-line react-hooks/exhaustive-deps
