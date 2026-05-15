@@ -1,6 +1,6 @@
 
 import { ReactSketchCanvas } from "react-sketch-canvas";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import "../layout/layout.css";
 import { FiRotateCcw, FiRotateCw, FiTrash2, FiSave, FiEdit3, FiSquare, FiCircle } from "react-icons/fi";
 import { socket } from "../context/VoiceContext";
