@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import "./Compiler.css";
 import { updateProgress } from "../services/progressService";
+import { socket } from "../context/VoiceContext";
 
 const languages = [
   { id: 63, name: "JavaScript", value: "javascript", emoji: "🟨" },
@@ -32,7 +33,7 @@ public class Main {
 }`,
 };
 
-export default function Compiler() {
+export default function Compiler({ roomId, isEmbedded }) {
   const [language, setLanguage] = useState(languages[0]);
   const [code, setCode] = useState(PLACEHOLDERS[languages[0].value]);
   const [input, setInput] = useState("");
@@ -40,11 +41,34 @@ export default function Compiler() {
   const [loading, setLoading] = useState(false);
   const [runCount, setRunCount] = useState(0);
 
+  // Sync listen
+  useEffect(() => {
+    if (!roomId) return;
+    const handleSync = ({ type, data }) => {
+      if (type === "compiler") {
+        if (data.code !== undefined) setCode(data.code);
+        if (data.languageId) {
+          const lang = languages.find(l => l.id === data.languageId);
+          if (lang) setLanguage(lang);
+        }
+        if (data.output !== undefined) setOutput(data.output);
+      }
+    };
+    socket.on("activity-sync", handleSync);
+    return () => socket.off("activity-sync", handleSync);
+  }, [roomId]);
+
   function handleLangChange(e) {
     const lang = languages.find((l) => l.id === parseInt(e.target.value));
     setLanguage(lang);
     setCode(PLACEHOLDERS[lang.value]);
     setOutput("");
+    if (roomId) socket.emit("activity-sync", { roomId, type: "compiler", data: { languageId: lang.id, code: PLACEHOLDERS[lang.value], output: "" } });
+  }
+
+  function handleCodeChange(value) {
+    setCode(value || "");
+    if (roomId) socket.emit("activity-sync", { roomId, type: "compiler", data: { code: value || "" } });
   }
 
   const runCode = async () => {
@@ -59,9 +83,13 @@ export default function Compiler() {
         { source_code: code, stdin: input, language_id: language.id }
       );
       const res = response.data;
-      setOutput(res.stdout || res.stderr || res.compile_output || "No output");
+      const newOut = res.stdout || res.stderr || res.compile_output || "No output";
+      setOutput(newOut);
+      if (roomId) socket.emit("activity-sync", { roomId, type: "compiler", data: { output: newOut } });
     } catch (err) {
-      setOutput("❌ Error: " + err.message);
+      const errOut = "❌ Error: " + err.message;
+      setOutput(errOut);
+      if (roomId) socket.emit("activity-sync", { roomId, type: "compiler", data: { output: errOut } });
     }
 
     setLoading(false);
@@ -107,7 +135,7 @@ export default function Compiler() {
             language={language.value}
             theme="vs-dark"
             value={code}
-            onChange={(value) => setCode(value || "")}
+            onChange={handleCodeChange}
             options={{
               fontSize: 13.5,
               fontFamily: "'JetBrains Mono', 'Fira Code', monospace",

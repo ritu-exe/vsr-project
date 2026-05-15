@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useVoice } from "../context/VoiceContext";
 import {
-  FiMic, FiMicOff, FiVideo, FiVideoOff, FiMonitor, FiPhoneOff, FiUsers
+  FiMic, FiMicOff, FiVideo, FiVideoOff, FiMonitor, FiPhoneOff, FiUsers, FiEdit3, FiCode
 } from "react-icons/fi";
+import Whiteboard from "./Whiteboard";
+import Compiler from "../pages/Compiler";
 
 /* ── Participant tile ───────────────────────────────────────── */
 function ParticipantTile({ stream, username, isLocal }) {
@@ -82,6 +84,7 @@ export default function VoiceRoom({ roomId, roomName }) {
 
   const username = localStorage.getItem("username") || "User";
   const isInThisRoom = currentVoiceRoom?.id === roomId;
+  const [activeActivity, setActiveActivity] = React.useState(null);
 
   // Remote participants audio
   const audioRefs = useRef({});
@@ -132,28 +135,44 @@ export default function VoiceRoom({ roomId, roomName }) {
         </span>
       </div>
 
-      {/* Participant grid */}
-      <div style={gridStyle(participants.length + 1)}>
-        <LocalTile
-          username={username}
-          isMuted={isMuted}
-          isCameraOn={isCameraOn}
-          localStream={localStream}
-        />
-        {participants.map(({ peerId, username: peerName, stream }) => (
-          <React.Fragment key={peerId}>
-            <audio
-              ref={(el) => { if (el) audioRefs.current[peerId] = el; }}
-              autoPlay
-              style={{ display: "none" }}
-            />
-            <ParticipantTile
-              stream={stream}
-              username={peerName}
-              isLocal={false}
-            />
-          </React.Fragment>
-        ))}
+      {/* Main Content Area */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        
+        {/* Participant grid */}
+        <div style={{ ...gridStyle(participants.length + 1), width: activeActivity ? "260px" : "100%", flex: activeActivity ? "none" : 1, borderRight: activeActivity ? "1px solid rgba(255,255,255,0.06)" : "none", display: "flex", flexDirection: activeActivity ? "column" : "grid" }}>
+          <LocalTile
+            username={username}
+            isMuted={isMuted}
+            isCameraOn={isCameraOn}
+            localStream={localStream}
+          />
+          {participants.map(({ peerId, username: peerName, stream }) => (
+            <React.Fragment key={peerId}>
+              <audio
+                ref={(el) => { if (el) audioRefs.current[peerId] = el; }}
+                autoPlay
+                style={{ display: "none" }}
+              />
+              <ParticipantTile
+                stream={stream}
+                username={peerName}
+                isLocal={false}
+              />
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* Activity Area */}
+        {activeActivity === "whiteboard" && (
+          <div style={{ flex: 1, height: "100%", overflow: "hidden", background: "#06080f", borderLeft: "1px solid rgba(255,255,255,0.06)" }}>
+            <Whiteboard roomId={roomId} isEmbedded={true} />
+          </div>
+        )}
+        {activeActivity === "compiler" && (
+          <div style={{ flex: 1, height: "100%", overflow: "hidden", background: "#06080f", borderLeft: "1px solid rgba(255,255,255,0.06)" }}>
+            <Compiler roomId={roomId} isEmbedded={true} />
+          </div>
+        )}
       </div>
 
       {/* Controls */}
@@ -183,6 +202,24 @@ export default function VoiceRoom({ roomId, roomName }) {
         >
           <FiMonitor size={18} />
           <span>{isScreenSharing ? "Stop Share" : "Screen"}</span>
+        </button>
+
+        <button
+          style={ctrlBtn(activeActivity === "whiteboard", "#a78bfa")}
+          onClick={() => setActiveActivity(a => a === "whiteboard" ? null : "whiteboard")}
+          title="Shared Whiteboard"
+        >
+          <FiEdit3 size={18} />
+          <span>Board</span>
+        </button>
+
+        <button
+          style={ctrlBtn(activeActivity === "compiler", "#fbbf24")}
+          onClick={() => setActiveActivity(a => a === "compiler" ? null : "compiler")}
+          title="Shared Compiler"
+        >
+          <FiCode size={18} />
+          <span>Code</span>
         </button>
 
         <button

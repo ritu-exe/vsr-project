@@ -2,17 +2,10 @@
 import { ReactSketchCanvas } from "react-sketch-canvas";
 import { useRef, useState } from "react";
 import "../layout/layout.css";
-import {
-FiRotateCcw,
-FiRotateCw,
-FiTrash2,
-FiSave,
-FiEdit3,
-FiSquare,
-FiCircle
-} from "react-icons/fi";
+import { FiRotateCcw, FiRotateCw, FiTrash2, FiSave, FiEdit3, FiSquare, FiCircle } from "react-icons/fi";
+import { socket } from "../context/VoiceContext";
 
-function Whiteboard() {
+function Whiteboard({ roomId, isEmbedded }) {
 
   const canvasRef = useRef(null);
 
@@ -43,14 +36,10 @@ function Whiteboard() {
 
   const addNote = () => {
 
-    const newNote = {
-      id: Date.now(),
-      x:200,
-      y:200,
-      text:"Note..."
-    };
-
-    setNotes([...notes,newNote]);
+    const newNote = { id: Date.now(), x:200, y:200, text:"Note..." };
+    const newNotes = [...notes, newNote];
+    setNotes(newNotes);
+    if (roomId) socket.emit("activity-sync", { roomId, type: "whiteboard", data: { notes: newNotes } });
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -63,15 +52,44 @@ function Whiteboard() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const newShape = {
-      id: Date.now(),
-      type: tool,
-      x,
-      y,
-      color
-    };
+    const newShape = { id: Date.now(), type: tool, x, y, color };
+    const newShapes = [...shapes, newShape];
+    setShapes(newShapes);
+    
+    if (roomId) {
+      socket.emit("activity-sync", { roomId, type: "whiteboard", data: { shapes: newShapes } });
+    }
+  };
 
-    setShapes([...shapes,newShape]);
+  // Sync listen
+  useEffect(() => {
+    if (!roomId) return;
+    
+    const handleSync = ({ type, data }) => {
+      if (type === "whiteboard") {
+        if (data.shapes) setShapes(data.shapes);
+        if (data.notes) setNotes(data.notes);
+        if (data.paths && canvasRef.current) {
+          // ReactSketchCanvas requires an internal method to load paths safely.
+          canvasRef.current.loadPaths(data.paths);
+        }
+        if (data.clear) {
+          canvasRef.current?.clearCanvas();
+          setShapes([]);
+          setNotes([]);
+        }
+      }
+    };
+    
+    socket.on("activity-sync", handleSync);
+    return () => socket.off("activity-sync", handleSync);
+  }, [roomId]);
+
+  const handleClear = () => {
+    canvasRef.current.clearCanvas();
+    setShapes([]);
+    setNotes([]);
+    if (roomId) socket.emit("activity-sync", { roomId, type: "whiteboard", data: { clear: true } });
   };
 
   return (
@@ -95,11 +113,7 @@ overflow:"hidden"
 
 <button
 className="icon-btn clear"
-onClick={()=>{
-canvasRef.current.clearCanvas();
-setShapes([]);
-setNotes([]);
-}}>
+onClick={handleClear}>
   <FiTrash2/>
 </button>
 
@@ -184,6 +198,9 @@ overflow:"auto"
 ref={canvasRef}
 strokeWidth={strokeWidth}
 strokeColor={color}
+onChange={(paths) => {
+  if (roomId) socket.emit("activity-sync", { roomId, type: "whiteboard", data: { paths } });
+}}
 style={{
 border:"1px solid #334155",
 borderRadius:"10px",

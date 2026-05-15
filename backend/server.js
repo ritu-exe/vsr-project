@@ -354,6 +354,11 @@ io.on("connection", (socket) => {
     io.to(targetId).emit("voice-ice-candidate", { fromId: socket.id, candidate });
   });
 
+  // ── Shared Activities (Whiteboard, Compiler) ───────────
+  socket.on("activity-sync", ({ roomId, type, data }) => {
+    socket.to(roomId).emit("activity-sync", { type, data });
+  });
+
   // ── Disconnect ─────────────────────────────────────────
   socket.on("disconnect", () => {
     onlineUsers--;
