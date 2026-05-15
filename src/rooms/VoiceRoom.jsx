@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { useVoice } from "../context/VoiceContext";
 import {
-  FiMic, FiMicOff, FiVideo, FiVideoOff, FiMonitor, FiPhoneOff, FiUsers, FiEdit3, FiCode
+  FiMic, FiMicOff, FiVideo, FiVideoOff, FiMonitor, FiPhoneOff, FiUsers, FiEdit3, FiCode, FiYoutube
 } from "react-icons/fi";
 import Whiteboard from "./Whiteboard";
 import Compiler from "../pages/Compiler";
+import SharedYouTube from "./SharedYouTube";
 
 /* ── Participant tile ───────────────────────────────────────── */
 function ParticipantTile({ stream, username, isLocal }) {
@@ -173,6 +174,11 @@ export default function VoiceRoom({ roomId, roomName }) {
             <Compiler roomId={roomId} isEmbedded={true} />
           </div>
         )}
+        {activeActivity === "youtube" && (
+          <div style={{ flex: 1, height: "100%", overflow: "hidden", background: "#06080f", borderLeft: "1px solid rgba(255,255,255,0.06)" }}>
+            <SharedYouTube roomId={roomId} />
+          </div>
+        )}
       </div>
 
       {/* Controls */}
@@ -220,6 +226,15 @@ export default function VoiceRoom({ roomId, roomName }) {
         >
           <FiCode size={18} />
           <span>Code</span>
+        </button>
+
+        <button
+          style={ctrlBtn(activeActivity === "youtube", "#ef4444")}
+          onClick={() => setActiveActivity(a => a === "youtube" ? null : "youtube")}
+          title="Shared YouTube"
+        >
+          <FiYoutube size={18} />
+          <span>YouTube</span>
         </button>
 
         <button
