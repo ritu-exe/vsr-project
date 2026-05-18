@@ -8,13 +8,24 @@ function authHeaders() {
   };
 }
 
+// Helper to handle 401 Unauthorized globally
+async function apiFetch(url, options = {}) {
+  const res = await fetch(url, options);
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    window.location.reload();
+  }
+  return res;
+}
+
 export const getRooms = async () => {
-  const res = await fetch(`${BASE}/api/rooms`);
+  const res = await apiFetch(`${BASE}/api/rooms`);
   return res.json();
 };
 
 export const getServers = async () => {
-  const res = await fetch(`${BASE}/api/servers`, {
+  const res = await apiFetch(`${BASE}/api/servers`, {
     headers: authHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch servers");
@@ -23,7 +34,7 @@ export const getServers = async () => {
 
 export const createServer = async (name) => {
   const username = localStorage.getItem("username") || "system";
-  const res = await fetch(`${BASE}/api/servers`, {
+  const res = await apiFetch(`${BASE}/api/servers`, {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify({ name, ownerId: username }),
@@ -33,7 +44,7 @@ export const createServer = async (name) => {
 };
 
 export const createRoomInServer = async (serverId, name, type = "chat") => {
-  const res = await fetch(`${BASE}/api/servers/${serverId}/rooms`, {
+  const res = await apiFetch(`${BASE}/api/servers/${serverId}/rooms`, {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify({ name, type }),
@@ -43,7 +54,7 @@ export const createRoomInServer = async (serverId, name, type = "chat") => {
 };
 
 export const addMemberToServer = async (serverId, username) => {
-  const res = await fetch(`${BASE}/api/servers/${serverId}/members`, {
+  const res = await apiFetch(`${BASE}/api/servers/${serverId}/members`, {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify({ username }),
@@ -53,12 +64,12 @@ export const addMemberToServer = async (serverId, username) => {
 };
 
 export const getMessages = async (roomId) => {
-  const res = await fetch(`${BASE}/api/messages/${roomId}`);
+  const res = await apiFetch(`${BASE}/api/messages/${roomId}`);
   return res.json();
 };
 
 export const sendMessage = async (roomId, message) => {
-  const res = await fetch(`${BASE}/api/messages/${roomId}`, {
+  const res = await apiFetch(`${BASE}/api/messages/${roomId}`, {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify(message),
@@ -67,7 +78,7 @@ export const sendMessage = async (roomId, message) => {
 };
 
 export const signup = async (data) => {
-  const res = await fetch(`${BASE}/api/signup`, {
+  const res = await apiFetch(`${BASE}/api/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -76,7 +87,7 @@ export const signup = async (data) => {
 };
 
 export const login = async (data) => {
-  const res = await fetch(`${BASE}/api/login`, {
+  const res = await apiFetch(`${BASE}/api/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -85,7 +96,7 @@ export const login = async (data) => {
 };
 
 export const createRoom = async (name) => {
-  const res = await fetch(`${BASE}/api/rooms`, {
+  const res = await apiFetch(`${BASE}/api/rooms`, {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify({ name }),
