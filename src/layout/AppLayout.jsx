@@ -71,6 +71,7 @@ function AppLayout({ children, page, setPage }) {
         goFocus={() => setPage("focus")}
         goCompiler={() => setPage("compiler")}
         goProgress={() => setPage("progress")}
+        goFriends={() => setPage("friends")}
         currentPage={page}
       />
 

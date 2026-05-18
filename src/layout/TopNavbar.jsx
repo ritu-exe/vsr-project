@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiHome, FiTarget, FiCode, FiBarChart2, FiSun, FiMoon, FiBell } from "react-icons/fi";
+import { FiHome, FiTarget, FiCode, FiBarChart2, FiSun, FiMoon, FiBell, FiUsers } from "react-icons/fi";
 import "./layout.css";
 
 const navItems = [
@@ -7,9 +7,10 @@ const navItems = [
   { icon: FiTarget, label: "Focus", key: "focus", color: "#f97316" },
   { icon: FiCode, label: "Compiler", key: "compiler", color: "#22c55e" },
   { icon: FiBarChart2, label: "Progress", key: "progress", color: "#a855f7" },
+  { icon: FiUsers, label: "Friends", key: "friends", color: "#eab308" },
 ];
 
-function TopNavbar({ goHome, goFocus, goCompiler, goProgress, currentPage }) {
+function TopNavbar({ goHome, goFocus, goCompiler, goProgress, goFriends, currentPage }) {
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");
     return saved ? saved === "dark" : true; // default dark
@@ -23,8 +24,8 @@ function TopNavbar({ goHome, goFocus, goCompiler, goProgress, currentPage }) {
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  const handlers = { home: goHome, focus: goFocus, compiler: goCompiler, progress: goProgress };
-  const colors = { home: "#6366f1", focus: "#f97316", compiler: "#22c55e", progress: "#a855f7" };
+  const handlers = { home: goHome, focus: goFocus, compiler: goCompiler, progress: goProgress, friends: goFriends };
+  const colors = { home: "#6366f1", focus: "#f97316", compiler: "#22c55e", progress: "#a855f7", friends: "#eab308" };
 
   return (
     <nav className="top-navbar">
