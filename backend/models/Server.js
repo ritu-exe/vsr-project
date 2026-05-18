@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const serverSchema = new mongoose.Schema({
   name: { type: String, required: true },
   ownerId: { type: String, default: "system" },
+  members: { type: [String], default: [] },
   rooms: [
     {
       name: { type: String, required: true },

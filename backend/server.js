@@ -120,27 +120,36 @@ app.post("/api/login", async (req, res) => {
 // --------------------
 // SERVERS API
 // --------------------
-app.get("/api/servers", async (req, res) => {
+app.get("/api/servers", authMiddleware, async (req, res) => {
   try {
-    const servers = await ServerModel.find().sort({ createdAt: 1 });
+    const username = req.user.username;
+    const servers = await ServerModel.find({
+      $or: [
+        { ownerId: "system" },
+        { ownerId: username },
+        { members: username }
+      ]
+    }).sort({ createdAt: 1 });
     res.json(servers);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.post("/api/servers", async (req, res) => {
+app.post("/api/servers", authMiddleware, async (req, res) => {
   try {
-    const { name, ownerId } = req.body;
+    const { name } = req.body;
     if (!name) return res.status(400).json({ error: "Server name required" });
+    const username = req.user.username;
     const newServer = await ServerModel.create({
       name,
-      ownerId: ownerId || "system",
+      ownerId: username,
+      members: [username],
       rooms: [
         { name: "general-chat",  type: "chat"  },
         { name: "announcements", type: "chat"  },
         { name: "Lounge",        type: "voice" },
-        { name: "Study Room", type: "video" },
+        { name: "Study Room",    type: "video" },
         { name: "Whiteboard",    type: "board" },
       ],
     });
@@ -151,7 +160,7 @@ app.post("/api/servers", async (req, res) => {
 });
 
 // Add a room to an existing server
-app.post("/api/servers/:serverId/rooms", async (req, res) => {
+app.post("/api/servers/:serverId/rooms", authMiddleware, async (req, res) => {
   try {
     const { name, type } = req.body;
     if (!name) return res.status(400).json({ error: "Room name required" });
@@ -160,6 +169,30 @@ app.post("/api/servers/:serverId/rooms", async (req, res) => {
     srv.rooms.push({ name, type: type || "chat" });
     await srv.save();
     res.json(srv.rooms[srv.rooms.length - 1]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add member to server
+app.post("/api/servers/:serverId/members", authMiddleware, async (req, res) => {
+  try {
+    const { username } = req.body;
+    if (!username) return res.status(400).json({ error: "Username required" });
+    const srv = await ServerModel.findById(req.params.serverId);
+    if (!srv) return res.status(404).json({ error: "Server not found" });
+    
+    // check if current user is owner or system
+    if (srv.ownerId !== req.user.username && srv.ownerId !== "system") {
+      return res.status(403).json({ error: "Only the owner can add members" });
+    }
+    
+    if (!srv.members) srv.members = [];
+    if (!srv.members.includes(username)) {
+      srv.members.push(username);
+      await srv.save();
+    }
+    res.json({ message: "Member added", server: srv });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

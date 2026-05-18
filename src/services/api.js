@@ -14,7 +14,10 @@ export const getRooms = async () => {
 };
 
 export const getServers = async () => {
-  const res = await fetch(`${BASE}/api/servers`);
+  const res = await fetch(`${BASE}/api/servers`, {
+    headers: authHeaders(),
+  });
+  if (!res.ok) throw new Error("Failed to fetch servers");
   return res.json();
 };
 
@@ -36,6 +39,16 @@ export const createRoomInServer = async (serverId, name, type = "chat") => {
     body: JSON.stringify({ name, type }),
   });
   if (!res.ok) throw new Error("Failed to create room in server");
+  return res.json();
+};
+
+export const addMemberToServer = async (serverId, username) => {
+  const res = await fetch(`${BASE}/api/servers/${serverId}/members`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({ username }),
+  });
+  if (!res.ok) throw new Error("Failed to add member to server");
   return res.json();
 };
 

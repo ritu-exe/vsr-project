@@ -1,7 +1,7 @@
 import PomodoroTimer from "../components/PomodoroTimer";
 import { useState } from "react";
-import { Hash, Mic, Video, PenTool, Plus, Search, ChevronDown, ChevronRight } from "lucide-react";
-import { createServer as apiCreateServer, createRoomInServer } from "../services/api";
+import { Hash, Mic, Video, PenTool, Plus, Search, ChevronDown, ChevronRight, UserPlus } from "lucide-react";
+import { createServer as apiCreateServer, createRoomInServer, addMemberToServer } from "../services/api";
 import FloatingCallBar from "./FloatingCallBar";
 
 /* ─── helpers ──────────────────────────────────────────────── */
@@ -213,6 +213,19 @@ export default function ServerSidebar({
     }
   }
 
+  /* ---- Invite friend ---- */
+  async function inviteFriend(serverId) {
+    const friendName = prompt("Enter friend's username to invite:");
+    if (!friendName) return;
+    try {
+      await addMemberToServer(serverId, friendName);
+      alert(`Successfully added ${friendName} to the server! They can now see it in their sidebar.`);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to invite friend. You might not be the owner, or they might already be in the server.");
+    }
+  }
+
   /* ---- Create room ---- */
   async function createRoom(serverId) {
     const name = prompt("Enter room name");
@@ -304,13 +317,21 @@ export default function ServerSidebar({
                 <RoomSection title="VIDEO CHANNELS" icon={Video}   sectionColor="#f97316" rooms={grouped.video}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
                 <RoomSection title="WHITEBOARD"     icon={PenTool} sectionColor="#a78bfa" rooms={grouped.board}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
 
-                {/* Add room */}
-                <button onClick={() => createRoom(server.id)} style={addRoomBtnStyle}>
-                  <span style={addRoomIconStyle}>
-                    <Plus size={10} />
-                  </span>
-                  Add Channel
-                </button>
+                {/* Actions */}
+                <div style={{ display: "flex", gap: "8px", marginTop: "12px", padding: "0 16px" }}>
+                  <button onClick={() => createRoom(server.id)} style={{...addRoomBtnStyle, flex: 1, marginTop: 0}}>
+                    <span style={addRoomIconStyle}>
+                      <Plus size={10} />
+                    </span>
+                    Add Channel
+                  </button>
+                  <button onClick={() => inviteFriend(server.id)} style={{...addRoomBtnStyle, flex: 1, marginTop: 0, background: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px dashed rgba(16, 185, 129, 0.3)"}}>
+                    <span style={{...addRoomIconStyle, background: "rgba(16, 185, 129, 0.2)", color: "#10b981"}}>
+                      <UserPlus size={10} />
+                    </span>
+                    Invite
+                  </button>
+                </div>
 
               </div>
             )}
