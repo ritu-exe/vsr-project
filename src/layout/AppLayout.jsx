@@ -25,7 +25,7 @@ function AppLayout({ children, page, setPage }) {
 
   /* ================= LOAD ROOMS ================= */
 
-  useEffect(() => {
+  const fetchServers = () => {
     getServers().then((data) => {
       const serverList = Array.isArray(data) ? data : [];
       const formattedServers = serverList.map((srv) => ({
@@ -37,16 +37,26 @@ function AppLayout({ children, page, setPage }) {
           type: room.type || "chat",
           category: "general",
         })),
+        members: srv.members || [],
       }));
 
       setServers(formattedServers);
-      if (formattedServers.length > 0) {
-        setSelectedServer(formattedServers[0]);
-        if (formattedServers[0].rooms.length > 0) {
-          setSelectedRoom(formattedServers[0].rooms[0]);
+      
+      setSelectedServer((prevServer) => {
+        if (!prevServer || !prevServer.id) {
+          const newSrv = formattedServers[0] || {};
+          if (newSrv.rooms && newSrv.rooms.length > 0) setSelectedRoom(newSrv.rooms[0]);
+          return newSrv;
         }
-      }
-    });
+        return formattedServers.find(s => s.id === prevServer.id) || prevServer;
+      });
+    }).catch(err => console.error(err));
+  };
+
+  useEffect(() => {
+    fetchServers();
+    const interval = setInterval(fetchServers, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

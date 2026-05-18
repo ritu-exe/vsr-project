@@ -1,7 +1,7 @@
 import PomodoroTimer from "../components/PomodoroTimer";
 import { useState } from "react";
 import { Hash, Mic, Video, PenTool, Plus, Search, ChevronDown, ChevronRight, UserPlus } from "lucide-react";
-import { createServer as apiCreateServer, createRoomInServer, addMemberToServer, sendServerInvite } from "../services/api";
+import { createServer as apiCreateServer, createRoomInServer, sendServerInvite } from "../services/api";
 import FloatingCallBar from "./FloatingCallBar";
 
 /* ─── helpers ──────────────────────────────────────────────── */
@@ -332,6 +332,21 @@ export default function ServerSidebar({
                     Invite
                   </button>
                 </div>
+
+                {/* Members List */}
+                {server.members && server.members.length > 0 && (
+                  <div style={{ marginTop: "16px", padding: "0 16px" }}>
+                    <div style={{ fontSize: "10px", fontWeight: "bold", color: "#64748b", marginBottom: "8px", textTransform: "uppercase" }}>Members — {server.members.length}</div>
+                    {server.members.map(member => (
+                      <div key={member} style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+                        <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: "linear-gradient(135deg, #6366f1, #3b82f6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "white", fontWeight: "bold", boxShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>
+                          {member.substring(0, 2).toUpperCase()}
+                        </div>
+                        <span style={{ fontSize: "13px", color: "#e2e8f0", fontWeight: 500 }}>{member}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
               </div>
             )}

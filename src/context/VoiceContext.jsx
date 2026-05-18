@@ -69,6 +69,17 @@ export function VoiceProvider({ children }) {
       });
     };
 
+    // Renegotiate when tracks change (e.g. turning on camera)
+    pc.onnegotiationneeded = async () => {
+      try {
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        socket.emit("voice-offer", { targetId: peerId, sdp: pc.localDescription });
+      } catch (err) {
+        console.error("Negotiation error:", err);
+      }
+    };
+
     pc.onconnectionstatechange = () => {
       if (["disconnected", "failed", "closed"].includes(pc.connectionState)) {
         removePeer(peerId);
