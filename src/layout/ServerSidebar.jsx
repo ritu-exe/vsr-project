@@ -1,16 +1,16 @@
 import PomodoroTimer from "../components/PomodoroTimer";
 import { useState } from "react";
 import { Hash, Mic, Video, PenTool, Plus, Search, ChevronDown, ChevronRight, UserPlus } from "lucide-react";
-import { createServer as apiCreateServer, createRoomInServer, addMemberToServer } from "../services/api";
+import { createServer as apiCreateServer, createRoomInServer, addMemberToServer, sendServerInvite } from "../services/api";
 import FloatingCallBar from "./FloatingCallBar";
 
 /* ─── helpers ──────────────────────────────────────────────── */
 
 const TYPE_META = {
-  voice: { icon: Mic,      color: "#10b981", label: "Voice" },
-  video: { icon: Video,    color: "#f97316", label: "Video" },
-  board: { icon: PenTool,  color: "#a78bfa", label: "Board" },
-  chat:  { icon: Hash,     color: "#6366f1", label: "Text"  },
+  voice: { icon: Mic, color: "#10b981", label: "Voice" },
+  video: { icon: Video, color: "#f97316", label: "Video" },
+  board: { icon: PenTool, color: "#a78bfa", label: "Board" },
+  chat: { icon: Hash, color: "#6366f1", label: "Text" },
 };
 
 function getRoomMeta(type) {
@@ -24,11 +24,11 @@ function hasUnread(room) {
 function groupRoomsBySection(rooms) {
   return {
     general: rooms.filter((r) => r.name.includes("general")),
-    help:    rooms.filter((r) => r.name.includes("help")),
-    text:    rooms.filter((r) => r.type === "chat" && !r.name.includes("general") && !r.name.includes("help")),
-    voice:   rooms.filter((r) => r.type === "voice"),
-    video:   rooms.filter((r) => r.type === "video"),
-    board:   rooms.filter((r) => r.type === "board"),
+    help: rooms.filter((r) => r.name.includes("help")),
+    text: rooms.filter((r) => r.type === "chat" && !r.name.includes("general") && !r.name.includes("help")),
+    voice: rooms.filter((r) => r.type === "voice"),
+    video: rooms.filter((r) => r.type === "video"),
+    board: rooms.filter((r) => r.type === "board"),
   };
 }
 
@@ -218,11 +218,11 @@ export default function ServerSidebar({
     const friendName = prompt("Enter friend's username to invite:");
     if (!friendName) return;
     try {
-      await addMemberToServer(serverId, friendName);
-      alert(`Successfully added ${friendName} to the server! They can now see it in their sidebar.`);
+      await sendServerInvite(serverId, friendName);
+      alert(`Server invite sent to ${friendName}! They can accept it in their Friends tab.`);
     } catch (err) {
       console.error(err);
-      alert("Failed to invite friend. You might not be the owner, or they might already be in the server.");
+      alert("Failed to send invite: " + err.message);
     }
   }
 
@@ -230,7 +230,7 @@ export default function ServerSidebar({
   async function createRoom(serverId) {
     const name = prompt("Enter room name");
     if (!name) return;
-    
+
     // Quick prompt for type
     const typeStr = prompt("Enter type: chat, voice, video, board", "chat");
     const type = ["chat", "voice", "video", "board"].includes(typeStr) ? typeStr : "chat";
@@ -310,23 +310,23 @@ export default function ServerSidebar({
                 </div>
 
                 {/* Sections */}
-                <RoomSection title="GENERAL"        icon={Hash}    sectionColor="#6366f1" rooms={grouped.general} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
-                <RoomSection title="HELP"           icon={Hash}    sectionColor="#f97316" rooms={grouped.help}    {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
-                <RoomSection title="TEXT CHANNELS"  icon={Hash}    sectionColor="#6366f1" rooms={grouped.text}    {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
-                <RoomSection title="VOICE CHANNELS" icon={Mic}     sectionColor="#10b981" rooms={grouped.voice}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
-                <RoomSection title="VIDEO CHANNELS" icon={Video}   sectionColor="#f97316" rooms={grouped.video}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
-                <RoomSection title="WHITEBOARD"     icon={PenTool} sectionColor="#a78bfa" rooms={grouped.board}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="GENERAL" icon={Hash} sectionColor="#6366f1" rooms={grouped.general} {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="HELP" icon={Hash} sectionColor="#f97316" rooms={grouped.help}    {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="TEXT CHANNELS" icon={Hash} sectionColor="#6366f1" rooms={grouped.text}    {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="VOICE CHANNELS" icon={Mic} sectionColor="#10b981" rooms={grouped.voice}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="VIDEO CHANNELS" icon={Video} sectionColor="#f97316" rooms={grouped.video}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
+                <RoomSection title="WHITEBOARD" icon={PenTool} sectionColor="#a78bfa" rooms={grouped.board}   {...{ serverId: server.id, selectedRoom, setSelectedRoom, deleteRoom, focusMode, setPage }} />
 
                 {/* Actions */}
                 <div style={{ display: "flex", gap: "8px", marginTop: "12px", padding: "0 16px" }}>
-                  <button onClick={() => createRoom(server.id)} style={{...addRoomBtnStyle, flex: 1, marginTop: 0}}>
+                  <button onClick={() => createRoom(server.id)} style={{ ...addRoomBtnStyle, flex: 1, marginTop: 0 }}>
                     <span style={addRoomIconStyle}>
                       <Plus size={10} />
                     </span>
                     Add Channel
                   </button>
-                  <button onClick={() => inviteFriend(server.id)} style={{...addRoomBtnStyle, flex: 1, marginTop: 0, background: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px dashed rgba(16, 185, 129, 0.3)"}}>
-                    <span style={{...addRoomIconStyle, background: "rgba(16, 185, 129, 0.2)", color: "#10b981"}}>
+                  <button onClick={() => inviteFriend(server.id)} style={{ ...addRoomBtnStyle, flex: 1, marginTop: 0, background: "rgba(16, 185, 129, 0.1)", color: "#10b981", border: "1px dashed rgba(16, 185, 129, 0.3)" }}>
+                    <span style={{ ...addRoomIconStyle, background: "rgba(16, 185, 129, 0.2)", color: "#10b981" }}>
                       <UserPlus size={10} />
                     </span>
                     Invite

@@ -41,6 +41,13 @@ function Home({ setPage }) {
       page: "progress",
       desc: "Track your study sessions",
     },
+    {
+      icon: "👥",
+      label: "Friends",
+      page: "friends",
+      desc: "Manage friends and server invites",
+      badge: "New",
+    },
   ];
 
   function handleLogout() {

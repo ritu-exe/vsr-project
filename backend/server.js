@@ -118,6 +118,115 @@ app.post("/api/login", async (req, res) => {
 });
 
 // --------------------
+// FRIENDS & INVITES API
+// --------------------
+app.get("/api/users/me", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.user.username });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json({
+      friends: user.friends || [],
+      friendRequests: user.friendRequests || [],
+      serverInvites: user.serverInvites || []
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/friends/request", authMiddleware, async (req, res) => {
+  try {
+    const { targetUsername } = req.body;
+    if (targetUsername === req.user.username) return res.status(400).json({ error: "Cannot add yourself" });
+    const targetUser = await User.findOne({ username: targetUsername });
+    if (!targetUser) return res.status(404).json({ error: "User not found" });
+    
+    const currentUser = await User.findOne({ username: req.user.username });
+    if (currentUser.friends.includes(targetUsername)) return res.status(400).json({ error: "Already friends" });
+    
+    const alreadySent = targetUser.friendRequests.find(r => r.from === req.user.username);
+    if (alreadySent) return res.status(400).json({ error: "Request already sent" });
+    
+    targetUser.friendRequests.push({ from: req.user.username, status: "pending" });
+    await targetUser.save();
+    res.json({ message: "Friend request sent!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/friends/accept", authMiddleware, async (req, res) => {
+  try {
+    const { fromUsername } = req.body;
+    const user = await User.findOne({ username: req.user.username });
+    const requestIndex = user.friendRequests.findIndex(r => r.from === fromUsername);
+    if (requestIndex === -1) return res.status(404).json({ error: "No request found" });
+    
+    user.friendRequests.splice(requestIndex, 1);
+    if (!user.friends.includes(fromUsername)) user.friends.push(fromUsername);
+    await user.save();
+    
+    const sender = await User.findOne({ username: fromUsername });
+    if (sender && !sender.friends.includes(req.user.username)) {
+      sender.friends.push(req.user.username);
+      await sender.save();
+    }
+    res.json({ message: "Friend added!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/servers/:serverId/invite", authMiddleware, async (req, res) => {
+  try {
+    const { targetUsername } = req.body;
+    const server = await ServerModel.findById(req.params.serverId);
+    if (!server) return res.status(404).json({ error: "Server not found" });
+    
+    const targetUser = await User.findOne({ username: targetUsername });
+    if (!targetUser) return res.status(404).json({ error: "User not found" });
+    
+    if (server.members.includes(targetUsername)) return res.status(400).json({ error: "User already in server" });
+    
+    const alreadyInvited = targetUser.serverInvites.find(i => i.serverId === req.params.serverId);
+    if (alreadyInvited) return res.status(400).json({ error: "Invite already sent" });
+    
+    targetUser.serverInvites.push({
+      serverId: server._id.toString(),
+      serverName: server.name,
+      from: req.user.username
+    });
+    await targetUser.save();
+    res.json({ message: "Server invite sent!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/servers/invites/accept", authMiddleware, async (req, res) => {
+  try {
+    const { serverId } = req.body;
+    const user = await User.findOne({ username: req.user.username });
+    
+    const inviteIndex = user.serverInvites.findIndex(i => i.serverId === serverId);
+    if (inviteIndex === -1) return res.status(404).json({ error: "Invite not found" });
+    
+    user.serverInvites.splice(inviteIndex, 1);
+    await user.save();
+    
+    const server = await ServerModel.findById(serverId);
+    if (server && !server.members.includes(req.user.username)) {
+      server.members.push(req.user.username);
+      await server.save();
+    }
+    res.json({ message: "Joined server!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// --------------------
 // SERVERS API
 // --------------------
 app.get("/api/servers", authMiddleware, async (req, res) => {

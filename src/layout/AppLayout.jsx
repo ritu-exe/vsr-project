@@ -14,6 +14,7 @@ import "./layout.css";
 import Focus from "../pages/Focus";
 import Compiler from "../pages/Compiler";
 import Progress from "../pages/Progress";
+import Friends from "../pages/Friends";
 
 function AppLayout({ children, page, setPage }) {
 
@@ -92,6 +93,7 @@ function AppLayout({ children, page, setPage }) {
         
 
 {page === "progress" && <Progress />}
+          {page === "friends" && <Friends />}
           {page === "chat" && <RoomRenderer room={selectedRoom} />}
 
           {/* ✅ OPTIONAL: direct whiteboard page */}

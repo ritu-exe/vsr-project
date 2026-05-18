@@ -63,6 +63,51 @@ export const addMemberToServer = async (serverId, username) => {
   return res.json();
 };
 
+export const getMe = async () => {
+  const res = await apiFetch(`${BASE}/api/users/me`, { headers: authHeaders() });
+  return res.json();
+};
+
+export const sendFriendRequest = async (targetUsername) => {
+  const res = await apiFetch(`${BASE}/api/friends/request`, {
+    method: "POST", headers: authHeaders(),
+    body: JSON.stringify({ targetUsername })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || "Failed to send request");
+  }
+  return res.json();
+};
+
+export const acceptFriendRequest = async (fromUsername) => {
+  const res = await apiFetch(`${BASE}/api/friends/accept`, {
+    method: "POST", headers: authHeaders(),
+    body: JSON.stringify({ fromUsername })
+  });
+  return res.json();
+};
+
+export const sendServerInvite = async (serverId, targetUsername) => {
+  const res = await apiFetch(`${BASE}/api/servers/${serverId}/invite`, {
+    method: "POST", headers: authHeaders(),
+    body: JSON.stringify({ targetUsername })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || "Failed to send invite");
+  }
+  return res.json();
+};
+
+export const acceptServerInvite = async (serverId) => {
+  const res = await apiFetch(`${BASE}/api/servers/invites/accept`, {
+    method: "POST", headers: authHeaders(),
+    body: JSON.stringify({ serverId })
+  });
+  return res.json();
+};
+
 export const getMessages = async (roomId) => {
   const res = await apiFetch(`${BASE}/api/messages/${roomId}`);
   return res.json();
